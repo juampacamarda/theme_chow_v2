@@ -1,0 +1,23 @@
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/plugins/
+wp-content/themes/*/node_modules/
+*.log
+wp-content/debug.log
+wp-content/cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Composer
+vendor/
+
+# Node
+node_modules/
+npm-debug.log*

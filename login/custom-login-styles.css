@@ -1,0 +1,27 @@
+body { 
+background: #fff;
+background: linear-gradient(117deg, rgba(252,252,252,1) 47%, rgba(249,95,44,1) 86%);
+}
+@media(min-width:992px){
+#login {
+    margin: 0 0 0 100px!important;
+    padding: 4% 0 0!important;
+}
+}
+.login h1 a {background-image: none,url('https://liebre.online/images/logo-color.png')!important;background-size: 99%;width: 325px!important;}
+
+.wp-core-ui .button-primary { 
+    background-color:#ef4f33!important;
+    display:block!important;
+    width:100%!important;
+    margin-top:20px;
+    border:none!important
+ }
+.wp-core-ui .button-primary.focus, 
+.wp-core-ui .button-primary.hover, 
+.wp-core-ui .button-primary:focus, 
+.wp-core-ui .button-primary:hover { 
+    color:#ef4f33!important;
+    background-color:#fff!important;
+    border:1px solid!important
+}
