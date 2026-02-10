@@ -23,19 +23,19 @@
 										</div>
 										<div class="data-cliente">
 												
-												<?php if ( scf_get_field( 'direccion','option' ) ) {?>
+												<?php if ( get_field( 'direccion','option' ) ) {?>
 														<p>
-															<i class="fas fa-map-marker-alt me-2"></i> <?php scf_the_field( 'direccion','option' ); ?>
+															<i class="fas fa-map-marker-alt me-2"></i> <?php the_field( 'direccion','option' ); ?>
 														</p>
 												<?php } ?> 
-												<?php if ( scf_get_field( 'telefonos','option' ) ) {?>
+												<?php if ( get_field( 'telefonos','option' ) ) {?>
 													<p>
-														<i class="fas fa-phone me-2"></i> <?php scf_the_field( 'telefonos','option' ); ?>
+														<i class="fas fa-phone me-2"></i> <?php the_field( 'telefonos','option' ); ?>
 													</p>
 												<?php } ?>
-												<?php if ( scf_get_field( 'mail','option' ) ) {?>
+												<?php if ( get_field( 'mail','option' ) ) {?>
 														<p>
-															<i class="fas fa-envelope me-2"></i>	<?php scf_the_field( 'mail', 'option' ); ?>
+															<i class="fas fa-envelope me-2"></i>	<?php the_field( 'mail', 'option' ); ?>
 														</p>
 												<?php }else{ ?>
 														E-mail: xxxxx@xxxxx - xxxxx@xxxxx
@@ -64,13 +64,13 @@
 								</div>
 
 								<div class="col-12 col-md-4 align-items-md-center text-center text-md-left">
-									<?php if ( scf_have_rows( 'logos_legales', 'options' ) ):?>
+									<?php if ( have_rows( 'logos_legales', 'options' ) ):?>
 
 									<div class="logos-footer">
-									<?php while ( scf_have_rows( 'logos_legales', 'options' ) ) : scf_the_row();
+									<?php while ( have_rows( 'logos_legales', 'options' ) ) : the_row();
 										
 									?>
-										<img src="<?php scf_the_sub_field( 'logo' ) ;?>" alt="">
+										<img src="<?php the_sub_field( 'logo' ) ;?>" alt="">
 									<?php endwhile ;?>
 									</div>
 

@@ -5,8 +5,8 @@ Template Name: blog-plantilla
 ?>
 <?php get_header();?>
 <main class="site-content">
-<?php if ( scf_get_field( 'imagen_portada') ) { ?>
-    <div class="heading d-flex align-items-center" style="background-position: center;background-image:url('<?php scf_the_field( 'imagen_portada' ); ?>'); background-size:cover; background-repeat:no-repeat">
+<?php if ( get_field( 'imagen_portada') ) { ?>
+    <div class="heading d-flex align-items-center" style="background-position: center;background-image:url('<?php the_field( 'imagen_portada' ); ?>'); background-size:cover; background-repeat:no-repeat">
         <div class="container">
             <h2 class="tittle cursiva" data-aos="fade-up" > <?php the_title(); ?> </h2>
         </div>

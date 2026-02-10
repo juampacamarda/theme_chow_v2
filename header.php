@@ -9,14 +9,14 @@
 		<?php wp_head(); ?>
 		<title><?php echo get_bloginfo( 'name' ); ?></title>
 		<meta name="Title" content="<?php echo get_bloginfo( 'name' ); ?>">
-		<?php if ( scf_get_field( 'google_analytics', 'option') ) { ?>
-			<?php scf_the_field( 'google_analytics','option' ); ?>
+		<?php if ( get_field( 'google_analytics', 'option') ) { ?>
+			<?php the_field( 'google_analytics','option' ); ?>
 		<?php } ?>
-		<?php if ( scf_get_field( 'fb_pix', 'option') ) { ?>
-			<?php scf_the_field( 'fb_pix','option' ); ?>
+		<?php if ( get_field( 'fb_pix', 'option') ) { ?>
+			<?php the_field( 'fb_pix','option' ); ?>
 		<?php } ?>
-		<?php if ( scf_get_field( 'otro_code', 'option') ) { ?>
-			<?php scf_the_field( 'otro_code','option' ); ?>
+		<?php if ( get_field( 'otro_code', 'option') ) { ?>
+			<?php the_field( 'otro_code','option' ); ?>
 		<?php } ?>
 </head>
 
@@ -51,29 +51,29 @@
 														<li class="redes border-r padding-datos">
 																<!--<<h3 class="title-datos">Nuestras redes</h3>-->
 																<ul class="nav data-datos header-redes">
-																		<?php if ( scf_get_field( 'instagram_link', 'option') ) { ?>
+																		<?php if ( get_field( 'instagram_link', 'option') ) { ?>
 																		<li>
-																				<a href="<?php scf_the_field( 'instagram_link', 'option' ); ?>" target="_blank"><i class="fab fa-instagram"></i></a>
+																				<a href="<?php the_field( 'instagram_link', 'option' ); ?>" target="_blank"><i class="fab fa-instagram"></i></a>
 																		</li>
 																		<?php } ?>
-																		<?php if ( scf_get_field( 'facebook_link', 'option') ) { ?>
+																		<?php if ( get_field( 'facebook_link', 'option') ) { ?>
 																		<li>
-																				<a href="<?php scf_the_field( 'facebook_link', 'option' ); ?>" target="_blank"><i class="fab fa-facebook"></i></a>
+																				<a href="<?php the_field( 'facebook_link', 'option' ); ?>" target="_blank"><i class="fab fa-facebook"></i></a>
 																		</li>
 																		<?php } ?>
-																		<?php if ( scf_get_field( 'tel_numero', 'option') ) { ?>
+																		<?php if ( get_field( 'tel_numero', 'option') ) { ?>
 																		<li>
-																				<a href="tel:<?php scf_the_field( 'tel_numero', 'option' ); ?>"><i class="fa fa-phone"></i></a>
+																				<a href="tel:<?php the_field( 'tel_numero', 'option' ); ?>"><i class="fa fa-phone"></i></a>
 																		</li>
 																		<?php } ?>
-																		<?php if ( scf_get_field( 'wsp_link', 'option') ) { ?>
+																		<?php if ( get_field( 'wsp_link', 'option') ) { ?>
 																		<li>
-																				<a href="https://wa.me/<?php scf_the_field( 'wsp_link', 'option' ); ?>"><i class="fab fa-whatsapp"></i></a>
+																				<a href="https://wa.me/<?php the_field( 'wsp_link', 'option' ); ?>"><i class="fab fa-whatsapp"></i></a>
 																		</li>
 																		<?php } ?>
-																		<?php if ( scf_get_field( 'mail', 'option') ) { ?>
+																		<?php if ( get_field( 'mail', 'option') ) { ?>
 																		<li>
-																				<a href="mailto:<?php scf_the_field( 'mail', 'option' ); ?>"><i class="fa fa-envelope"></i></a>
+																				<a href="mailto:<?php the_field( 'mail', 'option' ); ?>"><i class="fa fa-envelope"></i></a>
 																		</li>
 																		<?php } ?>
 																</ul>

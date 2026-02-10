@@ -158,9 +158,9 @@ if (is_user_logged_in()) {
 
 //abajo carga shortcodes
 add_filter('the_excerpt', 'do_shortcode');
-add_filter('scf/format_value/type=textarea', 'do_shortcode');
-add_filter('scf/format_value/type=text', 'do_shortcode');
-add_filter('scf/format_value', 'do_shortcode');
+add_filter('acf/format_value/type=textarea', 'do_shortcode');
+add_filter('acf/format_value/type=text', 'do_shortcode');
+add_filter('acf/format_value', 'do_shortcode');
 
 // Enable shortcodes in widgets
 add_filter('widget_text', 'do_shortcode');
@@ -236,7 +236,7 @@ function relacionados(){
 
  /* SCF */
  
- add_filter('scf/settings/save_json', 'chow_acf_json_save_point');
+ add_filter('acf/settings/save_json', 'chow_acf_json_save_point');
  
  function chow_acf_json_save_point( $path ) {
      
@@ -248,7 +248,7 @@ function relacionados(){
      
  }
 
- add_filter('scf/settings/load_json', 'chow_acf_json_load_point');
+ add_filter('acf/settings/load_json', 'chow_acf_json_load_point');
 
  function chow_acf_json_load_point( $paths ) {
      
@@ -264,8 +264,8 @@ function relacionados(){
  }
 
 
- if( function_exists('scf_add_options_page') ) {
-	scf_add_options_page(array(
+ if( function_exists('acf_add_options_page') ) {
+	acf_add_options_page(array(
 		'page_title' 	=> 'Opciones Chow theme',
 		'menu_title'	=> 'Chow theme',
 		'menu_slug' 	=> 'Chow-theme',
@@ -273,20 +273,20 @@ function relacionados(){
 		'position'		=> 5.4
 	));
 
-    scf_add_options_sub_page(array(
+    acf_add_options_sub_page(array(
 		'page_title' 	=> 'Editar Footer del Sitio',
 		'menu_title'	=> 'Footer',
 		'parent_slug'	=> 'Chow-theme',
 	));
 
 	
-    scf_add_options_sub_page(array(
+    acf_add_options_sub_page(array(
 		'page_title' 	=> 'Slide Home',
 		'menu_title'	=> 'slide',
 		'parent_slug'	=> 'Chow-theme',
 	));
 
-    scf_add_options_sub_page(array(
+    acf_add_options_sub_page(array(
 		'page_title' 	=> 'Formulario Consulta Productos',
 		'menu_title'	=> 'Formulario Productos',
 		'parent_slug'	=> 'Chow-theme',

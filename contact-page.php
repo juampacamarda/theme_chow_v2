@@ -6,10 +6,10 @@ Template Name: page-contacto
 <?php get_header();?>
 <main class="site-content">
    
-        <?php if ( scf_get_field( 'imagen_portada') ) { ?>
-            <div class="heading d-flex align-items-center" style="background-image:url('<?php scf_the_field( 'imagen_portada' ); ?>'); background-size:cover; background-repeat:no-repeat; background-position:center">
+        <?php if ( get_field( 'imagen_portada') ) { ?>
+            <div class="heading d-flex align-items-center" style="background-image:url('<?php the_field( 'imagen_portada' ); ?>'); background-size:cover; background-repeat:no-repeat; background-position:center">
                 <div class="container">
-                    <h2 class="tittle cursiva"> <?php scf_the_field( 'titulo' ); ?> </h2>
+                    <h2 class="tittle cursiva"> <?php the_field( 'titulo' ); ?> </h2>
                 </div>
             </div>
         <?php } ?>        
@@ -17,28 +17,28 @@ Template Name: page-contacto
     <div class="container">
         <div class="content-page">
             <div class="row d-flex justify-content-center">
-                <?php if ( scf_get_field( 'imagen' ) ) : ?>
+                <?php if ( get_field( 'imagen' ) ) : ?>
                 <div class="col-12 col-md-6" data-aos="fade-up">
                     <div class="my-4">
-                        <img src="<?php scf_the_field( 'imagen' ); ?>" class="img-fluid d-block"/>
+                        <img src="<?php the_field( 'imagen' ); ?>" class="img-fluid d-block"/>
                     </div>
                     
                 </div>
                 <?php endif ?> 
                 <div class="col-12 col-md-6" data-aos="fade-up">
                     <div class="texto-post my-4">
-                        <?php scf_the_field( 'texto_contenido' ); ?>
-                        <?php if ( scf_get_field( 'texto_contacto' ) ) : ?>
+                        <?php the_field( 'texto_contenido' ); ?>
+                        <?php if ( get_field( 'texto_contacto' ) ) : ?>
                             <div class="my-4">
-                                <?php scf_the_field( 'texto_contacto' ); ?>
+                                <?php the_field( 'texto_contacto' ); ?>
                             </div>
                         <?php endif ?> 
                     </div>
                 </div>
                 
-                    <?php if (scf_get_field( 'mapa' )){ ?>
+                    <?php if (get_field( 'mapa' )){ ?>
                         <div class="col-12">
-                            <?php scf_the_field( 'mapa' ); ?>
+                            <?php the_field( 'mapa' ); ?>
                         </div>
                         <?php }?>
                 
