@@ -6,7 +6,7 @@ Tema de WordPress personalizado para e-commerce, construido con Bootstrap 5 y Wo
 
 - ✅ Compatible con **WooCommerce 9.x**
 - ✅ Diseño responsivo con **Bootstrap 5.3.0**
-- ✅ Campos personalizados con **Advanced Custom Fields (ACF Pro)**
+- ✅ Campos personalizados con **SCF (fork de ACF mantenido por WordPress)**
 - ✅ Templates WooCommerce actualizados (v9.4.0)
 - ✅ Sistema de productos dinámicos (categorías, destacados, ofertas, últimos)
 - ✅ Template de página flexible con componentes reutilizables
@@ -19,15 +19,15 @@ Tema de WordPress personalizado para e-commerce, construido con Bootstrap 5 y Wo
 1. Sube el tema a `/wp-content/themes/chow-theme/`
 2. Activa el tema en el panel de WordPress
 3. Instala y activa los plugins requeridos:
-   - **WooCommerce** (9.0+)
-   - **Advanced Custom Fields PRO** (6.0+)
-   - **Contact Form 7** (para formularios)
+  - **WooCommerce** (9.0+)
+  - **SCF (fork de ACF)**
+  - **Contact Form 7** (para formularios)
 4. Los grupos de campos se importan automáticamente desde `acf-json/`
 5. Configura las opciones del tema en **Apariencia > Chow theme**
 
-## Configuración ACF
+## Configuración SCF
 
-El tema utiliza un sistema centralizado de opciones con sub-páginas:
+El tema utiliza un sistema centralizado de opciones (SCF) con sub-páginas:
 
 ### **Apariencia > Chow theme**
 
@@ -111,7 +111,7 @@ El template `home/productos-1.php` permite crear múltiples bloques de productos
 - WordPress 5.0+
 - PHP 7.4+
 - WooCommerce 9.0+
-- ACF Pro 6.0+
+- SCF (fork de ACF)
 
 ### **Dependencias Frontend**
 - Bootstrap 5.3.0
@@ -122,11 +122,11 @@ El template `home/productos-1.php` permite crear múltiples bloques de productos
 ### **Estructura de Archivos**
 ```
 chow-theme/
-├── acf-json/                 # ACF field groups (auto-sync)
+├── acf-json/                 # SCF/ACF field groups (auto-sync)
 ├── assets/                   # CSS, JS, imágenes
 ├── home/                     # Partials específicos del home
 ├── inc/                      # Configuración modular
-│   └── acf-config.php       # Configuración ACF
+│   └── acf-config.php       # Configuración SCF
 ├── woocommerce/             # Templates WooCommerce
 ├── flexible-page.php        # Template página flexible
 ├── functions.php            # Funcionalidades del tema
@@ -137,8 +137,8 @@ chow-theme/
 
 ### v2.0 (Febrero 2026)
 
-**🎨 Gestión de Colores**
-- Migración de colores de WordPress Customizer a ACF
+- **🎨 Gestión de Colores**
+- Migración de colores de WordPress Customizer a SCF
 - 4 colores configurables desde "Apariencia > Chow theme > Empresa"
 - Variables CSS centralizadas: `--chow_ppal`, `--chow_secundario`, `--chow_txt`, `--chow_blanco`
 - Interfaz unificada para toda la configuración del tema
@@ -163,15 +163,15 @@ chow-theme/
 - Compatible con WooCommerce 3.0+
 - Filtrado por: categoría, destacados, ofertas, últimos
 
-**🔧 Estructura ACF**
+**🔧 Estructura SCF**
 - Reorganización completa en 6 grupos centralizados
 - Todos los campos como hijos directos de 'option'
 - Sub-páginas en "Apariencia > Chow theme"
-- Auto-sync mediante acf-json/
+- Auto-sync mediante acf-json/ (compatible con SCF)
 - Eliminación de templates obsoletos (destaque.php)
 
 **✨ Mejoras Generales**
-- Procesamiento correcto de shortcodes en campos ACF
+- Procesamiento correcto de shortcodes en campos SCF
 - Código modularizado (acf-config.php)
 - Documentación completa actualizada
 
@@ -181,7 +181,7 @@ chow-theme/
 
 Para dudas o problemas, consulta la documentación de:
 - [WooCommerce](https://woocommerce.com/documentation/)
-- [ACF Pro](https://www.advancedcustomfields.com/resources/)
+- SCF (fork de ACF)
 - [Bootstrap 5](https://getbootstrap.com/docs/5.3/)
 
 ## Licencia
