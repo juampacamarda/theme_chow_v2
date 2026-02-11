@@ -4,8 +4,8 @@
     "fields": [
         {
             "key": "field_5e2f2d90a0573",
-            "label": "Formulario-news",
-            "name": "formulario_news",
+            "label": "Formulario-producto",
+            "name": "formulario_producto",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -21,14 +21,35 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_698bc9c28eb81",
+            "label": "Formulario-news",
+            "name": "formulario_news",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 1,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
         [
             {
-                "param": "page_type",
+                "param": "options_page",
                 "operator": "==",
-                "value": "front_page"
+                "value": "acf-options-formulario-productos"
             }
         ]
     ],
@@ -54,7 +75,7 @@
     ],
     "active": true,
     "description": "",
-    "show_in_rest": false,
+    "show_in_rest": 0,
     "display_title": "",
-    "modified": 1770750996
+    "modified": 1770768931
 }

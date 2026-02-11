@@ -158,9 +158,29 @@ if (is_user_logged_in()) {
 
 //abajo carga shortcodes
 add_filter('the_excerpt', 'do_shortcode');
-add_filter('acf/format_value/type=textarea', 'do_shortcode');
-add_filter('acf/format_value/type=text', 'do_shortcode');
-add_filter('acf/format_value', 'do_shortcode');
+
+// Procesar shortcodes en campos ACF (textarea y text)
+add_filter('acf/format_value/type=textarea', function( $value ) {
+    if ( is_string( $value ) ) {
+        return do_shortcode( $value );
+    }
+    return $value;
+});
+
+add_filter('acf/format_value/type=text', function( $value ) {
+    if ( is_string( $value ) ) {
+        return do_shortcode( $value );
+    }
+    return $value;
+});
+
+// Procesar shortcodes en todos los campos ACF (fallback seguro)
+add_filter('acf/format_value', function( $value ) {
+    if ( is_string( $value ) ) {
+        return do_shortcode( $value );
+    }
+    return $value;
+});
 
 // Enable shortcodes in widgets
 add_filter('widget_text', 'do_shortcode');
@@ -233,67 +253,6 @@ function relacionados(){
     add_action( 'woocommerce_after_single_product', 'woocommerce_output_related_products' );
  }
  add_action( 'woocommerce_before_main_content', 'relacionados' );
-
- /* SCF */
- 
- add_filter('acf/settings/save_json', 'chow_acf_json_save_point');
- 
- function chow_acf_json_save_point( $path ) {
-     
-     // update path
-     $path = get_stylesheet_directory() . '/acf-json';
-     
-     // return
-     return $path;
-     
- }
-
- add_filter('acf/settings/load_json', 'chow_acf_json_load_point');
-
- function chow_acf_json_load_point( $paths ) {
-     
-     // remove original path (optional)
-     unset($paths[0]);
-     
-     // append path
-     $paths[] = get_stylesheet_directory() . '/acf-json';
-     
-     // return
-     return $paths;
-     
- }
-
-
- if( function_exists('acf_add_options_page') ) {
-	acf_add_options_page(array(
-		'page_title' 	=> 'Opciones Chow theme',
-		'menu_title'	=> 'Chow theme',
-		'menu_slug' 	=> 'Chow-theme',
-		'redirect'		=> false,
-		'position'		=> 5.4
-	));
-
-    acf_add_options_sub_page(array(
-		'page_title' 	=> 'Editar Footer del Sitio',
-		'menu_title'	=> 'Footer',
-		'parent_slug'	=> 'Chow-theme',
-	));
-
-	
-    acf_add_options_sub_page(array(
-		'page_title' 	=> 'Slide Home',
-		'menu_title'	=> 'slide',
-		'parent_slug'	=> 'Chow-theme',
-	));
-
-    acf_add_options_sub_page(array(
-		'page_title' 	=> 'Formulario Consulta Productos',
-		'menu_title'	=> 'Formulario Productos',
-		'parent_slug'	=> 'Chow-theme',
-	));
-    
-
-}
 
 
 /* widget buscador header */

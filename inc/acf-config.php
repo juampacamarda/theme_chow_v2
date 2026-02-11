@@ -1,4 +1,4 @@
-/* ACF Config */
+<?php /* ACF Config */
 
 add_filter('acf/settings/save_json', 'chow_acf_json_save_point');
 

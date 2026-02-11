@@ -1,11 +1,33 @@
 {
-    "key": "group_5ea7344250581",
-    "title": "contacto",
+    "key": "group_62782aebc2768",
+    "title": "Banner full width",
     "fields": [
         {
-            "key": "field_5ea7344253584",
-            "label": "imagen portada",
-            "name": "imagen_portada",
+            "key": "field_62782cad61777",
+            "label": "orden banner",
+            "name": "orden_banner",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_62782afb41f07",
+            "label": "imagen",
+            "name": "imagen_banner",
             "aria-label": "",
             "type": "image",
             "instructions": "",
@@ -28,9 +50,9 @@
             "mime_types": ""
         },
         {
-            "key": "field_5ea73442535f4",
-            "label": "título",
-            "name": "titulo",
+            "key": "field_62782b2824045",
+            "label": "banner-titulo",
+            "name": "banner-titulo",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -48,11 +70,11 @@
             "maxlength": ""
         },
         {
-            "key": "field_5ea7344253662",
-            "label": "Texto de contenido",
-            "name": "texto_contenido",
+            "key": "field_62782b0d41f08",
+            "label": "banner bajada",
+            "name": "banner-pretxt",
             "aria-label": "",
-            "type": "textarea",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -63,16 +85,16 @@
             },
             "default_value": "",
             "placeholder": "",
-            "maxlength": "",
-            "rows": "",
-            "new_lines": "wpautop"
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         },
         {
-            "key": "field_5ea734618fdb0",
-            "label": "iframe mapa",
-            "name": "mapa",
+            "key": "field_62782b44b2af9",
+            "label": "link",
+            "name": "link",
             "aria-label": "",
-            "type": "textarea",
+            "type": "link",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -81,11 +103,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "placeholder": "",
-            "maxlength": "",
-            "rows": "",
-            "new_lines": "wpautop"
+            "return_format": "url"
         }
     ],
     "location": [
@@ -93,7 +111,7 @@
             {
                 "param": "page_template",
                 "operator": "==",
-                "value": "contact-page.php"
+                "value": "info-page.php"
             }
         ]
     ],
@@ -102,20 +120,7 @@
     "style": "default",
     "label_placement": "top",
     "instruction_placement": "label",
-    "hide_on_screen": [
-        "the_content",
-        "excerpt",
-        "discussion",
-        "comments",
-        "revisions",
-        "slug",
-        "author",
-        "format",
-        "page_attributes",
-        "categories",
-        "tags",
-        "send-trackbacks"
-    ],
+    "hide_on_screen": "",
     "active": true,
     "description": "",
     "show_in_rest": false,

@@ -8,16 +8,14 @@
             <?php while( have_rows('botonera_productos') ): the_row(); 
                 $imagen = get_sub_field('imagen');
                 $link = get_sub_field('link');
-                $nombre = get_sub_field('nombre_del_link')
+                $nombre = get_sub_field('nombre_del_link');
             ?>
                 <li data-aos="fade-up">
                     <?php if ( $imagen ) { ?>
                         <img src="<?php echo $imagen;?>" alt="" class="d-block img-fluid">
                         
-                        
-                        
                         <?php if ( $link ) : ?>
-                            <a href="<?php echo esc_url( $link ); ?>" target="<?php echo esc_attr( $link['target'] ); ?>">
+                            <a href="<?php echo esc_url( $link['url'] ); ?>" target="<?php echo esc_attr( $link['target'] ); ?>" title="<?php echo esc_attr( $link['title'] ); ?>">
                                 <?php echo $nombre; ?>
                             </a>
                         <?php endif; ?>

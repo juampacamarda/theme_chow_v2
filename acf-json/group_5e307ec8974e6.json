@@ -1,23 +1,7 @@
 {
     "key": "group_5e307ec8974e6",
-    "title": "ajustes opciones",
+    "title": "ajustes opciones 3",
     "fields": [
-        {
-            "key": "field_5e307eef3593d",
-            "label": "twitter link",
-            "name": "twitter_link",
-            "aria-label": "",
-            "type": "link",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "url"
-        },
         {
             "key": "field_5e307f213593e",
             "label": "Facebook link",
@@ -55,7 +39,7 @@
             "label": "wsp link",
             "name": "wsp_link",
             "aria-label": "",
-            "type": "link",
+            "type": "number",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -64,7 +48,55 @@
                 "class": "",
                 "id": ""
             },
-            "return_format": "url"
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_62edbfc8ab8be",
+            "label": "telefono",
+            "name": "tel_numero",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_62edc07b01adb",
+            "label": "correo electrónico",
+            "name": "mail",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         }
     ],
     "location": [
@@ -72,7 +104,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "acf-options"
+                "value": "Remo-theme"
             }
         ]
     ],
@@ -84,7 +116,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "show_in_rest": false,
+    "show_in_rest": 0,
     "display_title": "",
-    "modified": 1770750996
+    "modified": 1770754269
 }

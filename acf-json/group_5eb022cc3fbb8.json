@@ -213,9 +213,9 @@
         "tags",
         "send-trackbacks"
     ],
-    "active": true,
+    "active": false,
     "description": "",
-    "show_in_rest": false,
+    "show_in_rest": 0,
     "display_title": "",
-    "modified": 1770750997
+    "modified": 1770754269
 }

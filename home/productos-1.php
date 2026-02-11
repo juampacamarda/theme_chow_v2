@@ -1,152 +1,159 @@
-<section id="productos-destacados">
-    <div class="container">
-        <div class="row">
-            <div id="tituloseccion" class="col-12 col-md-4">
-                <h2 class="titulo cursiva">
-                    <?php if ( get_field( 'titulo') ) { ?>
-                        <?php the_field( 'titulo' ); ?>
-                        <?php }else{ ?>
-                        Lorem, ipsum dolor sit amet consectetur.
-                    <?php }?>
-                </h2>
-                <p>
-                    <?php if ( get_field( 'mensaje') ) { ?>
-                        <?php the_field( 'mensaje' ); ?>
-                        <?php }else{ ?>
-                        Lorem, ipsum dolor sit amet consectetur.
-                    <?php }?>
-                </p>
-                <a href="<?php echo wc_get_page_permalink( 'shop' ); ?>" class="btn btn-tienda">Ver Nuestros Productos</a>
-            </div>
-            <!--<div class="col-12 col-md-8 mb-2">
-                <div id="slide-proddest" class="productocard carousel slide carousel-fade" data-ride="carousel">
-        
-                        <div class="carousel-inner">
-                            <div class="carousel-item active" style="<?php //if ( get_field( 'imagen_de_producto_1' ) ) { ?> 
-                                background-image:url('<?php //the_field( 'imagen_de_producto_1' ); ?>'); 
-                                <?php //}else{ ?>
-                                background-image:url('<?php //echo get_template_directory_uri(); ?>/assets/img/default-img.png');
-                                <?php //} ?> background-size:cover;background-repeat:no-repeat;height: 400px;" data-interval="5000">
-                                
-                                <div class="dataproducto">
-                                        <h3 class="producto-nombre cursiva">
-                                            <?php //if ( get_field( 'nombre_de_producto_1') ) { ?>
-                                                <?php //the_field( 'nombre_de_producto_1' ); ?>
-                                                <?php //}else{ ?>
-                                                Lorem, ipsum dolor sit amet consectetur.
-                                            <?php// }?>
-                                        </h3>
-                                        <h4 class="producto-precio">
-                                            $ <?php// if ( get_field( 'precio_producto_1') ) { ?>
-                                                <?php// the_field( 'precio_producto_1' ); ?>
-                                                <?php// }else{ ?>
-                                                XXX.XXX
-                                            <?php// }?>
-                                        </h4>
-                                        <?php //$link_producto_1 = get_field( 'link_producto_1' ); ?>
-                                        <?php //if ( $link_producto_1 ) { ?>
-                                            <a href="<?php// echo esc_url( $link_producto_1) ; ?>" class="btn btn-tienda">Ver Más</a>
-                                        <?php// }else{ ?>
-                                            <a href="" class="btn btn-tienda">Ver Más</a>
-                                        <?php// } ?>
-                                    </div>
-                                <div class="overlay"></div>
+<?php
+/**
+ * Sección de Productos Dinámicos
+ * Utiliza un campo repeater en ACF para múltiples bloques de productos
+ * Cada bloque puede mostrar productos por categoría, últimos, destacados u ofertas
+ * Con opciones de layout: grid de columnas o carrusel Owl Carousel
+ */
+?>
+
+<section id="productos-dinamicos" class="productos-section">
+    <div class="container-fluid">
+        <?php
+        if ( have_rows( 'bloques_productos', 'option' ) ) :
+            while ( have_rows( 'bloques_productos', 'option' ) ) : the_row();
+                
+                // Obtener valores del sub-campo
+                $titulo = get_sub_field( 'titulo' );
+                $descripcion = get_sub_field( 'descripcion' );
+                $tipo = get_sub_field( 'tipo' );
+                $cantidad = get_sub_field( 'cantidad' ) ? get_sub_field( 'cantidad' ) : 8;
+                $layout = get_sub_field( 'layout' );
+                $columnas = get_sub_field( 'columnas' ) ? get_sub_field( 'columnas' ) : 'col-lg-3';
+                
+                // Construcción del array de argumentos para WP_Query
+                $args = array(
+                    'post_type'      => 'product',
+                    'posts_per_page' => $cantidad,
+                    'orderby'        => 'date',
+                    'order'          => 'DESC',
+                );
+                
+                // Aplicar filtros según el tipo seleccionado
+                if ( 'categoria' === $tipo ) {
+                    $categoria = get_sub_field( 'categoria' );
+                    if ( $categoria ) {
+                        $args['tax_query'] = array(
+                            array(
+                                'taxonomy' => 'product_cat',
+                                'field'    => 'slug',
+                                'terms'    => $categoria,
+                            ),
+                        );
+                    }
+                } elseif ( 'destacados' === $tipo ) {
+                    $args['meta_query'] = array(
+                        array(
+                            'key'   => '_featured',
+                            'value' => 'yes',
+                        ),
+                    );
+                } elseif ( 'ofertas' === $tipo ) {
+                    $args['meta_query'] = array(
+                        array(
+                            'key'     => '_sale_price',
+                            'value'   => 0,
+                            'compare' => '>',
+                            'type'    => 'NUMERIC',
+                        ),
+                    );
+                }
+                // Si tipo es 'ultimos', usa los argumentos por defecto
+                
+                // Ejecutar la consulta
+                $products_query = new WP_Query( $args );
+                
+                ?>
+                <div class="bloque-productos mb-5">
+                    <div class="container">
+                        <?php if ( $titulo ) : ?>
+                            <div class="bloque-header mb-4">
+                                <h2 class="titulo cursiva"><?php echo esc_html( $titulo ); ?></h2>
+                                <?php if ( $descripcion ) : ?>
+                                    <p class="descripcion"><?php echo wp_kses_post( $descripcion ); ?></p>
+                                <?php endif; ?>
                             </div>
+                        <?php endif; ?>
                         
-                            <div class="carousel-item" style="<?php //if ( get_field( 'imagen_de_producto_2' ) ) { ?> 
-                                background-image:url('<?php //the_field( 'imagen_de_producto_2' ); ?>'); 
-                                <?php //}else{ ?>
-                                background-image:url('<?php //echo get_template_directory_uri(); ?>/assets/img/default-img.png');
-                                <?php //} ?> background-size:cover;background-repeat:no-repeat;height: 400px;" data-interval="5000">
-                                
-                                <div class="dataproducto">
-                                        <h3 class="producto-nombre cursiva">
-                                            <?php //if ( get_field( 'nombre_de_producto_2') ) { ?>
-                                                <?php //the_field( 'nombre_de_producto_2' ); ?>
-                                                <?php //}else{ ?>
-                                                Lorem, ipsum dolor sit amet consectetur.
-                                            <?php //}?>
-                                        </h3>
-                                        <h4 class="producto-precio">
-                                            $ <?php //if ( get_field( 'precio_producto_2') ) { ?>
-                                                <?php //the_field( 'precio_producto_2' ); ?>
-                                                <?php// }else{ ?>
-                                                XXX.XXX
-                                            <?php// }?>
-                                        </h4>
-                                        <?php //$link_producto_2 = get_field( 'link_producto_2' ); ?>
-                                        <?php //if ( $link_producto_2 ) { ?>
-                                            <a href="<?php// echo esc_url( $link_producto_2) ; ?>" class="btn btn-tienda">Ver Más</a>
-                                        <?php //}else{ ?>
-                                            <a href="" class="btn btn-tienda">Ver Más</a>
-                                        <?php //} ?>
-                                    </div>
-                                <div class="overlay"></div>
+                        <?php
+                        if ( 'carousel' === $layout ) :
+                            // Layout: Carrusel Owl Carousel
+                            ?>
+                            <div class="productos-carousel owl-carousel owl-theme" data-items="4" data-margin="20" data-responsive='{"0":{"items":1},"576":{"items":2},"768":{"items":3},"992":{"items":4}}'>
+                                <?php
+                                if ( $products_query->have_posts() ) :
+                                    while ( $products_query->have_posts() ) : $products_query->the_post();
+                                        global $product;
+                                        ?>
+                                        <div class="producto-item">
+                                            <div class="productocard">
+                                                <div class="imagen-prodest" style="background-image:url('<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'medium' ) ?: get_template_directory_uri() . '/assets/img/default-img.png' ); ?>'); background-size:cover; background-repeat:no-repeat; min-height:200px;"></div>
+                                                <div class="dataproducto p-3">
+                                                    <h3 class="producto-nombre cursiva"><?php the_title(); ?></h3>
+                                                    <h4 class="producto-precio">
+                                                        <?php echo wp_kses_post( $product->get_price_html() ); ?>
+                                                    </h4>
+                                                    <a href="<?php the_permalink(); ?>" class="btn btn-tienda btn-sm">Ver Más</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    endwhile;
+                                    wp_reset_postdata();
+                                endif;
+                                ?>
                             </div>
-                        </div>
-                </div>
-            </div>-->
-            <div class="col-12 col-md-4 mb-2">
-                <div class="productocard">
-                    <?php if ( get_field( 'imagen_de_producto_1' ) ) { ?>
-                        <div class="imagen-prodest" style="background-image:url('<?php the_field( 'imagen_de_producto_1' ); ?>'); background-size:cover;background-repeat:no-repeat;height:150px"></div>
-                        <?php }else{ ?>
-                         <div class="imagen-prodest" style="background-image:url('<?php echo get_template_directory_uri(); ?>/assets/img/default-img.png'); background-size:cover;background-repeat:no-repeat;height:150px"></div>
-                    <?php } ?>
-                    <div class="dataproducto">
-                        <h3 class="producto-nombre cursiva">
-                            <?php if ( get_field( 'nombre_de_producto_1') ) { ?>
-                                <?php the_field( 'nombre_de_producto_1' ); ?>
-                                <?php }else{ ?>
-                                Lorem, ipsum dolor sit amet consectetur.
-                            <?php }?>
-                        </h3>
-                        <h4 class="producto-precio">
-                            $ <?php if ( get_field( 'precio_producto_1') ) { ?>
-                                <?php the_field( 'precio_producto_1' ); ?>
-                                <?php }else{ ?>
-                                XXX.XXX
-                            <?php }?>
-                        </h4>
-                        <?php $link_producto_1 = get_field( 'link_producto_1' ); ?>
-                        <?php if ( $link_producto_1 ) { ?>
-                            <a href="<?php echo esc_url( $link_producto_1) ; ?>" class="btn btn-tienda">Ver Más</a>
-                        <?php }else{ ?>
-                            <a href="" class="btn btn-tienda">Ver Más</a>
-                        <?php } ?>
+                            <?php
+                        else :
+                            // Layout: Grid de columnas (por defecto)
+                            ?>
+                            <div class="row">
+                                <?php
+                                if ( $products_query->have_posts() ) :
+                                    while ( $products_query->have_posts() ) : $products_query->the_post();
+                                        global $product;
+                                        ?>
+                                        <div class="<?php echo esc_attr( $columnas ); ?> col-md-6 col-sm-12 mb-4">
+                                            <div class="productocard h-100">
+                                                <div class="imagen-prodest" style="background-image:url('<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'medium' ) ?: get_template_directory_uri() . '/assets/img/default-img.png' ); ?>'); background-size:cover; background-repeat:no-repeat; min-height:200px;"></div>
+                                                <div class="dataproducto p-3">
+                                                    <h3 class="producto-nombre cursiva"><?php the_title(); ?></h3>
+                                                    <h4 class="producto-precio">
+                                                        <?php echo wp_kses_post( $product->get_price_html() ); ?>
+                                                    </h4>
+                                                    <a href="<?php the_permalink(); ?>" class="btn btn-tienda btn-sm">Ver Más</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    endwhile;
+                                    wp_reset_postdata();
+                                else :
+                                    ?>
+                                    <div class="col-12">
+                                        <p class="text-center text-muted">No hay productos disponibles en esta sección.</p>
+                                    </div>
+                                    <?php
+                                endif;
+                                ?>
+                            </div>
+                            <?php
+                        endif;
+                        ?>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="productocard">
-                    <?php if ( get_field( 'imagen_de_producto_2' ) ) { ?>
-                        <div class="imagen-prodest" style="background-image:url('<?php the_field( 'imagen_de_producto_2' ); ?>'); background-size:cover;background-repeat:no-repeat;height:150px"></div>
-                        <?php }else{ ?>
-                         <div class="imagen-prodest" style="background-image:url('<?php echo get_template_directory_uri(); ?>/assets/img/default-img.png'); background-size:cover;background-repeat:no-repeat;height:150px"></div>
-                    <?php } ?>
-                    <h3 class="producto-nombre cursiva">
-                         <?php if ( get_field( 'nombre_de_producto_2') ) { ?>
-                            <?php the_field( 'nombre_de_producto_2' ); ?>
-                            <?php }else{ ?>
-                            Lorem, ipsum dolor sit amet consectetur.
-                        <?php }?>
-                    </h3>
-                    <h4 class="producto-precio">
-                        $ <?php if ( get_field( 'precio_producto_2') ) { ?>
-                            <?php the_field( 'precio_producto_2' ); ?>
-                            <?php }else{ ?>
-                            XXX.XXX
-                        <?php }?>
-                    </h4>
-                    <?php $link_producto_1 = get_field( 'link_producto_1' ); ?>
-                    <?php if ( $link_producto_1 ) { ?>
-                        <a href="<?php echo esc_url( $link_producto_1) ; ?>" class="btn btn-tienda">Ver Más</a>
-                    <?php }else{ ?>
-                        <a href="" class="btn btn-tienda">Ver Más</a>
-                    <?php } ?>
+                <?php
+            endwhile;
+        else :
+            ?>
+            <!-- Sin bloques de productos configurados -->
+            <div class="container">
+                <div class="alert alert-info" role="alert">
+                    No hay bloques de productos configurados. Por favor, ve a Apariencia > Opciones de tema y configura los bloques de productos.
                 </div>
             </div>
-        </div>
-        
+            <?php
+        endif;
+        ?>
     </div>
 </section>

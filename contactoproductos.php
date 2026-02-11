@@ -3,7 +3,12 @@
     
     <h2>Consultar por este producto</h2>
     <div class="formulario-productos-consulta">
-        <?php the_field('formulario_producto', 'option') ; ?>
+        <?php 
+        $formulario_producto = get_field( 'formulario_producto', 'option');
+        if ( $formulario_producto ) {
+            echo do_shortcode( $formulario_producto );
+        }
+        ?>
     </div>
 
 </section>

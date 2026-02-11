@@ -4,8 +4,14 @@
             <div class="col-lg-7">
                 <div class="newcontenedor" data-aos="fade-up" data-aos-duration="3000">
                     <h3 class="text-center"><span class="cursiva">Descubrinos ! No te pierdas nuestras propuestas...</span><br/><br>Suscribite</h3>
-                    <?php the_field( 'formulario_news' ); ?></div>
+                    <?php 
+                    $formulario_news = get_field( 'formulario_news', 'option');
+                    if ( $formulario_news ) {
+                        echo do_shortcode( $formulario_news );
+                    }
+                    ?>
                 </div>
+            </div>
                 
         </div>
     </div>

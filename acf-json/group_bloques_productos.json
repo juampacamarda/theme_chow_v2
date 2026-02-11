@@ -1,0 +1,216 @@
+{
+    "key": "group_bloques_productos",
+    "title": "Bloques de Productos",
+    "fields": [
+        {
+            "key": "field_bloques_productos_repeater",
+            "label": "Bloques de Productos",
+            "name": "bloques_productos",
+            "type": "repeater",
+            "instructions": "Crea múltiples bloques de productos. Cada bloque puede mostrar productos de forma diferente según la configuración.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Agregar Bloque",
+            "sub_fields": [
+                {
+                    "key": "field_bloques_titulo",
+                    "label": "Título del Bloque",
+                    "name": "titulo",
+                    "type": "text",
+                    "instructions": "Título que aparecerá en la sección de productos",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_bloques_descripcion",
+                    "label": "Descripción",
+                    "name": "descripcion",
+                    "type": "textarea",
+                    "instructions": "Descripción opcional para el bloque de productos",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "maxlength": "",
+                    "rows": 4
+                },
+                {
+                    "key": "field_bloques_tipo",
+                    "label": "Tipo de Productos",
+                    "name": "tipo",
+                    "type": "select",
+                    "instructions": "Selecciona cómo se mostrarán los productos",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "ultimos": "Últimos Productos",
+                        "destacados": "Productos Destacados",
+                        "ofertas": "Productos en Oferta",
+                        "categoria": "Por Categoría"
+                    },
+                    "default_value": "ultimos",
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 1,
+                    "return_format": "value",
+                    "ajax": 0
+                },
+                {
+                    "key": "field_bloques_categoria",
+                    "label": "Categoría",
+                    "name": "categoria",
+                    "type": "taxonomy",
+                    "instructions": "Selecciona la categoría de productos a mostrar (solo si el tipo es 'Por Categoría')",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_bloques_tipo",
+                                "operator": "==",
+                                "value": "categoria"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "taxonomy": "product_cat",
+                    "field_type": "select",
+                    "allow_null": 0,
+                    "add_term": 0,
+                    "save_terms": 0,
+                    "load_terms": 0,
+                    "return_format": "id",
+                    "multiple": 0
+                },
+                {
+                    "key": "field_bloques_cantidad",
+                    "label": "Cantidad de Productos",
+                    "name": "cantidad",
+                    "type": "number",
+                    "instructions": "Número de productos a mostrar en este bloque",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 8,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": 1,
+                    "max": 50,
+                    "step": 1
+                },
+                {
+                    "key": "field_bloques_layout",
+                    "label": "Layout",
+                    "name": "layout",
+                    "type": "select",
+                    "instructions": "Elige cómo mostrar los productos",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "columnas": "Grid de Columnas",
+                        "carousel": "Carrusel (Owl Carousel)"
+                    },
+                    "default_value": "columnas",
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 1,
+                    "return_format": "value",
+                    "ajax": 0
+                },
+                {
+                    "key": "field_bloques_columnas",
+                    "label": "Número de Columnas",
+                    "name": "columnas",
+                    "type": "select",
+                    "instructions": "Cuántas columnas por fila en pantallas grandes (solo si layout es 'Grid de Columnas')",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_bloques_layout",
+                                "operator": "==",
+                                "value": "columnas"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "col-lg-2": "6 Columnas (muy pequeño)",
+                        "col-lg-3": "4 Columnas (pequeño)",
+                        "col-lg-4": "3 Columnas (mediano)",
+                        "col-lg-6": "2 Columnas (grande)"
+                    },
+                    "default_value": "col-lg-3",
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 1,
+                    "return_format": "value",
+                    "ajax": 0
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "chow_options"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": ""
+}
