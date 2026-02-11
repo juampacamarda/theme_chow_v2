@@ -56,4 +56,10 @@ if( function_exists('acf_add_options_page') ) {
         'parent_slug'	=> 'Chow-theme',
     ));
 
+    acf_add_options_sub_page(array(
+        'page_title' 	=> 'Bloques de Productos',
+        'menu_title'	=> 'Bloques de Productos',
+        'parent_slug'	=> 'Chow-theme',
+    ));
+
 }

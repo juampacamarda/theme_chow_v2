@@ -6,6 +6,7 @@
             "key": "field_bloques_productos_repeater",
             "label": "Bloques de Productos",
             "name": "bloques_productos",
+            "aria-label": "",
             "type": "repeater",
             "instructions": "Crea múltiples bloques de productos. Cada bloque puede mostrar productos de forma diferente según la configuración.",
             "required": 0,
@@ -20,11 +21,13 @@
             "max": 0,
             "layout": "table",
             "button_label": "Agregar Bloque",
+            "rows_per_page": 20,
             "sub_fields": [
                 {
                     "key": "field_bloques_titulo",
                     "label": "Título del Bloque",
                     "name": "titulo",
+                    "aria-label": "",
                     "type": "text",
                     "instructions": "Título que aparecerá en la sección de productos",
                     "required": 0,
@@ -38,12 +41,14 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "maxlength": ""
+                    "maxlength": "",
+                    "parent_repeater": "field_bloques_productos_repeater"
                 },
                 {
                     "key": "field_bloques_descripcion",
                     "label": "Descripción",
                     "name": "descripcion",
+                    "aria-label": "",
                     "type": "textarea",
                     "instructions": "Descripción opcional para el bloque de productos",
                     "required": 0,
@@ -56,12 +61,15 @@
                     "default_value": "",
                     "placeholder": "",
                     "maxlength": "",
-                    "rows": 4
+                    "rows": 4,
+                    "new_lines": "",
+                    "parent_repeater": "field_bloques_productos_repeater"
                 },
                 {
                     "key": "field_bloques_tipo",
                     "label": "Tipo de Productos",
                     "name": "tipo",
+                    "aria-label": "",
                     "type": "select",
                     "instructions": "Selecciona cómo se mostrarán los productos",
                     "required": 1,
@@ -82,12 +90,17 @@
                     "multiple": 0,
                     "ui": 1,
                     "return_format": "value",
-                    "ajax": 0
+                    "ajax": 0,
+                    "placeholder": "",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_bloques_productos_repeater"
                 },
                 {
                     "key": "field_bloques_categoria",
                     "label": "Categoría",
                     "name": "categoria",
+                    "aria-label": "",
                     "type": "taxonomy",
                     "instructions": "Selecciona la categoría de productos a mostrar (solo si el tipo es 'Por Categoría')",
                     "required": 0,
@@ -112,12 +125,15 @@
                     "save_terms": 0,
                     "load_terms": 0,
                     "return_format": "id",
-                    "multiple": 0
+                    "multiple": 0,
+                    "bidirectional_target": [],
+                    "parent_repeater": "field_bloques_productos_repeater"
                 },
                 {
                     "key": "field_bloques_cantidad",
                     "label": "Cantidad de Productos",
                     "name": "cantidad",
+                    "aria-label": "",
                     "type": "number",
                     "instructions": "Número de productos a mostrar en este bloque",
                     "required": 0,
@@ -133,12 +149,14 @@
                     "append": "",
                     "min": 1,
                     "max": 50,
-                    "step": 1
+                    "step": 1,
+                    "parent_repeater": "field_bloques_productos_repeater"
                 },
                 {
                     "key": "field_bloques_layout",
                     "label": "Layout",
                     "name": "layout",
+                    "aria-label": "",
                     "type": "select",
                     "instructions": "Elige cómo mostrar los productos",
                     "required": 0,
@@ -157,12 +175,17 @@
                     "multiple": 0,
                     "ui": 1,
                     "return_format": "value",
-                    "ajax": 0
+                    "ajax": 0,
+                    "placeholder": "",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_bloques_productos_repeater"
                 },
                 {
                     "key": "field_bloques_columnas",
                     "label": "Número de Columnas",
                     "name": "columnas",
+                    "aria-label": "",
                     "type": "select",
                     "instructions": "Cuántas columnas por fila en pantallas grandes (solo si layout es 'Grid de Columnas')",
                     "required": 0,
@@ -191,7 +214,11 @@
                     "multiple": 0,
                     "ui": 1,
                     "return_format": "value",
-                    "ajax": 0
+                    "ajax": 0,
+                    "placeholder": "",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_bloques_productos_repeater"
                 }
             ]
         }
@@ -201,7 +228,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "chow_options"
+                "value": "Bloques de Productos"
             }
         ]
     ],
@@ -212,5 +239,8 @@
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
-    "description": ""
+    "description": "",
+    "show_in_rest": false,
+    "display_title": "",
+    "modified": 1770769925
 }
