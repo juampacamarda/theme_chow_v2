@@ -12,67 +12,21 @@ function custom_url_login() {
 }
 add_filter( 'login_headerurl', 'custom_url_login' );
 
-//colores
-
-function chow_theme_customize_register($wp_customize) {
-    // Color principal
-    $wp_customize->add_setting('chow_ppal', array(
-        'default' => '#D60B52',
-        'sanitize_callback' => 'sanitize_hex_color',
-        'transport' => 'postMessage',
-    ));
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'chow_ppal', array(
-        'label' => __('Color Principal', 'chow-theme01'),
-        'section' => 'colors',
-        'settings' => 'chow_ppal',
-    )));
-    
-    // Color secundario
-    $wp_customize->add_setting('chow_secundario', array(
-        'default' => '#1d71b8',
-        'sanitize_callback' => 'sanitize_hex_color',
-        'transport' => 'postMessage',
-    ));
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'chow_secundario', array(
-        'label' => __('Color Secundario', 'chow-theme01'),
-        'section' => 'colors',
-        'settings' => 'chow_secundario',
-    )));
-
-    // Color del texto
-    $wp_customize->add_setting('chow_txt', array(
-        'default' => '#5f5f5f',
-        'sanitize_callback' => 'sanitize_hex_color',
-        'transport' => 'postMessage',
-    ));
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'chow_txt', array(
-        'label' => __('Color del Texto', 'chow-theme01'),
-        'section' => 'colors',
-        'settings' => 'chow_txt',
-    )));
-
-    // Color de fondo
-    $wp_customize->add_setting('chow_blanco', array(
-        'default' => '#ffffff',
-        'sanitize_callback' => 'sanitize_hex_color',
-        'transport' => 'postMessage',
-    ));
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'chow_blanco', array(
-        'label' => __('Color de Fondo', 'chow-theme01'),
-        'section' => 'colors',
-        'settings' => 'chow_blanco',
-    )));
-}
-add_action('customize_register', 'chow_theme_customize_register');
+//colores desde ACF
 
 function chow_theme_customize_css() {
+    // Obtener colores desde ACF con fallbacks a los valores por defecto
+    $color_ppal = get_field('color_principal', 'option') ?: '#D60B52';
+    $color_secundario = get_field('color_secundario', 'option') ?: '#1d71b8';
+    $color_txt = get_field('color_texto', 'option') ?: '#5f5f5f';
+    $color_blanco = get_field('color_fondo', 'option') ?: '#ffffff';
     ?>
     <style type="text/css">
         :root {
-            --chow_ppal: <?php echo get_theme_mod('chow_ppal', '#D60B52'); ?>;
-            --chow_secundario: <?php echo get_theme_mod('chow_secundario', '#1d71b8'); ?>;
-            --chow_txt: <?php echo get_theme_mod('chow_txt', '#5f5f5f'); ?>;
-            --chow_blanco: <?php echo get_theme_mod('chow_blanco', '#ffffff'); ?>;
+            --chow_ppal: <?php echo esc_attr($color_ppal); ?>;
+            --chow_secundario: <?php echo esc_attr($color_secundario); ?>;
+            --chow_txt: <?php echo esc_attr($color_txt); ?>;
+            --chow_blanco: <?php echo esc_attr($color_blanco); ?>;
         }
     </style>
     <?php

@@ -1,0 +1,354 @@
+{
+    "key": "group_empresa",
+    "title": "Empresa",
+    "fields": [
+        {
+            "key": "field_color_principal",
+            "label": "Color Principal",
+            "name": "color_principal",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "Color primario del sitio (botones, enlaces, acentos)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#D60B52",
+            "enable_opacity": 0,
+            "return_format": "string"
+        },
+        {
+            "key": "field_color_secundario",
+            "label": "Color Secundario",
+            "name": "color_secundario",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "Color secundario del sitio",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#1d71b8",
+            "enable_opacity": 0,
+            "return_format": "string"
+        },
+        {
+            "key": "field_color_texto",
+            "label": "Color del Texto",
+            "name": "color_texto",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "Color del texto principal",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#5f5f5f",
+            "enable_opacity": 0,
+            "return_format": "string"
+        },
+        {
+            "key": "field_color_fondo",
+            "label": "Color de Fondo",
+            "name": "color_fondo",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "Color de fondo del sitio",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "#ffffff",
+            "enable_opacity": 0,
+            "return_format": "string"
+        },
+        {
+            "key": "field_logo_header_desktop",
+            "label": "Logo Header Desktop",
+            "name": "logo_header_desktop",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Logo que aparece en desktop. Si no carga, usa logo_color.png",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_logo_header_mobile",
+            "label": "Logo Header Mobile",
+            "name": "logo_header_mobile",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Logo que aparece en mobile. Si no carga, usa logo_light.png",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_logo_footer",
+            "label": "Logo Footer",
+            "name": "logo_footer",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Logo que aparece en el footer. Si no carga, usa logo_light.png",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_direccion",
+            "label": "Dirección",
+            "name": "direccion",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Dirección de la empresa",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "rows": 3,
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_telefonos",
+            "label": "Teléfonos",
+            "name": "telefonos",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Teléfono(s) de contacto",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_62edc07b01adb",
+            "label": "Email",
+            "name": "mail",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Correo electrónico de contacto",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_logos_legales",
+            "label": "Logos Legales",
+            "name": "logos_legales",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Logos de certificaciones o marcas legales que aparecen en footer",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Agregar Logo",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_logos_legales_imagen",
+                    "label": "Logo",
+                    "name": "logo",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url",
+                    "preview_size": "thumbnail",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "parent_repeater": "field_logos_legales"
+                }
+            ]
+        },
+        {
+            "key": "field_5e307f213593e",
+            "label": "Facebook",
+            "name": "facebook_link",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Link a la página de Facebook",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_5e307f3b3593f",
+            "label": "Instagram",
+            "name": "instagram_link",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Link al perfil de Instagram",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_twitter_link",
+            "label": "Twitter / Pinterest",
+            "name": "twitter_link",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Link a Twitter o Pinterest",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_5e307f732aa76",
+            "label": "WhatsApp",
+            "name": "wsp_link",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Número de WhatsApp (solo números)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        }
+        
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "acf-options-empresa"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1707638400
+}

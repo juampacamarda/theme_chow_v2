@@ -1,0 +1,630 @@
+{
+    "key": "group_flexible_page",
+    "title": "Página Flexible",
+    "fields": [
+        {
+            "key": "field_activo_encabezado",
+            "label": "Activar Encabezado",
+            "name": "activo_encabezado",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Marca para mostrar el encabezado con imagen de portada",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Activado",
+            "ui_off_text": "Desactivado"
+        },
+        {
+            "key": "field_imagen_portada",
+            "label": "Imagen de Portada",
+            "name": "imagen_portada",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Imagen de fondo para el encabezado de la página",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_encabezado",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "large",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_pre_txt",
+            "label": "Pretexto del Encabezado",
+            "name": "pre_txt",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Texto pequeño antes del título",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_encabezado",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_titulo",
+            "label": "Título Principal",
+            "name": "titulo",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Título principal de la página",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_encabezado",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_header_bajada",
+            "label": "Descripción del Encabezado",
+            "name": "header_bajada",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Descripción o subtítulo del encabezado",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_encabezado",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 3,
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_texto_contenido",
+            "label": "Contenido Principal",
+            "name": "texto_contenido",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Contenido de texto enriquecido de la página",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_orden_contenido",
+            "label": "Orden - Contenido",
+            "name": "orden_contenido",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Número para ordenar las secciones (1=primero, 2=segundo, etc)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "1",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_activo_collapses",
+            "label": "Activar Collapses / FAQ",
+            "name": "activo_collapses",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Marca para mostrar la sección de preguntas frecuentes",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Activado",
+            "ui_off_text": "Desactivado"
+        },
+        {
+            "key": "field_collapses",
+            "label": "Collapses / FAQ",
+            "name": "collapses",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Añade preguntas frecuentes o secciones desplegables",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_collapses",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Añadir Collapse",
+            "sub_fields": [
+                {
+                    "key": "field_titulo_collapse",
+                    "label": "Título del Collapse",
+                    "name": "titulo_collapse",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_contenido_collapse",
+                    "label": "Contenido del Collapse",
+                    "name": "contenido_collapse",
+                    "aria-label": "",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "all",
+                    "toolbar": "full",
+                    "media_upload": 1,
+                    "delay": 0
+                }
+            ]
+        },
+        {
+            "key": "field_orden_collapses",
+            "label": "Orden - Collapses",
+            "name": "orden_collapses",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Número para ordenar las secciones",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_collapses",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "2",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_activo_clientes",
+            "label": "Activar Logos de Clientes",
+            "name": "activo_clientes",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Marca para mostrar la sección de logos/clientes",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Activado",
+            "ui_off_text": "Desactivado"
+        },
+        {
+            "key": "field_clientes_logos",
+            "label": "Logos de Clientes",
+            "name": "clientes_logos",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Añade logos de clientes o partners",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_clientes",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Añadir Logo",
+            "sub_fields": [
+                {
+                    "key": "field_logo_cliente",
+                    "label": "Logo del Cliente",
+                    "name": "logo_cliente",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url",
+                    "preview_size": "medium",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": ""
+                },
+                {
+                    "key": "field_nombre_cliente",
+                    "label": "Nombre del Cliente",
+                    "name": "nombre_cliente",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                }
+            ]
+        },
+        {
+            "key": "field_orden_clientes",
+            "label": "Orden - Clientes",
+            "name": "orden_clientes",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Número para ordenar las secciones",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_clientes",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "3",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_activo_form",
+            "label": "Activar Formulario",
+            "name": "activo_form",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Marca para mostrar la sección de formulario",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Activado",
+            "ui_off_text": "Desactivado"
+        },
+        {
+            "key": "field_codigo_form",
+            "label": "Código del Formulario",
+            "name": "codigo_form",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Pega aquí el shortcode del formulario (Contact Form 7)",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_form",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 3,
+            "default_value": "",
+            "placeholder": "Ej: [contact-form-7 id=\"123\" title=\"Formulario de Contacto\"]",
+            "maxlength": ""
+        },
+        {
+            "key": "field_orden_form",
+            "label": "Orden - Formulario",
+            "name": "orden_form",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Número para ordenar las secciones",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_form",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "4",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_activo_banner",
+            "label": "Activar Banner",
+            "name": "activo_banner",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Marca para mostrar el banner final",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Activado",
+            "ui_off_text": "Desactivado"
+        },
+        {
+            "key": "field_imagen_banner",
+            "label": "Imagen del Banner",
+            "name": "imagen_banner",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Imagen principal del banner final",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_banner",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "large",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_link_banner",
+            "label": "Enlace del Banner",
+            "name": "link_banner",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Enlace que abre el banner al hacer click",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_banner",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
+            "key": "field_orden_banner",
+            "label": "Orden - Banner",
+            "name": "orden_banner",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Número para ordenar las secciones",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_activo_banner",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "5",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "flexible-page.php"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Campos para páginas flexibles con componentes reutilizables"
+}

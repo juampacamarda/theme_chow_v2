@@ -12,16 +12,20 @@
 <section id="productos-dinamicos" class="productos-section woocommerce py-5">
     <div class="container-fluid">
         <?php
-        if ( have_rows( 'bloques_productos', 'option' ) ) :
-            while ( have_rows( 'bloques_productos', 'option' ) ) : the_row();
+        
+        // Acceder directamente al repeater de bloques de productos
+        $bloques_productos = get_field('bloques_productos', 'option') ?: array();
+
+        if (!empty($bloques_productos)) :
+            foreach ($bloques_productos as $bloque) :
                 
-                // Obtener valores del sub-campo
-                $titulo = get_sub_field( 'titulo' );
-                $descripcion = get_sub_field( 'descripcion' );
-                $tipo = get_sub_field( 'tipo' );
-                $cantidad = get_sub_field( 'cantidad' ) ? get_sub_field( 'cantidad' ) : 8;
-                $layout = get_sub_field( 'layout' );
-                $columnas = get_sub_field( 'columnas' ) ? get_sub_field( 'columnas' ) : 'col-lg-3';
+                // Obtener valores del bloque de productos
+                $titulo = isset($bloque['titulo']) ? $bloque['titulo'] : '';
+                $descripcion = isset($bloque['descripcion']) ? $bloque['descripcion'] : '';
+                $tipo = isset($bloque['tipo']) ? $bloque['tipo'] : 'ultimos';
+                $cantidad = isset($bloque['cantidad']) && $bloque['cantidad'] ? $bloque['cantidad'] : 8;
+                $layout = isset($bloque['layout']) ? $bloque['layout'] : 'grid';
+                $columnas = isset($bloque['columnas']) ? $bloque['columnas'] : 'col-lg-3';
                 
                 // Construcción del array de argumentos para WP_Query
                 $args = array(
@@ -33,7 +37,7 @@
                 
                 // Aplicar filtros según el tipo seleccionado
                 if ( 'categoria' === $tipo ) {
-                    $categoria = get_sub_field( 'categoria' );
+                    $categoria = isset($bloque['categoria']) ? $bloque['categoria'] : '';
                     if ( $categoria ) {
                         $args['tax_query'] = array(
                             array(
@@ -44,21 +48,25 @@
                         );
                     }
                 } elseif ( 'destacados' === $tipo ) {
-                    $args['meta_query'] = array(
+                    // WooCommerce 3.0+ usa taxonomía product_visibility
+                    $args['tax_query'] = array(
+                        'relation' => 'AND',
                         array(
-                            'key'   => '_featured',
-                            'value' => 'yes',
+                            'taxonomy' => 'product_visibility',
+                            'field'    => 'name',
+                            'terms'    => 'featured',
+                            'operator' => 'IN',
                         ),
                     );
                 } elseif ( 'ofertas' === $tipo ) {
-                    $args['meta_query'] = array(
-                        array(
-                            'key'     => '_sale_price',
-                            'value'   => 0,
-                            'compare' => '>',
-                            'type'    => 'NUMERIC',
-                        ),
-                    );
+                    // Usar función nativa de WooCommerce para productos en oferta
+                    $product_ids_on_sale = wc_get_product_ids_on_sale();
+                    if ( ! empty( $product_ids_on_sale ) ) {
+                        $args['post__in'] = $product_ids_on_sale;
+                    } else {
+                        // Si no hay productos en oferta, forzar resultado vacío
+                        $args['post__in'] = array( 0 );
+                    }
                 }
                 // Si tipo es 'ultimos', usa los argumentos por defecto
                 
@@ -154,7 +162,7 @@
                                             }
                                         }
                                         
-                                        $product_class .= ' ' . esc_attr( $columnas ) . ' col-md-6 col-sm-12';
+                                        $product_class .= ' ' . esc_attr( $columnas ) . ' col-md-6 col-sm-6';
                                         
                                         // Clases del botón
                                         $button_class = 'button product_type_' . $product->get_type() . ' add_to_cart_button ajax_add_to_cart';
@@ -187,13 +195,13 @@
                     </div>
                 </div>
                 <?php
-            endwhile;
+            endforeach;
         else :
             ?>
             <!-- Sin bloques de productos configurados -->
             <div class="container">
                 <div class="alert alert-info" role="alert">
-                    No hay bloques de productos configurados. Por favor, ve a Apariencia > Chow theme > Bloques de Productos y configura los bloques.
+                    No hay bloques de productos configurados. Por favor, ve a Apariencia > Chow theme > Contenido Home y configura los bloques de productos.
                 </div>
             </div>
             <?php

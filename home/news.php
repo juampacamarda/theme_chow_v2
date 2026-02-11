@@ -1,13 +1,17 @@
-<section id="suscripcion-news" class="d-none d-lg-flex align-items-center"<?php if ( get_field( 'news_bg' ) ) : ?>style="background-image:url('<?php the_field( 'news_bg' ); ?>'); background-size:cover; background-position:center"<?php endif ?>>
+<section id="suscripcion-news" class="d-none d-lg-flex align-items-center"<?php 
+    $newsletter = get_field('newsletter', 'option');
+    if ($newsletter && isset($newsletter['news_bg']) && $newsletter['news_bg']) { 
+        echo 'style="background-image:url(\'' . esc_url($newsletter['news_bg']) . '\'); background-size:cover; background-position:center"'; 
+    } 
+?>>
     <div class="container">
         <div class="row d-flex justify-content-end">
             <div class="col-lg-7">
                 <div class="newcontenedor" data-aos="fade-up" data-aos-duration="3000">
                     <h3 class="text-center"><span class="cursiva">Descubrinos ! No te pierdas nuestras propuestas...</span><br/><br>Suscribite</h3>
                     <?php 
-                    $formulario_news = get_field( 'formulario_news', 'option');
-                    if ( $formulario_news ) {
-                        echo do_shortcode( $formulario_news );
+                    if ($newsletter && isset($newsletter['formulario_news']) && $newsletter['formulario_news']) {
+                        echo do_shortcode($newsletter['formulario_news']);
                     }
                     ?>
                 </div>

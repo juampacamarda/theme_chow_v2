@@ -30,17 +30,13 @@
 										<div class="col-12 col-sm-5 col-md-5 d-flex align-items-center">
 												<div class="navbar-brand">
 														<?php
-																// Display the Custom Logo
-																the_custom_logo();
-
-																// No Custom Logo, just display the site's name
-																if (!has_custom_logo()) {
-																		?>
-																<a href="<?php echo get_home_url(); ?>" class="home-link-xs d-block" rel="home">
-																		<img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo_color.png" alt="Logo" class="img-fluid">
-																</a>
-														<?php
-																}?>
+																// Logo Desktop - Get from ACF or use fallback
+																$logo_desktop = get_field('logo_header_desktop', 'option');
+																$logo_url = $logo_desktop ? $logo_desktop : get_template_directory_uri() . '/assets/img/logo_color.png';
+														?>
+														<a href="<?php echo get_home_url(); ?>" class="home-link-xs d-block" rel="home">
+																<img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo get_bloginfo('name'); ?>" class="img-fluid">
+														</a>
 												</div>
 												
 										</div>
@@ -51,24 +47,33 @@
 														<li class="redes border-r padding-datos">
 																<!--<<h3 class="title-datos">Nuestras redes</h3>-->
 																<ul class="nav data-datos header-redes">
-																		<?php if ( get_field( 'instagram_link', 'option') ) { ?>
+																		<?php $instagram = get_field('instagram_link', 'option');
+																		if ($instagram) { 
+																			$instagram_url = is_array($instagram) ? $instagram['url'] : $instagram;
+																		?>
 																		<li>
-																				<a href="<?php the_field( 'instagram_link', 'option' ); ?>" target="_blank"><i class="fab fa-instagram"></i></a>
+																				<a href="<?php echo esc_url($instagram_url); ?>" target="_blank"><i class="fab fa-instagram"></i></a>
 																		</li>
 																		<?php } ?>
-																		<?php if ( get_field( 'facebook_link', 'option') ) { ?>
+																		<?php $facebook = get_field('facebook_link', 'option');
+																		if ($facebook) { 
+																			$facebook_url = is_array($facebook) ? $facebook['url'] : $facebook;
+																		?>
 																		<li>
-																				<a href="<?php the_field( 'facebook_link', 'option' ); ?>" target="_blank"><i class="fab fa-facebook"></i></a>
+																				<a href="<?php echo esc_url($facebook_url); ?>" target="_blank"><i class="fab fa-facebook"></i></a>
 																		</li>
 																		<?php } ?>
-																		<?php if ( get_field( 'tel_numero', 'option') ) { ?>
+																		<?php if ( get_field( 'telefonos', 'option') ) { ?>
 																		<li>
-																				<a href="tel:<?php the_field( 'tel_numero', 'option' ); ?>"><i class="fa fa-phone"></i></a>
+																				<a href="tel:<?php the_field( 'telefonos', 'option' ); ?>"><i class="fa fa-phone"></i></a>
 																		</li>
 																		<?php } ?>
-																		<?php if ( get_field( 'wsp_link', 'option') ) { ?>
+																		<?php $whatsapp = get_field('wsp_link', 'option');
+																		if ($whatsapp) { 
+																			$whatsapp_url = is_array($whatsapp) ? $whatsapp['url'] : $whatsapp;
+																		?>
 																		<li>
-																				<a href="https://wa.me/<?php the_field( 'wsp_link', 'option' ); ?>"><i class="fab fa-whatsapp"></i></a>
+																				<a href="https://wa.me/<?php echo esc_attr($whatsapp_url); ?>"><i class="fab fa-whatsapp"></i></a>
 																		</li>
 																		<?php } ?>
 																		<?php if ( get_field( 'mail', 'option') ) { ?>

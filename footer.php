@@ -10,16 +10,13 @@
 								<div class="col-12 col-md-4">
 										<div class="logo-ftr mb-4">
 													<?php
-															// Display the Custom Logo
-															the_custom_logo();
-
-															// No Custom Logo, just display the site's name
-															if (!has_custom_logo()) {
-																	?>
-															<a href="<?php echo get_home_url(); ?>" class="home-link-xs d-block" rel="home">
-																	<img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo_light.png" alt="Logo" class="img-fluid">
-															</a>
-													<?php }?>
+															// Logo Footer - Get from ACF or use fallback
+															$logo_footer = get_field('logo_footer', 'option');
+															$logo_url = $logo_footer ? $logo_footer : get_template_directory_uri() . '/assets/img/logo_light.png';
+													?>
+													<a href="<?php echo get_home_url(); ?>" class="home-link-xs d-block" rel="home">
+															<img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo get_bloginfo('name'); ?>" class="img-fluid">
+													</a>
 										</div>
 										<div class="data-cliente">
 												

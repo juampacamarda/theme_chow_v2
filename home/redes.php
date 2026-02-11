@@ -1,4 +1,9 @@
-<section id="seccion-redes"class="d-flex align-items-center" <?php if ( get_field( 'fondo_redes','option' ) ) { ?> style="background-image:url('<?php the_field( 'fondo_redes','option' ); ?>'); background-size:cover;background-repeat:no-repeat" <?php } ?> >
+<section id="seccion-redes"class="d-flex align-items-center" <?php 
+    $redes_seccion = get_field('redes_seccion', 'option');
+    if ($redes_seccion && isset($redes_seccion['fondo_redes']) && $redes_seccion['fondo_redes']) { 
+        echo 'style="background-image:url(\'' . esc_url($redes_seccion['fondo_redes']) . '\'); background-size:cover;background-repeat:no-repeat"'; 
+    } 
+?> >
 
     <div class="container">
         <h2>Seguinos también en nuestras Redes Sociales !</h2>
@@ -19,7 +24,7 @@
                     <?php $twitter_link = get_field( 'twitter_link', 'option' ); ?>
                     <?php if ( $twitter_link ) { ?>
                         <a href="<?php echo $twitter_link; ?>" target="_blank">
-                            <i class="fab fa-pinterest"></i>
+                            <i class="fab fa-twitter"></i>
                         </a>
                     <?php } ?>
                 </li>

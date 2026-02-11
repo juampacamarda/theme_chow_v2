@@ -1,0 +1,527 @@
+{
+    "key": "group_contenido_home",
+    "title": "Contenido Home",
+    "fields": [
+        {
+            "key": "field_newsletter_seccion",
+            "label": "Newsletter",
+            "name": "newsletter",
+            "aria-label": "",
+            "type": "group",
+            "instructions": "Sección de suscripción newsletter",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_news_bg",
+                    "label": "Fondo",
+                    "name": "news_bg",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Imagen de fondo de la sección",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url",
+                    "preview_size": "medium",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": ""
+                },
+                {
+                    "key": "field_formulario_news",
+                    "label": "Formulario",
+                    "name": "formulario_news",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Shortcode del formulario Contact Form 7",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "ej: [contact-form-7 id=\"123\"]",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                }
+            ]
+        },
+        {
+            "key": "field_redes_seccion",
+            "label": "Sección Redes",
+            "name": "redes_seccion",
+            "aria-label": "",
+            "type": "group",
+            "instructions": "Sección de redes sociales",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_fondo_redes",
+                    "label": "Fondo",
+                    "name": "fondo_redes",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Imagen de fondo de la sección de redes",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url",
+                    "preview_size": "medium",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": ""
+                }
+            ]
+        },
+        {
+            "key": "field_carrusel_productos_destacados",
+            "label": "Carrusel de Productos Destacados",
+            "name": "carrusel_productos_destacados",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Botones\/productos que aparecen en el carrusel de home",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Agregar Producto",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_carrusel_prod_imagen",
+                    "label": "Imagen",
+                    "name": "imagen",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Imagen del producto o botón",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url",
+                    "preview_size": "medium",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "parent_repeater": "field_carrusel_productos_destacados"
+                },
+                {
+                    "key": "field_carrusel_prod_nombre",
+                    "label": "Nombre del Link",
+                    "name": "nombre_del_link",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Texto que se muestra en el enlace",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": "",
+                    "parent_repeater": "field_carrusel_productos_destacados"
+                },
+                {
+                    "key": "field_carrusel_prod_link",
+                    "label": "Link",
+                    "name": "link",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "URL del enlace",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "parent_repeater": "field_carrusel_productos_destacados"
+                }
+            ]
+        },
+        {
+            "key": "field_carrusel_logos",
+            "label": "Carrusel de Logos",
+            "name": "carrusel_logos",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Logos de marcas\/clientes que aparecen en el carrusel de home",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Agregar Logo",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_carrusel_logo_imagen",
+                    "label": "Imagen",
+                    "name": "imagen",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Logo de la marca o cliente",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "url",
+                    "preview_size": "medium",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "parent_repeater": "field_carrusel_logos"
+                },
+                {
+                    "key": "field_carrusel_logo_nombre",
+                    "label": "Nombre del Link",
+                    "name": "nombre_del_link",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Texto que se muestra en el enlace",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": "",
+                    "parent_repeater": "field_carrusel_logos"
+                },
+                {
+                    "key": "field_carrusel_logo_link",
+                    "label": "Link",
+                    "name": "link",
+                    "aria-label": "",
+                    "type": "url",
+                    "instructions": "URL del enlace",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_carrusel_logos"
+                }
+            ]
+        },
+        {
+            "key": "field_bloques_productos_repeater",
+            "label": "Bloques de Productos",
+            "name": "bloques_productos",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Crea múltiples bloques de productos dinámicos en la home",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "button_label": "Agregar Bloque",
+            "min": 0,
+            "max": 0,
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_bloques_titulo",
+                    "label": "Título del Bloque",
+                    "name": "titulo",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Título que aparecerá en la sección de productos",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_bloques_productos_repeater"
+                },
+                {
+                    "key": "field_bloques_descripcion",
+                    "label": "Descripción",
+                    "name": "descripcion",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "Descripción opcional para el bloque de productos",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "rows": 4,
+                    "default_value": "",
+                    "new_lines": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_bloques_productos_repeater"
+                },
+                {
+                    "key": "field_bloques_tipo",
+                    "label": "Tipo de Productos",
+                    "name": "tipo",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Selecciona cómo se mostrarán los productos",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "ultimos": "Últimos Productos",
+                        "destacados": "Productos Destacados",
+                        "ofertas": "Productos en Oferta",
+                        "categoria": "Por Categoría"
+                    },
+                    "default_value": "ultimos",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "return_format": "value",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_bloques_productos_repeater"
+                },
+                {
+                    "key": "field_bloques_categoria",
+                    "label": "Categoría",
+                    "name": "categoria",
+                    "aria-label": "",
+                    "type": "taxonomy",
+                    "instructions": "Selecciona la categoría de productos a mostrar",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_bloques_tipo",
+                                "operator": "==",
+                                "value": "categoria"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "taxonomy": "product_cat",
+                    "field_type": "select",
+                    "return_format": "id",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "add_term": 1,
+                    "load_terms": 0,
+                    "save_terms": 0,
+                    "bidirectional_target": [],
+                    "parent_repeater": "field_bloques_productos_repeater"
+                },
+                {
+                    "key": "field_bloques_cantidad",
+                    "label": "Cantidad de Productos",
+                    "name": "cantidad",
+                    "aria-label": "",
+                    "type": "number",
+                    "instructions": "Número de productos a mostrar",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 8,
+                    "min": 1,
+                    "max": 50,
+                    "step": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_bloques_productos_repeater"
+                },
+                {
+                    "key": "field_bloques_layout",
+                    "label": "Layout",
+                    "name": "layout",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Elige cómo mostrar los productos",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "columnas": "Grid de Columnas",
+                        "carousel": "Carrusel (Owl Carousel)"
+                    },
+                    "default_value": "columnas",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "return_format": "value",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_bloques_productos_repeater"
+                },
+                {
+                    "key": "field_bloques_columnas",
+                    "label": "Número de Columnas",
+                    "name": "columnas",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Cuántas columnas por fila",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_bloques_layout",
+                                "operator": "==",
+                                "value": "columnas"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "col-lg-2": "6 Columnas",
+                        "col-lg-3": "4 Columnas",
+                        "col-lg-4": "3 Columnas",
+                        "col-lg-6": "2 Columnas"
+                    },
+                    "default_value": "col-lg-3",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "return_format": "value",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_bloques_productos_repeater"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "acf-options-contenido-home"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "modified": 1770825144
+}

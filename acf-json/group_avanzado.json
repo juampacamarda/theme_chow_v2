@@ -1,0 +1,82 @@
+{
+    "key": "group_avanzado",
+    "title": "Avanzado",
+    "fields": [
+        {
+            "key": "field_google_analytics",
+            "label": "Google Analytics",
+            "name": "google_analytics",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Código de Google Analytics o Google Tag Manager",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 6,
+            "default_value": "",
+            "placeholder": "<!-- Google Analytics -->",
+            "maxlength": ""
+        },
+        {
+            "key": "field_fb_pix",
+            "label": "Facebook Pixel",
+            "name": "fb_pix",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Código de Facebook Pixel",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 6,
+            "default_value": "",
+            "placeholder": "<!-- Facebook Pixel -->",
+            "maxlength": ""
+        },
+        {
+            "key": "field_otro_code",
+            "label": "Código Personalizado",
+            "name": "otro_code",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Otro código personalizado que necesites en el header",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 6,
+            "default_value": "",
+            "placeholder": "<!-- Código personalizado -->",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "acf-options-avanzado"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1707638400
+}

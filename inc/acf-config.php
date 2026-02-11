@@ -38,27 +38,34 @@ if( function_exists('acf_add_options_page') ) {
     ));
 
     acf_add_options_sub_page(array(
-        'page_title' 	=> 'Editar Footer del Sitio',
-        'menu_title'	=> 'Footer',
-        'parent_slug'	=> 'Chow-theme',
-    ));
-
-
-    acf_add_options_sub_page(array(
-        'page_title' 	=> 'Slide Home',
-        'menu_title'	=> 'slide',
+        'page_title' 	=> 'Empresa',
+        'menu_title'	=> 'Empresa',
         'parent_slug'	=> 'Chow-theme',
     ));
 
     acf_add_options_sub_page(array(
-        'page_title' 	=> 'Formulario Consulta Productos',
-        'menu_title'	=> 'Formulario Productos',
+        'page_title' 	=> 'Slider Home',
+        'menu_title'	=> 'Slider Home',
         'parent_slug'	=> 'Chow-theme',
     ));
 
     acf_add_options_sub_page(array(
-        'page_title' 	=> 'Bloques de Productos',
-        'menu_title'	=> 'Bloques de Productos',
+        'page_title' 	=> 'Contenido Home',
+        'menu_title'	=> 'Contenido Home',
+        'parent_slug'	=> 'Chow-theme',
+    ));
+
+    acf_add_options_sub_page(array(
+        'page_title' 	=> 'Formularios',
+        'menu_title'	=> 'Formularios',
+        'parent_slug'	=> 'Chow-theme',
+    ));
+
+    
+
+    acf_add_options_sub_page(array(
+        'page_title' 	=> 'Avanzado',
+        'menu_title'	=> 'Avanzado',
         'parent_slug'	=> 'Chow-theme',
     ));
 

@@ -1,13 +1,14 @@
 {
-    "key": "group_5e2f2db1bec50",
-    "title": "formulario-news",
+    "key": "group_formularios",
+    "title": "Formularios",
     "fields": [
         {
-            "key": "field_5e2f2d90a0573",
-            "label": "Formulario-producto",
+            "key": "field_formulario_producto",
+            "label": "Consulta de Productos",
             "name": "formulario_producto",
+            "aria-label": "",
             "type": "text",
-            "instructions": "",
+            "instructions": "Shortcode del formulario Contact Form 7 para consultas de productos",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -16,7 +17,7 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "",
+            "placeholder": "ej: [contact-form-7 id=\"123\"]",
             "prepend": "",
             "append": "",
             "maxlength": ""
@@ -27,7 +28,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "acf-options-formulario-productos"
+                "value": "acf-options-formularios"
             }
         ]
     ],
@@ -36,23 +37,9 @@
     "style": "default",
     "label_placement": "top",
     "instruction_placement": "label",
-    "hide_on_screen": [
-        "permalink",
-        "the_content",
-        "excerpt",
-        "discussion",
-        "comments",
-        "revisions",
-        "slug",
-        "author",
-        "format",
-        "page_attributes",
-        "categories",
-        "tags",
-        "send-trackbacks"
-    ],
+    "hide_on_screen": "",
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1659758239
+    "modified": 1707638400
 }

@@ -125,7 +125,7 @@ h4.tienda-tittle {
     color: var(--chow_blanco);
     font-size: 16px;
     font-weight: unset!important;
-    padding: 10px 45px;
+    padding: 10px 15px;
 }
 
 .woocommerce .product a.button {
@@ -516,7 +516,7 @@ img.attachment-woocommerce_thumbnail {
     width:150px!important
 }
 
-#productos-dinamicos.woocommerce .products .product {
+#productos-dinamicos.woocommerce ul.products .product {
     float: unset;
     margin: unset;
     width: unset;
