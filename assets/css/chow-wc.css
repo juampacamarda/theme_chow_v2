@@ -371,7 +371,7 @@ form.checkout.woocommerce-checkout.customize-unpreviewable .form-row {
     display: block;
    
 }
-ul.products li.product, .woocommerce-page ul.products li.product, .row .product {
+ul.products li.product, .woocommerce-page ul.products li.product {
     background-color: #fff;
     height: 100%;
     display: flex;
@@ -501,7 +501,7 @@ li.product span.now_sold {
     box-shadow: 1px 2px 3px #3e3e3e;
 }
 
-li.product:hover a.button, .row .product:hover a.button {
+li.product:hover a.button {
     background-color: var(--chow_secundario);
 }
 
