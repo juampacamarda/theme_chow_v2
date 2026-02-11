@@ -379,6 +379,10 @@ ul.products li.product, .woocommerce-page ul.products li.product {
     flex-wrap: wrap;
     min-height: 368px;
     height: auto;
+    box-shadow:0 3px 4px lightslategrey;
+    padding-bottom:10px;
+    overflow: hidden;
+    border-radius: 5px;
 }
 .woocommerce nav.woocommerce-pagination ul li a, .woocommerce nav.woocommerce-pagination ul li span{
     color:var(--chow_txt);
@@ -510,4 +514,38 @@ img.attachment-woocommerce_thumbnail {
 }
 .woocommerce-cart-form__contents img.attachment-woocommerce_thumbnail.size-woocommerce_thumbnail {
     width:150px!important
+}
+
+#productos-dinamicos.woocommerce .products .product {
+    float: unset;
+    margin: unset;
+    width: unset;
+    padding: 0;
+    position: relative;
+    margin-left: 0;
+}
+
+#productos-dinamicos.woocommerce .products li.product,
+#productos-dinamicos.woocommerce .products .product .wrap{
+    background-color: #fff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    min-height: 368px;
+    box-shadow:0 3px 4px lightslategrey;
+    padding-bottom:10px;
+    margin:10px;
+    overflow: hidden;
+    border-radius: 5px;
+
+}
+
+.products.d-flex.flex-wrap .product {
+    margin-bottom: 20px!important;
+}
+
+#productos-dinamicos.woocommerce  a.woocommerce-LoopProduct-link {
+    display: block;
+    text-decoration: none;
 }

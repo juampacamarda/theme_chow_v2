@@ -9,7 +9,7 @@
  */
 ?>
 
-<section id="productos-dinamicos" class="productos-section">
+<section id="productos-dinamicos" class="productos-section woocommerce">
     <div class="container-fluid">
         <?php
         if ( have_rows( 'bloques_productos', 'option' ) ) :
@@ -94,18 +94,27 @@
                                             $product_class .= ' has-post-thumbnail';
                                         }
                                         $product_class .= ' shipping-taxable purchasable product-type-' . $product->get_type();
-                                        $product_class .= ' product_cat-' . str_replace(' ', '-', strtolower( wc_get_product_category_list( get_the_ID(), ', ' ) ) );
+                                        
+                                        // Obtener categorías de forma correcta
+                                        $terms = get_the_terms( get_the_ID(), 'product_cat' );
+                                        if ( $terms && ! is_wp_error( $terms ) ) {
+                                            foreach ( $terms as $term ) {
+                                                $product_class .= ' product_cat-' . esc_attr( $term->slug );
+                                            }
+                                        }
                                         
                                         // Clases del botón
                                         $button_class = 'button product_type_' . $product->get_type() . ' add_to_cart_button ajax_add_to_cart';
                                         ?>
                                         <li class="<?php echo esc_attr( $product_class ); ?>">
-                                            <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                <?php echo get_the_post_thumbnail( get_the_ID(), 'woocommerce_thumbnail', array( 'class' => 'attachment-woocommerce_thumbnail size-woocommerce_thumbnail' ) ); ?>
-                                                <h2 class="woocommerce-loop-product__title"><?php the_title(); ?></h2>
-                                                <span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
-                                            </a>
-                                            <a href="<?php echo esc_url( add_query_arg( 'add-to-cart', $product->get_id() ) ); ?>" data-quantity="1" class="<?php echo esc_attr( $button_class ); ?>" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>" aria-label="Add to cart: &quot;<?php the_title(); ?>&quot;" rel="nofollow"><?php esc_html_e( 'Agregar al carrito', 'woocommerce' ); ?></a>
+                                            
+                                                <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                    <?php echo get_the_post_thumbnail( get_the_ID(), 'woocommerce_thumbnail', array( 'class' => 'attachment-woocommerce_thumbnail size-woocommerce_thumbnail' ) ); ?>
+                                                    <h2 class="woocommerce-loop-product__title"><?php the_title(); ?></h2>
+                                                    <span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
+                                                </a>
+                                                <a href="<?php echo esc_url( add_query_arg( 'add-to-cart', $product->get_id() ) ); ?>" data-quantity="1" class="<?php echo esc_attr( $button_class ); ?>" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>" aria-label="Add to cart: &quot;<?php the_title(); ?>&quot;" rel="nofollow"><?php esc_html_e( 'Agregar al carrito', 'woocommerce' ); ?></a>
+                                            
                                         </li>
                                         <?php
                                     endwhile;
@@ -124,7 +133,7 @@
                             // Layout: Grid de columnas (por defecto) usando estructura WooCommerce
                             if ( $products_query->have_posts() ) :
                                 ?>
-                                <ul class="products row">
+                                <div class="products d-flex flex-wrap">
                                     <?php
                                     while ( $products_query->have_posts() ) : $products_query->the_post();
                                         global $product;
@@ -136,24 +145,34 @@
                                             $product_class .= ' has-post-thumbnail';
                                         }
                                         $product_class .= ' shipping-taxable purchasable product-type-' . $product->get_type();
-                                        $product_class .= ' product_cat-' . str_replace(' ', '-', strtolower( wc_get_product_category_list( get_the_ID(), ', ' ) ) );
+                                        
+                                        // Obtener categorías de forma correcta
+                                        $terms = get_the_terms( get_the_ID(), 'product_cat' );
+                                        if ( $terms && ! is_wp_error( $terms ) ) {
+                                            foreach ( $terms as $term ) {
+                                                $product_class .= ' product_cat-' . esc_attr( $term->slug );
+                                            }
+                                        }
+                                        
                                         $product_class .= ' ' . esc_attr( $columnas ) . ' col-md-6 col-sm-12';
                                         
                                         // Clases del botón
                                         $button_class = 'button product_type_' . $product->get_type() . ' add_to_cart_button ajax_add_to_cart';
                                         ?>
-                                        <li class="<?php echo esc_attr( $product_class ); ?>">
-                                            <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                <?php echo get_the_post_thumbnail( get_the_ID(), 'woocommerce_thumbnail', array( 'class' => 'attachment-woocommerce_thumbnail size-woocommerce_thumbnail' ) ); ?>
-                                                <h2 class="woocommerce-loop-product__title"><?php the_title(); ?></h2>
-                                                <span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
-                                            </a>
-                                            <a href="<?php echo esc_url( add_query_arg( 'add-to-cart', $product->get_id() ) ); ?>" data-quantity="1" class="<?php echo esc_attr( $button_class ); ?>" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>" aria-label="Add to cart: &quot;<?php the_title(); ?>&quot;" rel="nofollow"><?php esc_html_e( 'Agregar al carrito', 'woocommerce' ); ?></a>
-                                        </li>
+                                        <div class="<?php echo esc_attr( $product_class ); ?>">
+                                            <div class="wrap">
+                                                <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                                    <?php echo get_the_post_thumbnail( get_the_ID(), 'woocommerce_thumbnail', array( 'class' => 'attachment-woocommerce_thumbnail size-woocommerce_thumbnail' ) ); ?>
+                                                    <h2 class="woocommerce-loop-product__title"><?php the_title(); ?></h2>
+                                                    <span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
+                                                </a>
+                                                <a href="<?php echo esc_url( add_query_arg( 'add-to-cart', $product->get_id() ) ); ?>" data-quantity="1" class="<?php echo esc_attr( $button_class ); ?>" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>" aria-label="Add to cart: &quot;<?php the_title(); ?>&quot;" rel="nofollow"><?php esc_html_e( 'Agregar al carrito', 'woocommerce' ); ?></a>
+                                            </div>
+                                        </div>
                                         <?php
                                     endwhile;
                                     ?>
-                                </ul>
+                                </div>
                                 <?php
                                 wp_reset_postdata();
                             else :
