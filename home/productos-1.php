@@ -4,6 +4,8 @@
  * Utiliza un campo repeater en ACF para múltiples bloques de productos
  * Cada bloque puede mostrar productos por categoría, últimos, destacados u ofertas
  * Con opciones de layout: grid de columnas o carrusel Owl Carousel
+ * 
+ * Estructura sincronizada con los estilos de WooCommerce estándar
  */
 ?>
 
@@ -36,7 +38,7 @@
                         $args['tax_query'] = array(
                             array(
                                 'taxonomy' => 'product_cat',
-                                'field'    => 'slug',
+                                'field'    => 'id',
                                 'terms'    => $categoria,
                             ),
                         );
@@ -77,66 +79,68 @@
                         
                         <?php
                         if ( 'carousel' === $layout ) :
-                            // Layout: Carrusel Owl Carousel
-                            ?>
-                            <div class="productos-carousel owl-carousel owl-theme" data-items="4" data-margin="20" data-responsive='{"0":{"items":1},"576":{"items":2},"768":{"items":3},"992":{"items":4}}'>
-                                <?php
-                                if ( $products_query->have_posts() ) :
+                            // Layout: Carrusel Owl Carousel usando estructura WooCommerce
+                            if ( $products_query->have_posts() ) :
+                                ?>
+                                <ul class="products productos-carousel owl-carousel owl-theme">
+                                    <?php
                                     while ( $products_query->have_posts() ) : $products_query->the_post();
                                         global $product;
                                         ?>
-                                        <div class="producto-item">
-                                            <div class="productocard">
-                                                <div class="imagen-prodest" style="background-image:url('<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'medium' ) ?: get_template_directory_uri() . '/assets/img/default-img.png' ); ?>'); background-size:cover; background-repeat:no-repeat; min-height:200px;"></div>
-                                                <div class="dataproducto p-3">
-                                                    <h3 class="producto-nombre cursiva"><?php the_title(); ?></h3>
-                                                    <h4 class="producto-precio">
-                                                        <?php echo wp_kses_post( $product->get_price_html() ); ?>
-                                                    </h4>
-                                                    <a href="<?php the_permalink(); ?>" class="btn btn-tienda btn-sm">Ver Más</a>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <li class="product">
+                                            <a href="<?php the_permalink(); ?>" class="woocommerce-loop-item-link">
+                                                <?php echo get_the_post_thumbnail( get_the_ID(), 'woocommerce_thumbnail', array( 'class' => 'attachment-woocommerce_thumbnail size-woocommerce_thumbnail' ) ); ?>
+                                                <h2 class="woocommerce-loop-product__title"><?php the_title(); ?></h2>
+                                                <span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
+                                            </a>
+                                            <a href="<?php the_permalink(); ?>" class="button"><?php esc_html_e( 'Ver producto', 'woocommerce' ); ?></a>
+                                        </li>
                                         <?php
                                     endwhile;
-                                    wp_reset_postdata();
-                                endif;
+                                    ?>
+                                </ul>
+                                <?php
+                                wp_reset_postdata();
+                            else :
                                 ?>
-                            </div>
+                                <p class="text-center text-muted">No hay productos disponibles en esta sección.</p>
+                                <?php
+                            endif;
+                            ?>
                             <?php
                         else :
-                            // Layout: Grid de columnas (por defecto)
-                            ?>
-                            <div class="row">
-                                <?php
-                                if ( $products_query->have_posts() ) :
-                                    while ( $products_query->have_posts() ) : $products_query->the_post();
-                                        global $product;
-                                        ?>
-                                        <div class="<?php echo esc_attr( $columnas ); ?> col-md-6 col-sm-12 mb-4">
-                                            <div class="productocard h-100">
-                                                <div class="imagen-prodest" style="background-image:url('<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'medium' ) ?: get_template_directory_uri() . '/assets/img/default-img.png' ); ?>'); background-size:cover; background-repeat:no-repeat; min-height:200px;"></div>
-                                                <div class="dataproducto p-3">
-                                                    <h3 class="producto-nombre cursiva"><?php the_title(); ?></h3>
-                                                    <h4 class="producto-precio">
-                                                        <?php echo wp_kses_post( $product->get_price_html() ); ?>
-                                                    </h4>
-                                                    <a href="<?php the_permalink(); ?>" class="btn btn-tienda btn-sm">Ver Más</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <?php
-                                    endwhile;
-                                    wp_reset_postdata();
-                                else :
-                                    ?>
-                                    <div class="col-12">
-                                        <p class="text-center text-muted">No hay productos disponibles en esta sección.</p>
-                                    </div>
-                                    <?php
-                                endif;
+                            // Layout: Grid de columnas (por defecto) usando estructura WooCommerce
+                            if ( $products_query->have_posts() ) :
                                 ?>
-                            </div>
+                                <div class="row">
+                                    <ul class="products w-100">
+                                        <?php
+                                        while ( $products_query->have_posts() ) : $products_query->the_post();
+                                            global $product;
+                                            ?>
+                                            <li class="product <?php echo esc_attr( $columnas ); ?> col-md-6 col-sm-12">
+                                                <a href="<?php the_permalink(); ?>" class="woocommerce-loop-item-link">
+                                                    <?php echo get_the_post_thumbnail( get_the_ID(), 'woocommerce_thumbnail', array( 'class' => 'attachment-woocommerce_thumbnail size-woocommerce_thumbnail' ) ); ?>
+                                                    <h2 class="woocommerce-loop-product__title"><?php the_title(); ?></h2>
+                                                    <span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
+                                                </a>
+                                                <a href="<?php the_permalink(); ?>" class="button"><?php esc_html_e( 'Ver producto', 'woocommerce' ); ?></a>
+                                            </li>
+                                            <?php
+                                        endwhile;
+                                        ?>
+                                    </ul>
+                                </div>
+                                <?php
+                                wp_reset_postdata();
+                            else :
+                                ?>
+                                <div class="col-12">
+                                    <p class="text-center text-muted">No hay productos disponibles en esta sección.</p>
+                                </div>
+                                <?php
+                            endif;
+                            ?>
                             <?php
                         endif;
                         ?>
@@ -149,7 +153,7 @@
             <!-- Sin bloques de productos configurados -->
             <div class="container">
                 <div class="alert alert-info" role="alert">
-                    No hay bloques de productos configurados. Por favor, ve a Apariencia > Opciones de tema y configura los bloques de productos.
+                    No hay bloques de productos configurados. Por favor, ve a Apariencia > Chow theme > Bloques de Productos y configura los bloques.
                 </div>
             </div>
             <?php

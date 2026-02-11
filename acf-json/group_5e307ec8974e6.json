@@ -104,7 +104,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "Remo-theme"
+                "value": "Chow-theme"
             }
         ]
     ],
@@ -118,5 +118,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1770754269
+    "modified": 1770771005
 }

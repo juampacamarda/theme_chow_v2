@@ -9,19 +9,19 @@
             "aria-label": "",
             "type": "repeater",
             "instructions": "Crea múltiples bloques de productos. Cada bloque puede mostrar productos de forma diferente según la configuración.",
-            "required": 0,
-            "conditional_logic": 0,
+            "required": false,
+            "conditional_logic": false,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "collapsed": "",
-            "min": 0,
-            "max": 0,
             "layout": "table",
             "button_label": "Agregar Bloque",
+            "min": 0,
+            "max": 0,
             "rows_per_page": 20,
+            "collapsed": "",
             "sub_fields": [
                 {
                     "key": "field_bloques_titulo",
@@ -30,18 +30,18 @@
                     "aria-label": "",
                     "type": "text",
                     "instructions": "Título que aparecerá en la sección de productos",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "required": false,
+                    "conditional_logic": false,
                     "wrapper": {
                         "width": "",
                         "class": "",
                         "id": ""
                     },
                     "default_value": "",
+                    "maxlength": "",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "maxlength": "",
                     "parent_repeater": "field_bloques_productos_repeater"
                 },
                 {
@@ -51,18 +51,18 @@
                     "aria-label": "",
                     "type": "textarea",
                     "instructions": "Descripción opcional para el bloque de productos",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "required": false,
+                    "conditional_logic": false,
                     "wrapper": {
                         "width": "",
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
-                    "placeholder": "",
-                    "maxlength": "",
                     "rows": 4,
+                    "default_value": "",
                     "new_lines": "",
+                    "maxlength": "",
+                    "placeholder": "",
                     "parent_repeater": "field_bloques_productos_repeater"
                 },
                 {
@@ -73,9 +73,9 @@
                     "type": "select",
                     "instructions": "Selecciona cómo se mostrarán los productos",
                     "required": 1,
-                    "conditional_logic": 0,
+                    "conditional_logic": false,
                     "wrapper": {
-                        "width": "50",
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -86,12 +86,12 @@
                         "categoria": "Por Categoría"
                     },
                     "default_value": "ultimos",
-                    "allow_null": 0,
                     "multiple": 0,
-                    "ui": 1,
-                    "return_format": "value",
+                    "allow_null": 0,
+                    "ui": 0,
                     "ajax": 0,
                     "placeholder": "",
+                    "return_format": "value",
                     "create_options": 0,
                     "save_options": 0,
                     "parent_repeater": "field_bloques_productos_repeater"
@@ -102,8 +102,8 @@
                     "name": "categoria",
                     "aria-label": "",
                     "type": "taxonomy",
-                    "instructions": "Selecciona la categoría de productos a mostrar (solo si el tipo es 'Por Categoría')",
-                    "required": 0,
+                    "instructions": "Selecciona la categoría de productos a mostrar",
+                    "required": false,
                     "conditional_logic": [
                         [
                             {
@@ -114,18 +114,18 @@
                         ]
                     ],
                     "wrapper": {
-                        "width": "50",
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
                     "taxonomy": "product_cat",
                     "field_type": "select",
-                    "allow_null": 0,
-                    "add_term": 0,
-                    "save_terms": 0,
-                    "load_terms": 0,
                     "return_format": "id",
                     "multiple": 0,
+                    "allow_null": 0,
+                    "add_term": 1,
+                    "load_terms": 0,
+                    "save_terms": 0,
                     "bidirectional_target": [],
                     "parent_repeater": "field_bloques_productos_repeater"
                 },
@@ -135,21 +135,21 @@
                     "name": "cantidad",
                     "aria-label": "",
                     "type": "number",
-                    "instructions": "Número de productos a mostrar en este bloque",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "instructions": "Número de productos a mostrar",
+                    "required": false,
+                    "conditional_logic": false,
                     "wrapper": {
-                        "width": "25",
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
                     "default_value": 8,
+                    "min": 1,
+                    "max": 50,
+                    "step": "",
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "min": 1,
-                    "max": 50,
-                    "step": 1,
                     "parent_repeater": "field_bloques_productos_repeater"
                 },
                 {
@@ -159,10 +159,10 @@
                     "aria-label": "",
                     "type": "select",
                     "instructions": "Elige cómo mostrar los productos",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "required": false,
+                    "conditional_logic": false,
                     "wrapper": {
-                        "width": "25",
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
@@ -171,12 +171,12 @@
                         "carousel": "Carrusel (Owl Carousel)"
                     },
                     "default_value": "columnas",
-                    "allow_null": 0,
                     "multiple": 0,
-                    "ui": 1,
-                    "return_format": "value",
+                    "allow_null": 0,
+                    "ui": 0,
                     "ajax": 0,
                     "placeholder": "",
+                    "return_format": "value",
                     "create_options": 0,
                     "save_options": 0,
                     "parent_repeater": "field_bloques_productos_repeater"
@@ -187,8 +187,8 @@
                     "name": "columnas",
                     "aria-label": "",
                     "type": "select",
-                    "instructions": "Cuántas columnas por fila en pantallas grandes (solo si layout es 'Grid de Columnas')",
-                    "required": 0,
+                    "instructions": "Cuántas columnas por fila",
+                    "required": false,
                     "conditional_logic": [
                         [
                             {
@@ -199,23 +199,23 @@
                         ]
                     ],
                     "wrapper": {
-                        "width": "25",
+                        "width": "",
                         "class": "",
                         "id": ""
                     },
                     "choices": {
-                        "col-lg-2": "6 Columnas (muy pequeño)",
-                        "col-lg-3": "4 Columnas (pequeño)",
-                        "col-lg-4": "3 Columnas (mediano)",
-                        "col-lg-6": "2 Columnas (grande)"
+                        "col-lg-2": "6 Columnas",
+                        "col-lg-3": "4 Columnas",
+                        "col-lg-4": "3 Columnas",
+                        "col-lg-6": "2 Columnas"
                     },
                     "default_value": "col-lg-3",
-                    "allow_null": 0,
                     "multiple": 0,
-                    "ui": 1,
-                    "return_format": "value",
+                    "allow_null": 0,
+                    "ui": 0,
                     "ajax": 0,
                     "placeholder": "",
+                    "return_format": "value",
                     "create_options": 0,
                     "save_options": 0,
                     "parent_repeater": "field_bloques_productos_repeater"
@@ -228,7 +228,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "Bloques de Productos"
+                "value": "acf-options-bloques-de-productos"
             }
         ]
     ],
@@ -240,7 +240,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "show_in_rest": false,
+    "show_in_rest": 0,
     "display_title": "",
-    "modified": 1770769925
+    "modified": 1770771055
 }

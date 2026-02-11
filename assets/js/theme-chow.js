@@ -1,4 +1,3 @@
-
 jQuery(document).ready(function ($) {
 
     AOS.init();
@@ -83,4 +82,28 @@ jQuery(document).ready(function ($) {
     */
 
     // Code that uses jQuery's $ can follow here.
+
+    // Inicializar carrusel de bloques de productos dinámicos
+$('.productos-carousel').owlCarousel({
+    loop: true,
+    margin: 20,
+    nav: true,
+    dots: false,
+    autoplay: false,
+    responsive: {
+        0: {
+            items: 1
+        },
+        576: {
+            items: 2
+        },
+        768: {
+            items: 3
+        },
+        992: {
+            items: 4
+        }
+    }
+});
+
 })
