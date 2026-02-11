@@ -9,7 +9,7 @@
  */
 ?>
 
-<section id="productos-dinamicos" class="productos-section woocommerce">
+<section id="productos-dinamicos" class="productos-section woocommerce py-5">
     <div class="container-fluid">
         <?php
         if ( have_rows( 'bloques_productos', 'option' ) ) :

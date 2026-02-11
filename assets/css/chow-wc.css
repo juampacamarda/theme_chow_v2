@@ -338,7 +338,7 @@ h1.woocommerce-products-header__title.page-title {
     padding: 21px;
     color: var(--chow_ppal);
     font-weight: 400;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Raleway', sans-serif;
     text-transform: uppercase;
 }
 
@@ -546,6 +546,10 @@ img.attachment-woocommerce_thumbnail {
 }
 
 #productos-dinamicos.woocommerce  a.woocommerce-LoopProduct-link {
-    display: block;
+    display: flex;
     text-decoration: none;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding-bottom: 20px;
 }

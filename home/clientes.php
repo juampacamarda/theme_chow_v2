@@ -4,7 +4,7 @@
         <div class="tittle-botonera">
             <h3 class="text-center cursiva" style="font-weight:900">Nuestras Marcas</h3>
         </div>
-        <img src="https://sobolwines.com/wp-content/uploads/Logo-Don-Cristobal.png" alt="cliente" style="width:200px;height:auto;display:block;margin:20px auto;">
+        
         <?php if( have_rows('botonera_clientes') ): ?>
         <ul id="slide-clientes" class="productos owl-carousel owl-theme">
             <?php while( have_rows('botonera_clientes') ): the_row(); 
