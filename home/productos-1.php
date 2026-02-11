@@ -113,23 +113,23 @@
                             if ( $products_query->have_posts() ) :
                                 ?>
                                 <div class="row">
-                                    <ul class="products w-100">
-                                        <?php
-                                        while ( $products_query->have_posts() ) : $products_query->the_post();
-                                            global $product;
-                                            ?>
-                                            <li class="product <?php echo esc_attr( $columnas ); ?> col-md-6 col-sm-12">
+                                    <?php
+                                    while ( $products_query->have_posts() ) : $products_query->the_post();
+                                        global $product;
+                                        ?>
+                                        <div class="<?php echo esc_attr( $columnas ); ?> col-md-6 col-sm-12">
+                                            <div class="product">
                                                 <a href="<?php the_permalink(); ?>" class="woocommerce-loop-item-link">
                                                     <?php echo get_the_post_thumbnail( get_the_ID(), 'woocommerce_thumbnail', array( 'class' => 'attachment-woocommerce_thumbnail size-woocommerce_thumbnail' ) ); ?>
                                                     <h2 class="woocommerce-loop-product__title"><?php the_title(); ?></h2>
                                                     <span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
                                                 </a>
                                                 <a href="<?php the_permalink(); ?>" class="button"><?php esc_html_e( 'Ver producto', 'woocommerce' ); ?></a>
-                                            </li>
-                                            <?php
-                                        endwhile;
-                                        ?>
-                                    </ul>
+                                            </div>
+                                        </div>
+                                        <?php
+                                    endwhile;
+                                    ?>
                                 </div>
                                 <?php
                                 wp_reset_postdata();
