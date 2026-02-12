@@ -113,6 +113,84 @@ El template `home/productos-1.php` permite crear múltiples bloques de productos
 
 ## Sistema Modular de Tarjetas de Producto
 
+Las tarjetas de producto son **componentes modulares y reutilizables** que funcionan consistentemente en:
+- Bloques dinámicos del home (`home/productos-1.php`)
+- Página de tienda (`woocommerce/archive-product.php`)
+- Páginas de categoría
+- Búsqueda de productos
+- Productos relacionados
+
+### Estilos de Tarjeta Disponibles
+
+#### 1. **Tarjeta Clásica** (`card-classic.php`)
+Estilo estándar con estructura vertical:
+- Imagen del producto
+- Título
+- Precio
+- Botón "Agregar al carrito"
+- Clase CSS: `.chow-product-card-01`
+
+#### 2. **Tarjeta Hover Visual** (`card-hover_visual.php`)
+Estilo moderno con imagen a tamaño completo:
+- Imagen ocupa todo el espacio de la tarjeta
+- Al hacer hover: aparece overlay oscuro
+- Sobre el overlay: se revelan título, precio y botón
+- Efecto zoom suave en la imagen
+- Transiciones animate smoothly
+- Clase CSS: `.chow-product-card-02`
+
+### Configuración
+
+#### **Predeterminada (Global)**
+Ir a **Apariencia > Chow theme > Empresa** → "Estilo de Tarjeta Predeterminado"
+- Se aplica en toda la tienda (shop, categorías, búsqueda, productos relacionados)
+
+#### **Por Bloque (Home)**
+En **Apariencia > Chow theme > Contenido Home**, en cada bloque de productos:
+- Campo "Estilo de Tarjeta": permite sobrescribir el predeterminado
+- Opción "Usar predeterminado": hereda la configuración global
+
+### Arquitectura Técnica
+
+**Funciones Helper:**
+```php
+// Obtener el card_style correcto (local o global con fallback)
+$card_style = chow_get_card_style($card_style_override);
+
+// Obtener la clase CSS numérica
+$card_class = chow_get_card_class($card_style); // 'chow-product-card-01' o '02'
+
+// Cargar el template de tarjeta
+chow_load_product_card($product, $card_style);
+```
+
+**Templates de Tarjeta:**
+- `woocommerce/loop/card-classic.php`
+- `woocommerce/loop/card-hover_visual.php`
+
+**CSS Numerado:**
+- `.chow-product-card-01` → Estilos para tarjeta clásica
+- `.chow-product-card-02` → Estilos para tarjeta hover visual
+
+### Extensibilidad
+
+**Para agregar nuevos estilos:**
+
+1. **Crear template**: `woocommerce/loop/card-NOMBRE.php`
+2. **Agregar a ACF**: Editar campos `card_style_default` (Empresa) y `card_style` (Bloques)
+3. **Agregar función**: Actualizar array en `chow_get_card_class()` en `functions.php`
+4. **Crear CSS**: Agregar estilos `.chow-product-card-03` en `assets/css/chow-wc.css`
+
+### Cambios Técnicos Implementados
+
+- **WooCommerce Integration**: Uso de `wc_product_class()` para mantener todas las clases nativas
+- **Hooks Removidos**: Links vacíos y elementos duplicados de WooCommerce eliminados
+- **Estructura Limpia**: Sin divs anidados innecesarios
+- **Consistencia**: Mismo sistema funciona en home y store pages
+- **Mantenibilidad**: Templates modulares y funciones helper centralizadas
+
+## Sistema Modular de Tarjetas de Producto
+
 Las tarjetas de producto ahora son **componentes reutilizables** que funcionan en:
 - Bloques dinámicos del home (`home/productos-1.php`)
 - Página de tienda (`woocommerce/archive-product.php`)
@@ -197,7 +275,17 @@ chow-theme/
 
 ### v2.0 (Febrero 2026)
 
-- **🎨 Gestión de Colores**
+**🛒 Sistema Modular de Tarjetas**
+- Dos estilos de tarjeta: Classic (01) y Hover Visual (02)
+- Configuración dual: Global (Empresa) + Per-block override (Contenido Home)
+- Helper functions: `chow_get_card_style()`, `chow_get_card_class()`, `chow_load_product_card()`
+- Templates modulares: `card-classic.php`, `card-hover_visual.php`
+- WooCommerce integration: `content-product.php` personalizado
+- CSS numerado (`.chow-product-card-01/02`) para estilos específicos
+- Consistencia entre home blocks y store pages
+- Estructura HTML limpia sin nesting innecesario
+
+**🎨 Gestión de Colores**
 - Migración de colores de WordPress Customizer a SCF
 - 4 colores configurables desde "Apariencia > Chow theme > Empresa"
 - Variables CSS centralizadas: `--chow_ppal`, `--chow_secundario`, `--chow_txt`, `--chow_blanco`
