@@ -261,7 +261,13 @@ function chow_formulario_productos(){
 
 /* funcion slide shop */
 function chow_slide_shop(){
-    echo get_template_part( './home/slide' );
+    // Verificar si se debe mostrar el slider en la tienda
+    $mostrar_slider = get_field( 'mostrar_slider_tienda', 'option' );
+    
+    // Si la opción está habilitada, mostrar el slider
+    if ( $mostrar_slider ) {
+        echo get_template_part( './home/slide' );
+    }
 }
 
 add_action( 'woocommerce_before_main_content', 'chow_slide_shop', 5 );

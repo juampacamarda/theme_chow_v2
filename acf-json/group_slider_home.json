@@ -401,6 +401,26 @@
                     "placeholder": ""
                 }
             ]
+        },
+        {
+            "key": "field_mostrar_slider_tienda",
+            "label": "Mostrar slider en tienda",
+            "name": "mostrar_slider_tienda",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Mostrar u ocultar el slider en las páginas de tienda (shop y archive). La home siempre mostrará el slider.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Mostrar",
+            "ui_off_text": "Ocultar"
         }
     ],
     "location": [
