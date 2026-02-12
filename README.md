@@ -1,6 +1,12 @@
-# Chow Theme
+# Chow theme v2.0 - Quick Commerce
 
 Tema de WordPress personalizado para e-commerce, construido con Bootstrap 5 y WooCommerce.
+
+## Filosofía del Tema
+
+Este tema no compite con constructores de páginas como Elementor o Avada. Su enfoque es radicalmente distinto: se centra en la **velocidad de implementación** y en la **facilidad de gestión para el cliente final**.
+
+El objetivo es que un emprendedor o una pyme pueda tener su tienda online funcionando en cuestión de horas, no semanas, y que pueda gestionar su contenido y productos desde un panel de control simplificado, sin necesidad de conocimientos técnicos.
 
 ## Características
 
@@ -101,9 +107,63 @@ El template `home/productos-1.php` permite crear múltiples bloques de productos
 - **Destacados**: Productos marcados como destacados (taxonomía `product_visibility`)
 - **Ofertas**: Productos con precio de oferta activo
 
-**Layouts disponibles:**
+**Layouts de contenedor:**
 - **Grid**: Columnas configurables (col-lg-3, col-lg-4, etc.)
 - **Carousel**: Carrusel Owl Carousel
+
+## Sistema Modular de Tarjetas de Producto
+
+Las tarjetas de producto ahora son **componentes reutilizables** que funcionan en:
+- Bloques dinámicos del home (`home/productos-1.php`)
+- Página de tienda (`woocommerce/archive-product.php`)
+- Páginas de categoría
+- Búsqueda de productos
+- Productos relacionados
+
+**Estilos de tarjeta disponibles:**
+
+### 1. **Tarjeta Clásica** (`card-classic.php`)
+Estilo estándar con estructura vertical:
+- Imagen del producto
+- Título
+- Precio
+- Botón "Agregar al carrito"
+
+### 2. **Tarjeta Hover Visual** (`card-hover_visual.php`)
+Estilo moderno con imagen a tamaño completo:
+- Imagen ocupa todo el espacio de la tarjeta
+- Al hacer hover: aparece overlay oscuro
+- Sobre el overlay: se revelan título, precio y botón
+- Efecto zoom suave en la imagen
+- Transiciones animate smoothly
+
+**Configuración:**
+
+1. **Predeterminada (Global)**: Ir a **Apariencia > Chow theme > Empresa** y seleccionar "Estilo de Tarjeta Predeterminado"
+   - Se usa en toda la tienda (shop, categorías, búsqueda, productos relacionados)
+
+2. **Por Bloque (Home)**: En **Apariencia > Chow theme > Contenido Home**, en cada bloque de productos:
+   - Campo "Estilo de Tarjeta": permite sobrescribir el predeterminado para ese bloque específico
+   - Opción "Usar predeterminado": hereda la configuración global
+
+**Arquitectura PHP:**
+
+```php
+// Funciones helper disponibles:
+
+// 1. Obtener el card_style correcto (local o global)
+$card_style = chow_get_card_style($card_style_override);
+
+// 2. Cargar el template de tarjeta
+chow_load_product_card($product, $card_style);
+```
+
+**Para agregar nuevos estilos de tarjeta:**
+
+1. Crear archivo: `woocommerce/loop/card-NOMBRE.php`
+2. Implementar la lógica HTML/PHP en el template
+3. Agregar opción en ACF (campos `card_style_default` en "Empresa" y `card_style` en "Bloques de Productos")
+4. Agregar estilos CSS en `assets/css/chow-wc.css`
 
 ## Desarrollo
 

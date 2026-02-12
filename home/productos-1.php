@@ -24,8 +24,12 @@
                 $descripcion = isset($bloque['descripcion']) ? $bloque['descripcion'] : '';
                 $tipo = isset($bloque['tipo']) ? $bloque['tipo'] : 'ultimos';
                 $cantidad = isset($bloque['cantidad']) && $bloque['cantidad'] ? $bloque['cantidad'] : 8;
-                $layout = isset($bloque['layout']) ? $bloque['layout'] : 'grid';
+                $layout = isset($bloque['layout']) ? $bloque['layout'] : 'columnas';
                 $columnas = isset($bloque['columnas']) ? $bloque['columnas'] : 'col-lg-3';
+                $card_style_override = isset($bloque['card_style']) ? $bloque['card_style'] : null;
+                
+                // Obtener el estilo de tarjeta a usar (local o global)
+                $card_style = chow_get_card_style($card_style_override);
                 
                 // Construcción del array de argumentos para WP_Query
                 $args = array(
@@ -87,7 +91,7 @@
                         
                         <?php
                         if ( 'carousel' === $layout ) :
-                            // Layout: Carrusel Owl Carousel usando estructura WooCommerce
+                            // Layout: Carrusel Owl Carousel
                             if ( $products_query->have_posts() ) :
                                 ?>
                                 <ul class="products productos-carousel owl-carousel owl-theme">
@@ -111,18 +115,12 @@
                                             }
                                         }
                                         
-                                        // Clases del botón
-                                        $button_class = 'button product_type_' . $product->get_type() . ' add_to_cart_button ajax_add_to_cart';
+                                        // Agregar clase de tarjeta
+                                        $product_class .= ' ' . chow_get_card_class( $card_style );
+                                        
                                         ?>
                                         <li class="<?php echo esc_attr( $product_class ); ?>">
-                                            
-                                                <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                    <?php echo get_the_post_thumbnail( get_the_ID(), 'woocommerce_thumbnail', array( 'class' => 'attachment-woocommerce_thumbnail size-woocommerce_thumbnail' ) ); ?>
-                                                    <h2 class="woocommerce-loop-product__title"><?php the_title(); ?></h2>
-                                                    <span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
-                                                </a>
-                                                <a href="<?php echo esc_url( add_query_arg( 'add-to-cart', $product->get_id() ) ); ?>" data-quantity="1" class="<?php echo esc_attr( $button_class ); ?>" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>" aria-label="Add to cart: &quot;<?php the_title(); ?>&quot;" rel="nofollow"><?php esc_html_e( 'Agregar al carrito', 'woocommerce' ); ?></a>
-                                            
+                                            <?php chow_load_product_card( $product, $card_style ); ?>
                                         </li>
                                         <?php
                                     endwhile;
@@ -138,7 +136,7 @@
                             ?>
                             <?php
                         else :
-                            // Layout: Grid de columnas (por defecto) usando estructura WooCommerce
+                            // Layout: Grid de columnas (por defecto)
                             if ( $products_query->have_posts() ) :
                                 ?>
                                 <div class="products d-flex flex-wrap">
@@ -164,17 +162,13 @@
                                         
                                         $product_class .= ' ' . esc_attr( $columnas ) . ' col-md-6 col-sm-6';
                                         
-                                        // Clases del botón
-                                        $button_class = 'button product_type_' . $product->get_type() . ' add_to_cart_button ajax_add_to_cart';
+                                        // Agregar clase de tarjeta
+                                        $product_class .= ' ' . chow_get_card_class( $card_style );
+                                        
                                         ?>
                                         <div class="<?php echo esc_attr( $product_class ); ?>">
                                             <div class="wrap">
-                                                <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                                                    <?php echo get_the_post_thumbnail( get_the_ID(), 'woocommerce_thumbnail', array( 'class' => 'attachment-woocommerce_thumbnail size-woocommerce_thumbnail' ) ); ?>
-                                                    <h2 class="woocommerce-loop-product__title"><?php the_title(); ?></h2>
-                                                    <span class="price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
-                                                </a>
-                                                <a href="<?php echo esc_url( add_query_arg( 'add-to-cart', $product->get_id() ) ); ?>" data-quantity="1" class="<?php echo esc_attr( $button_class ); ?>" data-product_id="<?php echo esc_attr( $product->get_id() ); ?>" data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>" aria-label="Add to cart: &quot;<?php the_title(); ?>&quot;" rel="nofollow"><?php esc_html_e( 'Agregar al carrito', 'woocommerce' ); ?></a>
+                                                <?php chow_load_product_card( $product, $card_style ); ?>
                                             </div>
                                         </div>
                                         <?php

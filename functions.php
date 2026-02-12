@@ -330,3 +330,107 @@ function chow_bs5_dropdown_data_attribute( $atts, $item, $args ) {
     }
     return $atts;
 }
+
+/**
+ * Obtener el estilo de tarjeta de producto
+ * Utiliza el valor del bloque si existe, y si no, usa el predeterminado global
+ * 
+ * @param mixed $card_style_override Valor del campo card_style del bloque o null
+ * @return string El estilo de tarjeta a usar (classic, hover_visual, etc)
+ */
+function chow_get_card_style( $card_style_override = null ) {
+    // Si hay un valor explícito (no vacío), usarlo
+    if ( ! empty( $card_style_override ) ) {
+        return $card_style_override;
+    }
+    
+    // Si no, obtener el predeterminado global de la tienda
+    $default_style = get_field( 'card_style_default', 'option' );
+    
+    // Si no hay nada configurado, retornar 'classic' como fallback
+    return ! empty( $default_style ) ? $default_style : 'classic';
+}
+
+/**
+ * Obtener la clase CSS de la tarjeta de producto
+ * Retorna una clase numérica para identificar el tipo de tarjeta
+ * 
+ * @param string $card_style El estilo de tarjeta (classic, hover_visual, etc)
+ * @return string La clase CSS (chow-product-card-01, chow-product-card-02, etc)
+ */
+function chow_get_card_class( $card_style = 'classic' ) {
+    $card_classes = array(
+        'classic' => 'chow-product-card-01',
+        'hover_visual' => 'chow-product-card-02',
+    );
+    
+    return isset( $card_classes[$card_style] ) ? $card_classes[$card_style] : 'chow-product-card-01';
+}
+
+/**
+ * Cargar el template de tarjeta de producto correcto
+ * Usa get_template_part para permitir sobrescritura en child themes
+ * 
+ * @param WC_Product $product El objeto producto de WooCommerce
+ * @param string $card_style El estilo de tarjeta a cargar
+ */
+function chow_load_product_card( $product, $card_style = 'classic' ) {
+    // Validar que $product sea un objeto WC_Product
+    if ( ! is_a( $product, 'WC_Product' ) ) {
+        return;
+    }
+    
+    // Establecer el producto global para que esté disponible en el template
+    global $product;
+    
+    // Cargar el template del estilo de tarjeta especificado
+    // Fallback a 'classic' si el template no existe
+    get_template_part( 'woocommerce/loop/card', $card_style );
+}
+
+/**
+ * Remover hooks por defecto de WooCommerce que no necesitamos en nuestro diseño personalizado
+ */
+remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open' );
+remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_product_link_close' );
+remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail' );
+remove_action( 'woocommerce_shop_loop_item_title', 'woocommerce_template_loop_product_title' );
+remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5 );
+remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10 );
+remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
+
+/**
+ * Agregar clase de estilo de tarjeta a las clases del producto
+ */
+add_filter( 'woocommerce_post_class', function( $classes, $product ) {
+    if ( is_a( $product, 'WC_Product' ) ) {
+        $card_style = chow_get_card_style();
+        $card_class = chow_get_card_class( $card_style );
+        $classes[] = $card_class;
+    }
+    return $classes;
+}, 10, 2 );
+
+/**
+ * Abrir el <li> con todas las clases de WooCommerce + la nuestra
+ */
+add_action( 'woocommerce_before_shop_loop_item', function() {
+    global $product;
+    
+    // Obtener todas las clases que WooCommerce añadiría
+    $classes = get_post_class( '', get_the_ID() );
+    
+    // Agregar nuestra clase de estilo de tarjeta
+    $card_style = chow_get_card_style();
+    $card_class = chow_get_card_class( $card_style );
+    $classes[] = $card_class;
+    
+    echo '<li class="' . esc_attr( implode( ' ', $classes ) ) . '">';
+}, 10 );
+
+/**
+ * Cerrar el </li>
+ */
+add_action( 'woocommerce_after_shop_loop_item', function() {
+    echo '</li>';
+}, 100 );

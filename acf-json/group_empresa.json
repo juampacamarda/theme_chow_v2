@@ -329,6 +329,34 @@
             "min": "",
             "max": "",
             "step": ""
+        },
+        {
+            "key": "field_card_style_default",
+            "label": "Estilo de Tarjeta Predeterminado",
+            "name": "card_style_default",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Estilo de tarjeta de producto predeterminado para toda la tienda (puede sobrescribirse en bloques individuales)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "classic": "Clásica",
+                "hover_visual": "Hover Visual"
+            },
+            "default_value": "classic",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "return_format": "value",
+            "create_options": 0,
+            "save_options": 0
         }
         
     ],

@@ -500,6 +500,36 @@
                     "create_options": 0,
                     "save_options": 0,
                     "parent_repeater": "field_bloques_productos_repeater"
+                },
+                {
+                    "key": "field_bloques_card_style",
+                    "label": "Estilo de Tarjeta",
+                    "name": "card_style",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Estilo de tarjeta para este bloque (vacío = usa el predeterminado de la tienda)",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "": "Usar predeterminado",
+                        "classic": "Clásica",
+                        "hover_visual": "Hover Visual"
+                    },
+                    "default_value": "",
+                    "multiple": 0,
+                    "allow_null": 1,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "return_format": "value",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_bloques_productos_repeater"
                 }
             ]
         }
