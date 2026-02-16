@@ -219,35 +219,30 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'slug'    => 'preguntas-frecuentes',
                     'content' => '<p>Encuentra respuestas a las preguntas más comunes de nuestros clientes.</p>',
                     'template' => 'flexible-page',
-                    'flexible_content' => array(
+                    'collapses' => array(
                         array(
-                            'acf_fc_layout' => 'collapse_accordion',
-                            'items' => array(
-                                array(
-                                    'title'   => '¿Cuáles son los costos de envío?',
-                                    'content' => 'El envío es GRATIS para compras superiores a $500. Para órdenes menores, el costo es de $50-150 según tu localidad. Los envíos se realizan en 3-5 días hábiles.',
-                                ),
-                                array(
-                                    'title'   => '¿Puedo devolver un libro?',
-                                    'content' => 'Sí, tenemos una política de devolución de 30 días sin preguntas. El libro debe estar en perfectas condiciones y con su empaque original. Los costos de envío de devolución corren por cuenta del cliente.',
-                                ),
-                                array(
-                                    'title'   => '¿Ofrecen envío internacional?',
-                                    'content' => 'Actualmente solo enviamos dentro del país. Estamos trabajando en ampliar nuestras opciones de envío internacional. Contáctanos si tienes una solicitud especial.',
-                                ),
-                                array(
-                                    'title'   => '¿Tienen libros en otros idiomas?',
-                                    'content' => 'Sí, contamos con una sección de libros en inglés, portugués y francés. Puedes filtrar por idioma en nuestro catálogo. También aceptamos pedidos especiales.',
-                                ),
-                                array(
-                                    'title'   => '¿Cómo puedo contactarlos?',
-                                    'content' => 'Puedes escribirnos a través de nuestro formulario de contacto, por email a info@paginasdetinta.com, o llamarnos al +54 (11) 4567-8900. Respondemos en máximo 24 horas.',
-                                ),
-                                array(
-                                    'title'   => '¿Tienen programas de fidelización?',
-                                    'content' => 'Sí, al suscribirse a nuestro newsletter reciben descuentos exclusivos, promociones anticipadas y acceso a eventos especiales. Además, por cada compra acumulan puntos canjeables.',
-                                ),
-                            ),
+                            'titulo_collapse'   => '¿Cuáles son los costos de envío?',
+                            'contenido_collapse' => 'El envío es GRATIS para compras superiores a $500. Para órdenes menores, el costo es de $50-150 según tu localidad. Los envíos se realizan en 3-5 días hábiles.',
+                        ),
+                        array(
+                            'titulo_collapse'   => '¿Puedo devolver un libro?',
+                            'contenido_collapse' => 'Sí, tenemos una política de devolución de 30 días sin preguntas. El libro debe estar en perfectas condiciones y con su empaque original. Los costos de envío de devolución corren por cuenta del cliente.',
+                        ),
+                        array(
+                            'titulo_collapse'   => '¿Ofrecen envío internacional?',
+                            'contenido_collapse' => 'Actualmente solo enviamos dentro del país. Estamos trabajando en ampliar nuestras opciones de envío internacional. Contáctanos si tienes una solicitud especial.',
+                        ),
+                        array(
+                            'titulo_collapse'   => '¿Tienen libros en otros idiomas?',
+                            'contenido_collapse' => 'Sí, contamos con una sección de libros en inglés, portugués y francés. Puedes filtrar por idioma en nuestro catálogo. También aceptamos pedidos especiales.',
+                        ),
+                        array(
+                            'titulo_collapse'   => '¿Cómo puedo contactarlos?',
+                            'contenido_collapse' => 'Puedes escribirnos a través de nuestro formulario de contacto, por email a info@paginasdetinta.com, o llamarnos al +54 (11) 4567-8900. Respondemos en máximo 24 horas.',
+                        ),
+                        array(
+                            'titulo_collapse'   => '¿Tienen programas de fidelización?',
+                            'contenido_collapse' => 'Sí, al suscribirse a nuestro newsletter reciben descuentos exclusivos, promociones anticipadas y acceso a eventos especiales. Además, por cada compra acumulan puntos canjeables.',
                         ),
                     ),
                 ),
@@ -290,19 +285,19 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                 'slider_1' => array(
                     'imagen' => 'libreria-slide01.png',
                     'texto' => 'Descubre Nuevos Mundos',
-                    'link' => '/tienda',
+                    'link' => '/shop',
                 ),
                 
                 'slider_2' => array(
                     'imagen' => 'libreria-slide02.png',
                     'texto' => 'Literatura Premium',
-                    'link' => '/tienda',
+                    'link' => '/shop',
                 ),
                 
                 'slider_3' => array(
                     'imagen' => 'libreria-slide03.png',
                     'texto' => 'Ediciones Limitadas',
-                    'link' => '/tienda',
+                    'link' => '/shop',
                 ),
                 
                 'slider_4' => array(
@@ -399,14 +394,6 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                 ),
             ),
             
-            // Theme Options
-            'theme_options' => array(
-                'color_principal'  => '#2c3e50',
-                'color_secundario' => '#fdf5e6',
-                'color_texto'      => '#5f5f5f',
-                'color_fondo'      => '#ffffff',
-            ),
-            
             // Custom CSS
             'custom_css' => '/* Librería Demo - Estilos personalizados */
 #clientes-botonera { 
@@ -418,7 +405,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                 'name'  => 'Menú Librería',
                 'items' => array(
                     array( 'title' => 'Inicio', 'url' => '/', 'parent' => null ),
-                    array( 'title' => 'Tienda', 'url' => '/tienda', 'parent' => null ),
+                    array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
                     array( 'title' => 'Sobre Nosotros', 'url' => '/sobre-nosotros', 'parent' => null ),
                     array( 'title' => 'Preguntas Frecuentes', 'url' => '/preguntas-frecuentes', 'parent' => null ),
                     array( 'title' => 'Contacto', 'url' => '/contacto', 'parent' => null ),

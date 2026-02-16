@@ -592,25 +592,29 @@ function chow_create_pages( $demo, $attachment_ids, $form_ids ) {
         
         $page_id = wp_insert_post( $page_post );
         
-        if ( ! is_wp_error( $page_id ) ) {
-            // Set page template if specified
-            if ( isset( $page_data['template'] ) ) {
-                if ( 'flexible-page' === $page_data['template'] ) {
-                    update_post_meta( $page_id, '_wp_page_template', 'flexible-page.php' );
-                } elseif ( 'index-plantilla' === $page_data['template'] ) {
-                    update_post_meta( $page_id, '_wp_page_template', 'indexplantilla-page.php' );
-                }
-            }
-            
-            // Add flexible content for FAQ page
-            if ( isset( $page_data['flexible_content'] ) && function_exists( 'have_rows' ) ) {
-                // Save flexible content using SCF
-                update_field( 'flexible_content', $page_data['flexible_content'], $page_id );
-            }
-            
-            // Mark as demo content
-            update_post_meta( $page_id, '_demo_id', $demo_id );
-        }
+         if ( ! is_wp_error( $page_id ) ) {
+             // Set page template if specified
+             if ( isset( $page_data['template'] ) ) {
+                 if ( 'flexible-page' === $page_data['template'] ) {
+                     update_post_meta( $page_id, '_wp_page_template', 'flexible-page.php' );
+                     
+                     // Para páginas flexible, guardar contenido en ACF field (no en post_content)
+                     if ( isset( $page_data['content'] ) ) {
+                         update_field( 'texto_contenido', $page_data['content'], $page_id );
+                     }
+                     
+                     // Guardar collapses si existen
+                     if ( isset( $page_data['collapses'] ) ) {
+                         update_field( 'collapses', $page_data['collapses'], $page_id );
+                     }
+                 } elseif ( 'index-plantilla' === $page_data['template'] ) {
+                     update_post_meta( $page_id, '_wp_page_template', 'indexplantilla-page.php' );
+                 }
+             }
+             
+             // Mark as demo content
+             update_post_meta( $page_id, '_demo_id', $demo_id );
+         }
     }
     
     return true;
@@ -652,15 +656,8 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
         // Save as GROUP field
         update_field( 'empresa', $company_data, 'option' );
     }
-    
-     // Update colors
-     if ( isset( $demo['theme_options'] ) && function_exists( 'update_field' ) ) {
-         foreach ( $demo['theme_options'] as $field_name => $field_value ) {
-             update_field( $field_name, $field_value, 'option' );
-         }
-     }
      
-     // Update card_style (product card design for this demo)
+      // Update card_style (product card design for this demo)
      if ( isset( $demo['card_style'] ) && function_exists( 'update_field' ) ) {
          update_field( 'card_style_default', $demo['card_style'], 'option' );
      }
@@ -751,13 +748,13 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
              // Find the newsletter form ID
              $news_form_id = isset( $form_ids[ $newsletter['formulario_news'] ] ) ? $form_ids[ $newsletter['formulario_news'] ] : 0;
              
-             // Save as GROUP field
-             $newsletter_data = array(
-                 'titulo' => $newsletter['titulo'],
-                 'descripcion' => $newsletter['descripcion'],
-                 'news_bg' => $news_bg_id,
-                 'formulario_news' => $news_form_id,
-             );
+              // Save as GROUP field
+              $newsletter_data = array(
+                  'titulo' => $newsletter['titulo'],
+                  'descripcion' => $newsletter['descripcion'],
+                  'news_bg' => $news_bg_id,
+                  'formulario_news' => '[contact-form-7 id="' . $news_form_id . '" title="' . $newsletter['formulario_news'] . '"]',
+              );
              
              update_field( 'newsletter', $newsletter_data, 'option' );
          }
