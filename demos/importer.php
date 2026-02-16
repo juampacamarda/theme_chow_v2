@@ -1338,6 +1338,47 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
 }
 
 /**
+ * Ensure WooCommerce Shop page has a proper title
+ * Called before menu creation to prevent "(no label)" menu items
+ */
+function chow_ensure_shop_page_title() {
+    if ( ! function_exists( 'wc_get_page_id' ) ) {
+        return false;
+    }
+    
+    $shop_page_id = wc_get_page_id( 'shop' );
+    
+    if ( ! $shop_page_id || $shop_page_id <= 0 ) {
+        chow_importer_log( "  ⚠ Shop page ID no válido", 'WARNING' );
+        return false;
+    }
+    
+    $shop_page = get_post( $shop_page_id );
+    
+    if ( ! $shop_page ) {
+        chow_importer_log( "  ⚠ Shop page no existe (ID: {$shop_page_id})", 'WARNING' );
+        return false;
+    }
+    
+    // Check if title is empty or just whitespace
+    if ( empty( trim( $shop_page->post_title ) ) ) {
+        chow_importer_log( "  📝 Shop page sin título, asignando 'Tienda'" );
+        
+        wp_update_post( array(
+            'ID' => $shop_page_id,
+            'post_title' => 'Tienda',
+            'post_status' => 'publish'
+        ));
+        
+        chow_importer_log( "  ✓ Título 'Tienda' asignado a Shop page (ID: {$shop_page_id})" );
+        return true;
+    }
+    
+    chow_importer_log( "  ✓ Shop page ya tiene título: '{$shop_page->post_title}' (ID: {$shop_page_id})" );
+    return true;
+}
+
+/**
  * Create or update navigation menu
  */
 function chow_update_menu( $demo ) {
@@ -1346,6 +1387,9 @@ function chow_update_menu( $demo ) {
         chow_importer_log( "⚠ Configuración de menú no encontrada, omitiendo", 'WARNING' );
         return true;
     }
+    
+    // Ensure Shop page has a title before creating menu
+    chow_ensure_shop_page_title();
     
     $menu_name = $demo['menu']['name'];
     $demo_id = isset( $demo['id'] ) ? $demo['id'] : '';
@@ -1392,6 +1436,14 @@ function chow_update_menu( $demo ) {
                 chow_importer_log( "    🔍 Debug: wc_get_page_id('shop') retornó: " . var_export( $shop_page_id, true ) );
                 
                 if ( $shop_page_id && $shop_page_id > 0 ) {
+                    // Verificar que la página existe y tiene título
+                    $shop_page_post = get_post( $shop_page_id );
+                    if ( $shop_page_post && ! empty( $shop_page_post->post_title ) ) {
+                        chow_importer_log( "    📄 Shop page encontrada: '{$shop_page_post->post_title}' (ID: {$shop_page_id}, Status: {$shop_page_post->post_status})" );
+                    } else {
+                        chow_importer_log( "    ⚠ Shop page ID {$shop_page_id} no tiene título o no existe", 'WARNING' );
+                    }
+                    
                     // Use WooCommerce Shop page as menu item object
                     $menu_item_type = 'post_type';
                     $menu_item_object = 'page';
@@ -1463,6 +1515,7 @@ function chow_update_menu( $demo ) {
         } else {
             $item_args['menu-item-object-id'] = $menu_item_object_id;
             $item_args['menu-item-object'] = $menu_item_object;
+            $item_args['menu-item-url'] = $item_url; // Añadir URL también para post_type
         }
         
         // Create new menu item
