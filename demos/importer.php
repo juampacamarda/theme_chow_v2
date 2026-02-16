@@ -1506,13 +1506,8 @@ function chow_update_menu( $demo ) {
             'menu-item-status'     => 'publish',
             'menu-item-type'       => $menu_item_type,
             'menu-item-parent-id'  => $item_data['parent'] ?? 0,
+            'menu-item-title'      => $item_data['title'], // SIEMPRE incluir el título para evitar "(no label)"
         );
-        
-        // Para custom links, usar el título del config
-        // Para post_type, WordPress obtiene el título del post automáticamente
-        if ( 'custom' === $menu_item_type ) {
-            $item_args['menu-item-title'] = $item_data['title'];
-        }
         
         // Add type-specific attributes
         if ( 'custom' === $menu_item_type ) {
