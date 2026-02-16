@@ -144,11 +144,58 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
 <label>Tu correo electrónico
     [email* email autocomplete:email] </label>
 
-<label>¿Cuándo necesitas tu pedido?
-    [date* fecha] </label>
+<label>Asunto
+    [text* asunto] </label>
 
-<label>Tu mensaje
+<label>Tu mensaje (opcional)
     [textarea mensaje] </label>
+
+[submit "Enviar"]',
+                ),
+                array(
+                    'name'     => 'Newsletter Pastelería',
+                    'form_tag' => '<div id="news-form"><div class="row">
+<div class="col-xs-12 col-lg-9"><label> [email* email placeholder"Ingresá tu e-mail"] </label></div>
+<div class="col-xs-12 col-lg-3">[submit "ENVIAR"]</div>
+</div></div>',
+                ),
+                array(
+                    'name'     => 'Consulta Pedidos Pastelería',
+                    'form_tag' => '<div class="prod-form row d-flex justify-content-center">
+
+<div class="col-12 col-md-6">
+<label>Nombre (obligatorio)
+    [text* nombre] </label>
+</div>
+
+<div class="col-12 col-md-6">
+<label>Correo electrónico (obligatorio)
+    [email* email] </label>
+</div>
+
+</div>
+
+<div class="prod-form row d-flex justify-content-center">
+<div class="col-12 col-md-6">
+<label>Localidad
+    [text localidad] </label>
+</div>
+
+<div class="col-12 col-md-6">
+<label>Teléfono
+    [text telefono] </label>
+</div>
+
+</div>
+
+<div class="prod-form row d-flex justify-content-center">
+
+<div class="col-12 col-md-12">
+<label>Tu consulta
+    [textarea mensaje] </label>
+</div>
+
+</div>
 
 [submit "Enviar Consulta"]',
                 ),
