@@ -463,6 +463,8 @@ function chow_clear_demo_content( $demo_id ) {
     // Get demo config to know which posts to delete
     if ( 'libreria' === $demo_id ) {
         $demo = chow_get_demo_libreria();
+    } elseif ( 'pasteleria' === $demo_id ) {
+        $demo = chow_get_demo_pasteleria();
     } else {
         return;
     }
