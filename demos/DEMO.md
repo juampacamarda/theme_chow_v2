@@ -2,11 +2,12 @@
 
 ## Tabla de Contenidos
 1. [Introducción](#introducción)
-2. [Estructura General de un Demo](#estructura-general-de-un-demo)
-3. [Problemas Comunes y Soluciones](#problemas-comunes-y-soluciones)
-4. [Referencia de Campos ACF](#referencia-de-campos-acf)
-5. [Checklist Pre-Importación](#checklist-pre-importación)
-6. [Ejemplos de Código Correcto](#ejemplos-de-código-correcto)
+2. [Restaurar Plantilla (Función Rápida de Testing)](#restaurar-plantilla)
+3. [Estructura General de un Demo](#estructura-general-de-un-demo)
+4. [Problemas Comunes y Soluciones](#problemas-comunes-y-soluciones)
+5. [Referencia de Campos ACF](#referencia-de-campos-acf)
+6. [Checklist Pre-Importación](#checklist-pre-importación)
+7. [Ejemplos de Código Correcto](#ejemplos-de-código-correcto)
 
 ---
 
@@ -18,6 +19,49 @@ Esta guía documenta cómo crear demos correctamente para evitar errores comunes
 - `demos/demo-[nombre].php` - Definición del demo (datos)
 - `demos/importer.php` - Lógica de importación
 - `acf-json/group_*.json` - Esquema de campos ACF
+
+---
+
+## Restaurar Plantilla
+
+### Propósito
+
+La función "Restaurar Plantilla" permite resetear rápidamente el demo a su estado original. Es útil para:
+
+- **Testing rápido**: Probar cambios en demo sin afectar otros datos
+- **Validación de cambios**: Verificar que todos los cambios del demo funcionan correctamente
+- **Desarrollo iterativo**: Resetear fácilmente entre iteraciones de testing
+
+### Cómo Funciona
+
+1. Ve a **Chow Theme → Importar Demo** en el admin
+2. Busca el demo activo (mostrará badge "Activo")
+3. Haz clic en el botón **"Restaurar Plantilla"**
+4. Confirma la advertencia sobre eliminación de contenido
+5. El proceso:
+   - ✅ Elimina TODO el contenido actual (productos, páginas, etc.)
+   - ✅ Reimporta la plantilla original del demo
+   - ✅ Restaura todas las configuraciones
+
+### Advertencias
+
+⚠️ **Este proceso es DESTRUCTIVO**:
+- Se eliminarán TODOS los productos actuales
+- Se eliminarán TODAS las páginas personalizadas
+- Se restablecerá la configuración a valores del demo
+- **No se puede deshacer** - asegúrate de tener backup si necesitas preservar algo
+
+### Caso de Uso Real
+
+```
+Flujo de desarrollo:
+1. Haces cambios en demo-libreria.php
+2. Haces commit de cambios
+3. Usas "Restaurar Plantilla" en admin
+4. Revisas que TODO se importa correctamente
+5. Si hay errores, editas demo-libreria.php
+6. Vuelves a paso 2 (hasta que todo sea perfecto)
+```
 
 ---
 
