@@ -758,6 +758,30 @@ function chow_create_pages( $demo, $attachment_ids, $form_ids ) {
                            update_field( 'collapses', $page_data['collapses'], $page_id );
                        }
                        
+                       // Save header fields (imagen_portada with attachment ID conversion)
+                       if ( isset( $page_data['imagen_portada'] ) && ! empty( $page_data['imagen_portada'] ) ) {
+                           // Activate header section
+                           update_field( 'activo_encabezado', true, $page_id );
+                           
+                           // Convert filename to attachment ID
+                           $header_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $page_data['imagen_portada'] );
+                           $header_image_id = isset( $attachment_ids[ $header_key ] ) ? $attachment_ids[ $header_key ] : 0;
+                           
+                           // Store the attachment ID - ACF will convert to URL based on return_format
+                           update_field( 'imagen_portada', $header_image_id, $page_id );
+                       }
+                       
+                       // Save header metadata if present
+                       if ( isset( $page_data['pre_txt'] ) ) {
+                           update_field( 'pre_txt', $page_data['pre_txt'], $page_id );
+                       }
+                       if ( isset( $page_data['titulo'] ) ) {
+                           update_field( 'titulo', $page_data['titulo'], $page_id );
+                       }
+                       if ( isset( $page_data['header_bajada'] ) ) {
+                           update_field( 'header_bajada', $page_data['header_bajada'], $page_id );
+                       }
+                       
                        // Save form section if present
                        if ( isset( $page_data['codigo_form'] ) && ! empty( $page_data['codigo_form'] ) ) {
                            // Find the form ID by name

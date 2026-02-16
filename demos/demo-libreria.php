@@ -219,6 +219,11 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'slug'    => 'preguntas-frecuentes',
                     'content' => '<p>Encuentra respuestas a las preguntas más comunes de nuestros clientes.</p>',
                     'template' => 'flexible-page',
+                    'imagen_portada' => 'libreria-bannerflexible.png',
+                    'activo_encabezado' => true,
+                    'pre_txt' => 'DUDAS',
+                    'titulo' => 'Preguntas Frecuentes',
+                    'header_bajada' => 'Encuentre respuestas rápidas a sus preguntas más comunes',
                     'collapses' => array(
                         array(
                             'titulo_collapse'   => '¿Cuáles son los costos de envío?',
@@ -260,6 +265,11 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
 <li><strong>Dirección:</strong> Av. Corrientes 1234, Buenos Aires, Argentina</li>
 </ul>',
                     'template' => 'flexible-page',
+                    'imagen_portada' => 'libreria-bannerflexible.png',
+                    'activo_encabezado' => true,
+                    'pre_txt' => 'CONTACTO',
+                    'titulo' => 'Ponte en Contacto',
+                    'header_bajada' => 'Estamos aquí para ayudarte. Contáctanos ahora',
                     'codigo_form' => 'Contacto Librería',
                 ),
             ),
