@@ -89,3 +89,28 @@ Este archivo contiene todos los prompts diseñados para ser usados con un genera
 
 - **Banner para Página Flexible (relación de aspecto 21:9):**
   `Foto cenital de una mesa de pastelería: tazón con masa, rodillo de madera, cortantes para galletas, huevos, harina y utensilios cuidadosamente dispuestos, con algunos cupcakes terminados en un lado. Fondo en tonos claros. --ar 21:9 --style raw`
+
+### Lista de imágenes necesarias (nombres sugeridos)
+
+Para facilitar la generación y el mapeo en el demo, aquí está la lista de los archivos de imagen que necesitamos y el prompt asociado breve. Guarda las imágenes en `demos/pasteleria/images/`.
+
+- `pasteleria-hero-01.png` — Hero principal (16:9)
+  `Foto panorámica del interior de una pastelería artesanal, vitrinas con tortas y luz cálida de la mañana. --ar 16:9 --style raw`
+- `pasteleria-hero-02.png` — Hero secundario (16:9)
+  `Foto horizontal de una torta de varios pisos decorada con crema y frutos rojos sobre una mesa de madera clara. Luz natural suave. --ar 16:9 --style raw`
+- `pasteleria-producto-01.png` .. `pasteleria-producto-08.png` — Productos (3:4)
+  `Foto de estudio profesional de un solo producto de pastelería artesanal sobre fondo crema o blanco: tortas, tartas de frutas, cupcakes, macarons, cookies decoradas. --ar 3:4 --style raw`
+- `pasteleria-tentacion-01.png` .. `pasteleria-tentacion-06.png` — Galería "Tentaciones" (3:4)
+  `Foto estudio de alta calidad de una torta artesanal elegante sobre fondo crema claro. Enfocar textura del glaseado y detalles de decoración. --ar 3:4 --style raw`
+- `pasteleria-box-01.png` .. `pasteleria-box-03.png` — Packaging / Boxes (4:3)
+  `Foto de un box de regalo para pastelería, caja kraft con cinta y sticker del logo "Harina & Miel", sobre mesa de madera clara. --ar 4:3 --style raw`
+- `pasteleria-detail-01.png` .. `pasteleria-detail-02.png` — Detalles / macro (4:3)
+  `Primer plano macro de glaseado cremoso con texturas y sprinkles, fondo bokeh. --ar 4:3 --style raw`
+- `pasteleria-logo-primary.png` — Logo principal (vector / alta res)
+  `Logotipo delicado y moderno para una pastelería artesanal llamada "Harina & Miel". Incluir un ícono simple de torta o cupcake con glaseado, tipografía script elegante combinada con sans-serif limpia. Colores: crema, rosa pálido y dorado suave. --style raw`
+- `pasteleria-logo-sticker.png` — Logo circular para sticker
+  `Versión de logo circular para sticker: icono cupcake estilizado + "Harina & Miel" en script moderno, paleta crema/rosa/dorado. --style raw`
+- `pasteleria-social-banner.png` — Banner para redes (21:9)
+  `Banner para redes: collage de cupcakes, macarons y una taza de té, tonos pastel y espacio para overlay de texto. --ar 21:9 --style raw`
+
+Usa variaciones de estos prompts para generar las 6/8 imágenes distintas que necesites (cambiar ingredientes, ángulos y colores). Incluir `--seed` si necesitás reproducibilidad.
