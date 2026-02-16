@@ -842,6 +842,7 @@ function chow_create_products( $demo, $attachment_ids, $category_ids ) {
         if ( $existing_id ) {
             chow_importer_log( "    - Producto ya existe (ID: $existing_id)" );
             $success_count++;
+            $products_created[] = $existing_id;
             continue;
         }
         
