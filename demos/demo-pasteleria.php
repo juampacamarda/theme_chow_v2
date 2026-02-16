@@ -455,7 +455,15 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
 }
 
 .carousel-item > div {
-    height: 650px !important;
+    height: 500px !important;
+}
+
+.redes li a{
+    color: var(--chow_txt) !important;
+}
+
+footer{
+    background-color: var(--chow_txt) !important;
 }
 CSS,
             
