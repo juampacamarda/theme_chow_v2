@@ -52,14 +52,85 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                 array(
                     'title'   => 'Inicio',
                     'slug'    => 'home',
-                    'content' => '<p>Bienvenido a Harina & Miel, tu pastelería de confianza desde 1998.</p>',
+                    'content' => '<p>Bienvenido a <strong>Harina & Miel</strong>, tu pastelería artesanal de confianza.</p>',
                     'template' => 'home',
+                ),
+                array(
+                    'title'   => 'Sobre Nosotros',
+                    'slug'    => 'sobre-nosotros',
+                    'content' => '<p>Desde 1998, <strong>Harina & Miel</strong> se dedica a crear las mejores delicias de repostería con ingredientes premium y recetas tradicionales.</p>
+<p><strong>Nuestra Misión:</strong> Llevar alegría a cada celebración con productos artesanales de calidad superior.</p>
+<p><strong>¿Por qué elegirnos?</strong></p>
+<ul>
+<li>Ingredientes frescos y de calidad premium</li>
+<li>Recetas tradicionales y creaciones innovadoras</li>
+<li>Atención personalizada para eventos especiales</li>
+<li>Entregas rápidas y seguras en tu domicilio</li>
+<li>Asesoramiento personalizado en tus pedidos</li>
+</ul>
+<p>Cada producto es hecho con amor y dedicación para que disfrutes de momentos dulces inolvidables.</p>',
+                    'template' => 'flexible-page',
+                    'imagen_portada' => 'pasteleria-hero-01.png',
+                    'activo_encabezado' => true,
+                    'pre_txt' => 'NUESTRA HISTORIA',
+                    'titulo' => 'Sobre Nosotros',
+                    'header_bajada' => 'Más de 25 años de excelencia en repostería artesanal',
+                ),
+                array(
+                    'title'   => 'Preguntas Frecuentes',
+                    'slug'    => 'preguntas-frecuentes',
+                    'content' => '<p>Resolvemos tus dudas sobre nuestros productos, pedidos y entregas.</p>',
+                    'template' => 'flexible-page',
+                    'imagen_portada' => 'pasteleria-hero-02.png',
+                    'activo_encabezado' => true,
+                    'pre_txt' => 'DUDAS',
+                    'titulo' => 'Preguntas Frecuentes',
+                    'header_bajada' => 'Encuentra respuestas a tus preguntas más comunes',
+                    'collapses' => array(
+                        array(
+                            'titulo_collapse'   => '¿Cuáles son los costos de envío?',
+                            'contenido_collapse' => 'El envío es GRATIS para pedidos superiores a $250. Para órdenes menores, el costo es de $40-80 según tu zona. Los envíos se realizan en 24-48 horas hábiles.',
+                        ),
+                        array(
+                            'titulo_collapse'   => '¿Puedo hacer un pedido personalizado?',
+                            'contenido_collapse' => 'Sí, hazlo con gusto. Contáctanos con al menos 48 horas de anticipación para tortas decoradas, sin gluten o con requerimientos especiales. Te asesoraremos sin costo adicional.',
+                        ),
+                        array(
+                            'titulo_collapse'   => '¿Tienen opciones sin gluten?',
+                            'contenido_collapse' => 'Contamos con una línea de productos sin gluten preparados con dedicación. Consulta disponibilidad y haz tu pedido con 48 horas de anticipación.',
+                        ),
+                        array(
+                            'titulo_collapse'   => '¿Cuál es la política de devoluciones?',
+                            'contenido_collapse' => 'Garantizamos la calidad de nuestros productos. Si tienes algún problema, contáctanos dentro de 24 horas y lo resolveremos a tu satisfacción.',
+                        ),
+                        array(
+                            'titulo_collapse'   => '¿Ofrecen servicios para catering?',
+                            'contenido_collapse' => 'Sí, realizamos catering para eventos. Contáctanos para presupuestos y opciones de menú personalizados según tu evento.',
+                        ),
+                        array(
+                            'titulo_collapse'   => '¿Cómo puedo contactarlos?',
+                            'contenido_collapse' => 'Puedes escribirnos a través de nuestro formulario de contacto, por email a info@harinaymel.com, o llamarnos al +54 (11) 4567-8900. Estamos disponibles de lunes a viernes, 8:00 - 19:00 hs.',
+                        ),
+                    ),
                 ),
                 array(
                     'title'   => 'Contacto',
                     'slug'    => 'contacto',
-                    'content' => '<p>¿Tienes una ocasión especial? Contáctanos para hacer un pedido personalizado.</p>',
+                    'content' => '<p>¿Tienes una ocasión especial? ¿Preguntas sobre nuestros productos? Contáctanos y te ayudaremos.</p>
+<p><strong>Información de contacto directo:</strong></p>
+<ul>
+<li><strong>Email:</strong> info@harinaymel.com</li>
+<li><strong>Teléfono:</strong> +54 (11) 4567-8900</li>
+<li><strong>WhatsApp:</strong> +54 9 11 4567-8900</li>
+<li><strong>Horario:</strong> Lunes a Viernes, 8:00 - 19:00 hs</li>
+<li><strong>Dirección:</strong> Av. Corrientes 1234, Buenos Aires, Argentina</li>
+</ul>',
                     'template' => 'flexible-page',
+                    'imagen_portada' => 'pasteleria-hero-02.png',
+                    'activo_encabezado' => true,
+                    'pre_txt' => 'CONTACTO',
+                    'titulo' => 'Ponte en Contacto',
+                    'header_bajada' => 'Estamos aquí para ayudarte con tus pedidos especiales',
                     'codigo_form' => 'Contacto Pastelería',
                 ),
             ),
