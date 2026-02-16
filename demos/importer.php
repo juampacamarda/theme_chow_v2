@@ -1379,6 +1379,35 @@ function chow_ensure_shop_page_title() {
 }
 
 /**
+ * Get WooCommerce Shop page details (slug, title)
+ * Returns array with shop_slug and shop_title, or false if Shop page not found
+ */
+function chow_get_shop_page_details() {
+    if ( ! function_exists( 'wc_get_page_id' ) ) {
+        return false;
+    }
+    
+    $shop_page_id = wc_get_page_id( 'shop' );
+    
+    if ( ! $shop_page_id || $shop_page_id <= 0 ) {
+        chow_importer_log( "  ⚠ Shop page ID no válido en chow_get_shop_page_details()", 'WARNING' );
+        return false;
+    }
+    
+    $shop_page = get_post( $shop_page_id );
+    
+    if ( ! $shop_page ) {
+        chow_importer_log( "  ⚠ Shop page no existe (ID: {$shop_page_id})", 'WARNING' );
+        return false;
+    }
+    
+    return array(
+        'shop_slug'  => $shop_page->post_name, // El slug real de la página (ej: 'shop', 'tienda', 'boutique')
+        'shop_title' => $shop_page->post_title, // El título real
+    );
+}
+
+/**
  * Create or update navigation menu
  */
 function chow_update_menu( $demo ) {
@@ -1429,61 +1458,23 @@ function chow_update_menu( $demo ) {
         $menu_item_object_id = 0;
         $page_found = false;
         
-        // Special handling for "Tienda" - link to WooCommerce shop page dynamically
+        // Special handling for "Tienda" - detect Shop page slug and title dynamically
         if ( 'Tienda' === $item_data['title'] ) {
-            if ( function_exists( 'wc_get_page_id' ) ) {
-                $shop_page_id = wc_get_page_id( 'shop' );
-                chow_importer_log( "    🔍 Debug: wc_get_page_id('shop') retornó: " . var_export( $shop_page_id, true ) );
-                
-                if ( $shop_page_id && $shop_page_id > 0 ) {
-                    // Verificar que la página existe y tiene título
-                    $shop_page_post = get_post( $shop_page_id );
-                    if ( $shop_page_post && ! empty( $shop_page_post->post_title ) ) {
-                        chow_importer_log( "    📄 Shop page encontrada: '{$shop_page_post->post_title}' (ID: {$shop_page_id}, Status: {$shop_page_post->post_status})" );
-                    } else {
-                        chow_importer_log( "    ⚠ Shop page ID {$shop_page_id} no tiene título o no existe", 'WARNING' );
-                    }
-                    
-                    // Use WooCommerce Shop page as menu item object
-                    $menu_item_type = 'post_type';
-                    $menu_item_object = 'page';
-                    $menu_item_object_id = $shop_page_id;
-                    $item_url = get_permalink( $shop_page_id );
-                    $page_found = true;
-                    chow_importer_log( "    → Tienda vinculada a WooCommerce Shop (ID: {$shop_page_id})" );
-                } else {
-                    chow_importer_log( "    ⚠ WooCommerce Shop page ID inválido, intentando método alternativo", 'WARNING' );
-                    
-                    // Método alternativo: buscar página con post_type 'page' vinculada a Shop
-                    $shop_page = get_posts( array(
-                        'post_type' => 'page',
-                        'meta_key' => '_wp_page_template',
-                        'numberposts' => 1,
-                        'orderby' => 'ID',
-                        'order' => 'ASC'
-                    ));
-                    
-                    if ( ! empty( $shop_page ) ) {
-                        $menu_item_type = 'post_type';
-                        $menu_item_object = 'page';
-                        $menu_item_object_id = $shop_page[0]->ID;
-                        $item_url = get_permalink( $shop_page[0]->ID );
-                        $page_found = true;
-                        chow_importer_log( "    → Tienda vinculada a página alternativa (ID: {$shop_page[0]->ID})" );
-                    }
-                }
+            $shop_details = chow_get_shop_page_details();
+            
+            if ( $shop_details ) {
+                // Usar URL con el slug real de la Shop page
+                $item_url = home_url( '/' . $shop_details['shop_slug'] . '/' );
+                $item_data['title'] = $shop_details['shop_title']; // Usar el título real de la Shop page
+                chow_importer_log( "    → Tienda detectado: slug='{$shop_details['shop_slug']}', título='{$shop_details['shop_title']}'" );
             } else {
-                chow_importer_log( "    ⚠ Función wc_get_page_id no disponible (WooCommerce inactivo?)", 'WARNING' );
-            }
-            
-            // Si todavía no se encontró, NO buscar por slug - dejar como custom link
-            if ( ! $page_found ) {
-                chow_importer_log( "    ⚠ No se pudo vincular Tienda como página, usando custom link a /shop", 'WARNING' );
+                // Fallback si WooCommerce no está disponible
                 $item_url = home_url( '/shop/' );
+                chow_importer_log( "    ⚠ Shop page no detectable, usando /shop/ como fallback", 'WARNING' );
             }
             
-            // Skip normal page search for Tienda
-            $item_slug = '';
+            $menu_item_type = 'custom';
+            $page_found = true;
         }
         
         // Buscar página normal por slug
