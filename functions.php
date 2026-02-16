@@ -446,17 +446,17 @@ add_action( 'woocommerce_after_shop_loop_item', function() {
 // Deshabilitar la lectura de EXIF para evitar warnings con imágenes corruptas
 add_filter( 'wp_read_image_metadata', '__return_false' );
 
-// También podemos manejar el error directamente si ocurre
-function chow_disable_exif_warnings() {
-    // Deshabilitar warnings de EXIF
-    if ( function_exists( 'ini_set' ) ) {
-        ini_set( 'exif.decode_unicode_motorola', '0' );
-        ini_set( 'exif.decode_unicode_intel', '0' );
+// Función para manejar errores de EXIF silenciosamente
+function chow_handle_exif_error($errno, $errstr, $errfile, $errline) {
+    // Solo suprimir warnings relacionados con EXIF
+    if (strpos($errstr, 'exif_read_data') !== false || strpos($errstr, 'EXIF') !== false) {
+        return true; // Suprimir el error
     }
+    return false; // Dejar que otros errores se muestren
 }
-add_action( 'init', 'chow_disable_exif_warnings' );
+set_error_handler('chow_handle_exif_error', E_WARNING);
 
-// Filtro adicional para manejar errores de EXIF en wp_generate_attachment_metadata
+// Filtro adicional para manejar errores en wp_generate_attachment_metadata
 add_filter( 'wp_generate_attachment_metadata', function( $metadata, $attachment_id ) {
     // Si hay un error de EXIF, continuar sin los datos EXIF
     if ( is_wp_error( $metadata ) ) {
