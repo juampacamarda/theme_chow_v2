@@ -1379,6 +1379,47 @@ function chow_ensure_shop_page_title() {
 }
 
 /**
+ * Ensure WooCommerce Shop page has a proper title
+ * Called before menu creation to prevent "(no label)" menu items
+ */
+function chow_ensure_shop_page_title() {
+    if ( ! function_exists( 'wc_get_page_id' ) ) {
+        return false;
+    }
+    
+    $shop_page_id = wc_get_page_id( 'shop' );
+    chow_importer_log( "  🔍 Verificando Shop page: ID={$shop_page_id}" );
+    
+    if ( ! $shop_page_id || $shop_page_id <= 0 ) {
+        chow_importer_log( "  ⚠ Shop page ID no válido", 'WARNING' );
+        return false;
+    }
+    
+    $shop_page = get_post( $shop_page_id );
+    
+    if ( ! $shop_page ) {
+        chow_importer_log( "  ⚠ Shop page no existe (ID: {$shop_page_id})", 'WARNING' );
+        return false;
+    }
+    
+    // Siempre asegurar que tenga el título "Tienda"
+    if ( empty( trim( $shop_page->post_title ) ) || 'Shop' === $shop_page->post_title || 'shop' === $shop_page->post_title ) {
+        chow_importer_log( "  📝 Actualizando título de Shop page a 'Tienda' (antes: '{$shop_page->post_title}')" );
+        
+        wp_update_post( array(
+            'ID' => $shop_page_id,
+            'post_title' => 'Tienda',
+        ) );
+        
+        chow_importer_log( "  ✓ Título actualizado" );
+    } else {
+        chow_importer_log( "  ✓ Shop page ya tiene título: '{$shop_page->post_title}'" );
+    }
+    
+    return true;
+}
+
+/**
  * Create or update navigation menu
  */
 function chow_update_menu( $demo ) {
@@ -1506,13 +1547,15 @@ function chow_update_menu( $demo ) {
             'menu-item-status'     => 'publish',
             'menu-item-type'       => $menu_item_type,
             'menu-item-parent-id'  => $item_data['parent'] ?? 0,
-            'menu-item-title'      => $item_data['title'], // SIEMPRE incluir el título para evitar "(no label)"
         );
         
-        // Add type-specific attributes
+        // Add title ONLY for custom links
+        // For post_type items, WordPress uses the post_title automatically
         if ( 'custom' === $menu_item_type ) {
+            $item_args['menu-item-title'] = $item_data['title'];
             $item_args['menu-item-url'] = $item_url;
         } else {
+            // For post_type items, provide object references
             $item_args['menu-item-object-id'] = $menu_item_object_id;
             $item_args['menu-item-object'] = $menu_item_object;
         }
