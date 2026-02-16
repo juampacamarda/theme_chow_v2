@@ -322,7 +322,128 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                 ),
             ),
             
-            // Custom CSS for Pastelería demo
+            // Home page configuration (ACF options)
+            'home' => array(
+                // Sliders for main carousel
+                'slider_1' => array(
+                    'imagen' => 'pasteleria-hero-01.webp',
+                    'texto' => 'Delicias Artesanales',
+                    'link' => '/shop',
+                ),
+                
+                'slider_2' => array(
+                    'imagen' => 'pasteleria-hero-02.webp',
+                    'texto' => 'Tortas Personalizadas',
+                    'link' => '/shop',
+                ),
+                
+                'slider_3' => array(
+                    'imagen' => 'pasteleria-cover.webp',
+                    'texto' => 'Pedidos al Mayor',
+                    'link' => '/contacto',
+                ),
+                
+                'slider_4' => array(
+                    'imagen' => '',
+                    'texto' => '',
+                    'link' => '',
+                ),
+                
+                'slider_5' => array(
+                    'imagen' => '',
+                    'texto' => '',
+                    'link' => '',
+                ),
+                
+                // Product blocks
+                'product_blocks' => array(
+                    array(
+                        'titulo'      => 'Productos Destacados',
+                        'descripcion' => 'Nuestras creaciones más populares',
+                        'tipo'        => 'destacados',
+                        'cantidad'    => 4,
+                        'layout'      => 'columnas',
+                        'columnas'    => 'col-lg-3',
+                        'card_style'  => 'hover_visual',
+                    ),
+                    array(
+                        'titulo'      => 'Todas Nuestras Delicias',
+                        'descripcion' => 'Explora nuestro catálogo completo',
+                        'tipo'        => 'ultimos',
+                        'cantidad'    => 6,
+                        'layout'      => 'carousel',
+                        'columnas'    => 'col-lg-3',
+                        'card_style'  => 'hover_visual',
+                    ),
+                ),
+                
+                // Newsletter section
+                'newsletter' => array(
+                    'titulo'           => 'Suscribite a Nuestro Newsletter',
+                    'descripcion'      => 'Recibe promociones exclusivas y novedades sobre nuestros productos',
+                    'news_bg'          => 'pasteleria-newsbg.webp',
+                    'formulario_news'  => 'Newsletter Pastelería',
+                ),
+                
+                // Product inquiry form
+                'formulario_producto' => 'Consulta Pedidos Pastelería',
+                
+                // Social media section
+                'redes_seccion' => array(
+                    'titulo'      => 'Síguenos en Redes',
+                    'descripcion' => 'Conecta con nosotros para ver nuestras últimas creaciones',
+                    'fondo_redes' => 'pasteleria-redesbg.webp',
+                ),
+                
+                // Featured carousel title
+                'titulo_carrusel_destacados' => 'Nuestras Tentaciones',
+                'descripcion_carrusel_destacados' => 'Las creaciones que nuestros clientes más aman',
+                
+                // Featured products carousel
+                'carrusel_productos_destacados' => array(
+                    array(
+                        'imagen'            => 'pasteleria-tentacion-01.webp',
+                        'nombre_del_link'   => 'Croissant de Mantequilla',
+                        'link'              => array( 'url' => '/shop', 'title' => 'Croissant de Mantequilla', 'target' => '' ),
+                    ),
+                    array(
+                        'imagen'            => 'pasteleria-tentacion-02.webp',
+                        'nombre_del_link'   => 'Lemon Pie Casero',
+                        'link'              => array( 'url' => '/shop', 'title' => 'Lemon Pie Casero', 'target' => '' ),
+                    ),
+                    array(
+                        'imagen'            => 'pasteleria-tentacion-03.webp',
+                        'nombre_del_link'   => 'Torta Red Velvet',
+                        'link'              => array( 'url' => '/shop', 'title' => 'Torta Red Velvet', 'target' => '' ),
+                    ),
+                    array(
+                        'imagen'            => 'pasteleria-tentacion-04.webp',
+                        'nombre_del_link'   => 'Torta Chocolate',
+                        'link'              => array( 'url' => '/shop', 'title' => 'Torta Chocolate', 'target' => '' ),
+                    ),
+                    array(
+                        'imagen'            => 'pasteleria-tentacion-05.webp',
+                        'nombre_del_link'   => 'Chipa Paraguaya',
+                        'link'              => array( 'url' => '/shop', 'title' => 'Chipa Paraguaya', 'target' => '' ),
+                    ),
+                    array(
+                        'imagen'            => 'pasteleria-tentacion-06.webp',
+                        'nombre_del_link'   => 'Tarta de Frutas',
+                        'link'              => array( 'url' => '/shop', 'title' => 'Tarta de Frutas', 'target' => '' ),
+                    ),
+                ),
+                
+                // Sections visibility
+                'sections' => array(
+                    'slide'              => true,
+                    'productos-1'        => true,
+                    'productos-carrusel' => true,
+                    'news'               => true,
+                    'redes'              => true,
+                    'clientes'           => false,
+                ),
+            ),
+            
             'custom_css' => <<<CSS
 /* Pastelería Demo - Estilos personalizados */
 #clientes-botonera { 
