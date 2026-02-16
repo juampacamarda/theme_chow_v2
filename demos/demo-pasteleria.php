@@ -321,6 +321,41 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
 [submit "Enviar Consulta"]',
                 ),
             ),
+            
+            // Custom CSS for Pastelería demo
+            'custom_css' => <<<CSS
+/* Pastelería Demo - Estilos personalizados */
+#clientes-botonera { 
+    display: none !important; 
+}
+
+.main-slider-class {
+    height: 600px !important;
+}
+.main-slider-class .slick-list,
+.main-slider-class .slick-track,
+.main-slider-class .slick-slide img {
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+.carousel-item > div {
+    height: 650px !important;
+}
+CSS,
+            
+            // Menu for Pastelería demo
+            'menu' => array(
+                'name'  => 'Menú Pastelería',
+                'items' => array(
+                    array( 'title' => 'Inicio', 'url' => '/', 'parent' => null ),
+                    array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
+                    array( 'title' => 'Sobre Nosotros', 'url' => '/sobre-nosotros', 'parent' => null ),
+                    array( 'title' => 'Preguntas Frecuentes', 'url' => '/preguntas-frecuentes', 'parent' => null ),
+                    array( 'title' => 'Contacto', 'url' => '/contacto', 'parent' => null ),
+                    array( 'title' => 'Blog', 'url' => '/blog', 'parent' => null ),
+                ),
+            ),
         );
     }
 }
