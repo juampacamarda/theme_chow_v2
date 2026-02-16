@@ -468,7 +468,6 @@ li.product.chow-product-card-02,
 .chow-card-hover-visual{
     height:480px!important;
 }
-.
 
 footer{
     background-color: var(--chow_txt) !important;
