@@ -107,33 +107,33 @@ $demos[] = chow_get_demo_libreria();
                     </div>
                 </div>
                 
-                <!-- Action Button -->
-                <div class="demo-card-footer">
-                    <?php if ( $is_active ) : ?>
-                        <div class="demo-card-actions">
-                            <button type="button" 
-                                    class="button button-secondary" 
-                                    disabled
-                                    title="<?php esc_attr_e( 'Este demo ya está activo', 'chow-theme' ); ?>">
-                                <?php esc_html_e( 'Activo', 'chow-theme' ); ?>
-                            </button>
-                            <button type="button" 
-                                    class="button button-primary demo-reimport-btn" 
-                                    data-demo-id="<?php echo esc_attr( $demo['id'] ); ?>"
-                                    data-demo-name="<?php echo esc_attr( $demo['name'] ); ?>"
-                                    title="<?php esc_attr_e( 'Reimportar este demo y sobrescribir el contenido', 'chow-theme' ); ?>">
-                                <?php esc_html_e( 'Reimportar Demo', 'chow-theme' ); ?>
-                            </button>
-                        </div>
-                    <?php else : ?>
-                        <button type="button" 
-                                class="button button-primary demo-import-btn" 
-                                data-demo-id="<?php echo esc_attr( $demo['id'] ); ?>"
-                                data-demo-name="<?php echo esc_attr( $demo['name'] ); ?>">
-                            <?php esc_html_e( 'Importar Demo', 'chow-theme' ); ?>
-                        </button>
-                    <?php endif; ?>
-                </div>
+                 <!-- Action Button -->
+                 <div class="demo-card-footer">
+                     <?php if ( $is_active ) : ?>
+                         <div class="demo-card-actions">
+                             <button type="button" 
+                                     class="button button-secondary" 
+                                     disabled
+                                     title="<?php esc_attr_e( 'Este demo ya está activo', 'chow-theme' ); ?>">
+                                 <?php esc_html_e( 'Activo', 'chow-theme' ); ?>
+                             </button>
+                             <button type="button" 
+                                     class="button button-primary demo-restore-btn" 
+                                     data-demo-id="<?php echo esc_attr( $demo['id'] ); ?>"
+                                     data-demo-name="<?php echo esc_attr( $demo['name'] ); ?>"
+                                     title="<?php esc_attr_e( 'Restaurar plantilla original - sobrescribe todo el contenido', 'chow-theme' ); ?>">
+                                 <?php esc_html_e( 'Restaurar Plantilla', 'chow-theme' ); ?>
+                             </button>
+                         </div>
+                     <?php else : ?>
+                         <button type="button" 
+                                 class="button button-primary demo-import-btn" 
+                                 data-demo-id="<?php echo esc_attr( $demo['id'] ); ?>"
+                                 data-demo-name="<?php echo esc_attr( $demo['name'] ); ?>">
+                             <?php esc_html_e( 'Importar Demo', 'chow-theme' ); ?>
+                         </button>
+                     <?php endif; ?>
+                 </div>
             </div>
         <?php endforeach; ?>
     </div>
