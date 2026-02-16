@@ -721,17 +721,16 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
         
         // Process logo fields (convert image filenames to IDs then to URLs)
          $logo_fields = array( 'logo_header_desktop', 'logo_header_mobile', 'logo_footer' );
-         foreach ( $logo_fields as $logo_field ) {
-             if ( isset( $company[ $logo_field ] ) && ! empty( $company[ $logo_field ] ) ) {
-                 $logo_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $company[ $logo_field ] );
-                 $logo_id = isset( $attachment_ids[ $logo_key ] ) ? $attachment_ids[ $logo_key ] : 0;
-                 // Convert ID to URL (ACF field return_format is "url")
-                 $logo_url = $logo_id ? wp_get_attachment_url( $logo_id ) : '';
-                 $company_data[ $logo_field ] = $logo_url ?: '';
-             } else {
-                 $company_data[ $logo_field ] = '';
-             }
-         }
+          foreach ( $logo_fields as $logo_field ) {
+              if ( isset( $company[ $logo_field ] ) && ! empty( $company[ $logo_field ] ) ) {
+                  $logo_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $company[ $logo_field ] );
+                  $logo_id = isset( $attachment_ids[ $logo_key ] ) ? $attachment_ids[ $logo_key ] : 0;
+                  // Store the attachment ID directly - ACF will convert to URL based on return_format
+                  $company_data[ $logo_field ] = $logo_id;
+              } else {
+                  $company_data[ $logo_field ] = '';
+              }
+          }
         
         // Add other company fields
         $other_fields = array( 'color_principal', 'color_secundario', 'color_texto', 'color_fondo', 

@@ -388,23 +388,23 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     ),
                 ),
                 
-                 // Newsletter section (GROUP field)
-                 'newsletter' => array(
-                     'titulo'           => 'Suscribite a Nuestro Newsletter',
-                     'descripcion'      => 'Recibe ofertas exclusivas y novedades literarias directamente en tu inbox',
-                     'news_bg'          => 'fondo-news.png',
-                     'formulario_news'  => 'Newsletter Librería', // Will be replaced with actual form ID
-                  ),
+                  // Newsletter section (GROUP field)
+                  'newsletter' => array(
+                      'titulo'           => 'Suscribite a Nuestro Newsletter',
+                      'descripcion'      => 'Recibe ofertas exclusivas y novedades literarias directamente en tu inbox',
+                      'news_bg'          => 'libreria-fondo-news.png',
+                      'formulario_news'  => 'Newsletter Librería', // Will be replaced with actual form ID
+                   ),
                  
                  // Product inquiry form (stored in ACF options)
                  'formulario_producto' => 'Contacto Productos Librería',
                  
-                 // Redes (social) section (GROUP field)
-                'redes_seccion' => array(
-                    'titulo'      => 'Síguenos en Redes',
-                    'descripcion' => 'Conecta con nosotros en nuestras redes sociales',
-                    'fondo_redes' => 'fondo-redes.png',
-                ),
+                  // Redes (social) section (GROUP field)
+                 'redes_seccion' => array(
+                     'titulo'      => 'Síguenos en Redes',
+                     'descripcion' => 'Conecta con nosotros en nuestras redes sociales',
+                     'fondo_redes' => 'libreria-fondo-redes.png',
+                 ),
                 
                  // Productos destacados (REPEATER field - 6 productos)
                  'carrusel_productos_destacados' => array(
