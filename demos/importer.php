@@ -11,6 +11,7 @@
 
 // Load demo configuration files
 require_once get_template_directory() . '/demos/demo-libreria.php';
+require_once get_template_directory() . '/demos/demo-pasteleria.php';
 
 // Register the "Importar Demo" subpage
 add_action( 'init', 'chow_register_importer_page' );
@@ -212,6 +213,8 @@ function chow_do_import_internal( $demo_id, $action_type = 'import' ) {
     // Get demo configuration
     if ( 'libreria' === $demo_id ) {
         $demo = chow_get_demo_libreria();
+    } elseif ( 'pasteleria' === $demo_id ) {
+        $demo = chow_get_demo_pasteleria();
     } else {
         return new WP_Error( 'invalid_demo', 'Demo no encontrada' );
     }

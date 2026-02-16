@@ -24,6 +24,7 @@ $active_demo = get_option( 'chow_active_demo' );
 // Build demos array
 $demos = array();
 $demos[] = chow_get_demo_libreria();
+$demos[] = chow_get_demo_pasteleria();
 
 ?>
 
