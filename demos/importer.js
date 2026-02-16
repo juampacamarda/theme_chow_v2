@@ -56,7 +56,9 @@
           // Confirm import buttons
           $(document).on('click', '#confirm-import-btn', function(e) {
               e.preventDefault();
-              performImport('import');
+              // Check if overwrite checkbox is checked
+              const shouldOverwrite = $('#chow-overwrite-checkbox').is(':checked');
+              performImport(shouldOverwrite ? 'overwrite' : 'import');
           });
           
           $(document).on('click', '#confirm-overwrite-btn', function(e) {
@@ -215,33 +217,15 @@
                        
                        // After closing the message, the page will reload
                    } else {
-                       // Check if this is a "content already exists" error
-                       if (response.data && response.data.error_code === 'content_exists') {
-                           // Show the overwrite confirmation modal
-                           const modal = $('#chow-import-modal');
-                           modal.find('#modal-content-initial').hide();
-                           modal.find('#modal-content-existing').show();
-                           modal.find('#modal-content-restore').hide();
-                           modal.find('.demo-name-display').text(currentDemoName);
-                           modal.find('#confirm-import-btn').hide();
-                           modal.find('#confirm-overwrite-btn').show().css('display', 'inline-block');
-                           // Use fadeIn like openModal does
-                           modal.fadeIn(300);
-                           modal.find('.chow-modal-content').css('opacity', '0').animate({opacity: 1}, 300);
-                           
-                           // Re-enable buttons
-                           $('.demo-import-btn, .demo-restore-btn').prop('disabled', false);
-                       } else {
-                           // Show error message
-                           showMessage(
-                               'error',
-                               'Error en la Importación',
-                               response.data && response.data.message ? response.data.message : 'Ocurrió un error al importar el demo.'
-                           );
-                           
-                           // Re-enable buttons
-                           $('.demo-import-btn, .demo-restore-btn').prop('disabled', false);
-                       }
+                       // Show error message
+                       showMessage(
+                           'error',
+                           'Error en la Importación',
+                           response.data && response.data.message ? response.data.message : 'Ocurrió un error al importar el demo.'
+                       );
+                       
+                       // Re-enable buttons
+                       $('.demo-import-btn, .demo-restore-btn').prop('disabled', false);
                    }
                },
                error: function(xhr, status, error) {
