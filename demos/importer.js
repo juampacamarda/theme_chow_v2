@@ -229,19 +229,78 @@
                error: function(xhr, status, error) {
                    hideSpinner();
                    
+                   let errorMsg = 'No se pudo conectar con el servidor. Por favor, intenta nuevamente.';
+                   let detailedMsg = '\n\nDetalles técnicos:\n';
+                   
+                   // Timeout
+                   if (status === 'timeout') {
+                       errorMsg = '⏱️ La operación tardó demasiado tiempo (más de 10 minutos)';
+                       detailedMsg += '• La importación superó el límite de tiempo\n';
+                       detailedMsg += '• Posibles causas:\n';
+                       detailedMsg += '  - Local.app está lento\n';
+                       detailedMsg += '  - Las imágenes son muy pesadas\n';
+                       detailedMsg += '  - No hay suficiente memoria PHP\n\n';
+                       detailedMsg += 'Soluciones:\n';
+                       detailedMsg += '1. Reinicia Local.app\n';
+                       detailedMsg += '2. Revisa WP-Admin > Chow Theme > Importar Demo > Ver Logs\n';
+                       detailedMsg += '3. Aumenta max_execution_time en php.ini a 900+ segundos\n';
+                   }
+                   // Network error
+                   else if (xhr.status === 0 && error === 'error') {
+                       errorMsg = '🌐 Error de conexión de red';
+                       detailedMsg += '• No se pudo establecer conexión con el servidor\n';
+                       detailedMsg += '• Verifica que Local.app esté corriendo\n';
+                       detailedMsg += '• Intenta navegar al sitio normalmente\n';
+                   }
+                   // Server error
+                   else if (xhr.status === 500) {
+                       errorMsg = '❌ Error interno del servidor (500)';
+                       detailedMsg += '• El servidor WordPress encontró un error\n';
+                       detailedMsg += '• Revisa los logs:\n';
+                       detailedMsg += '  - WP-Admin > Chow Theme > Importar Demo > Ver Logs\n';
+                       detailedMsg += '  - Local.app: Click derecho > Logs > PHP\n';
+                   }
+                   // Bad gateway
+                   else if (xhr.status === 502 || xhr.status === 503) {
+                       errorMsg = '⚠️ Servidor no disponible (' + xhr.status + ')';
+                       detailedMsg += '• Local.app puede estar reiniciándose\n';
+                       detailedMsg += '• Intenta nuevamente en unos segundos\n';
+                   }
+                   // Parse error
+                   else if (status === 'parsererror') {
+                       errorMsg = '📝 Error procesando respuesta del servidor';
+                       detailedMsg += '• Respuesta inválida recibida\n';
+                       detailedMsg += '• Posible conflicto con otro plugin\n';
+                       detailedMsg += '• Revisa los logs para más detalles\n';
+                   }
+                   
+                   if (xhr.responseText) {
+                       detailedMsg += '\nRespuesta del servidor:\n' + xhr.responseText.substring(0, 200) + '...\n';
+                   }
+                   
+                   detailedMsg += '\nEstado: ' + status + '\n';
+                   detailedMsg += 'Código HTTP: ' + xhr.status + '\n';
+                   
                    // Show error message
                    showMessage(
                        'error',
                        'Error de Conexión',
-                       'No se pudo conectar con el servidor. Por favor, intenta nuevamente.'
+                       errorMsg + detailedMsg
                    );
                    
                    // Re-enable buttons
                    $('.demo-import-btn, .demo-restore-btn').prop('disabled', false);
                    
-                   console.error('AJAX Error:', error, status, xhr);
+                   console.error('AJAX Error:', {
+                       status: status,
+                       error: error,
+                       xhr: xhr,
+                       statusCode: xhr.status,
+                       statusText: xhr.statusText,
+                       response: xhr.responseText
+                   });
                },
-               timeout: 300000, // 5 minutes timeout
+               timeout: 900000, // 15 minutes - necesario para Local.app con muchas imágenes
            });
        }
     
