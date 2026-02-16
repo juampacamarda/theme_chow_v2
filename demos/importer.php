@@ -139,12 +139,17 @@ function chow_handle_import_ajax() {
     
     if ( is_wp_error( $result ) ) {
         $error_msg = $result->get_error_message();
+        $error_code = $result->get_error_code();
         $error_data = $result->get_error_data();
         chow_importer_log( "Error en importación: $error_msg", 'ERROR' );
         if ( $error_data ) {
             chow_importer_log( "Datos del error: " . json_encode( $error_data ), 'ERROR' );
         }
-        wp_send_json_error( array( 'message' => $error_msg ) );
+        // Enviar código de error específico para que el frontend lo maneje
+        wp_send_json_error( array(
+            'message' => $error_msg,
+            'error_code' => $error_code,
+        ) );
     }
     
     // Disparar hook para que otros complementos ejecuten tareas post-importación

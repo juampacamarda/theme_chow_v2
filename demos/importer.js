@@ -214,6 +214,22 @@
                        $('.demo-import-btn, .demo-restore-btn').prop('disabled', false);
                        
                        // After closing the message, the page will reload
+               } else {
+                   hideSpinner();
+                   
+                   // Check if this is a "content already exists" error
+                   if (response.data && response.data.error_code === 'content_exists') {
+                       // Show the overwrite confirmation modal
+                       $('#chow-import-modal').find('#modal-content-initial').hide();
+                       $('#chow-import-modal').find('#modal-content-existing').show();
+                       $('#chow-import-modal').find('#modal-content-restore').hide();
+                       $('#chow-import-modal').find('.demo-name-display').text(currentDemoName);
+                       $('#chow-import-modal').find('#confirm-import-btn').hide();
+                       $('#chow-import-modal').find('#confirm-overwrite-btn').show().css('display', 'inline-block');
+                       $('#chow-import-modal').show();
+                       
+                       // Re-enable buttons
+                       $('.demo-import-btn, .demo-restore-btn').prop('disabled', false);
                    } else {
                        // Show error message
                        showMessage(
@@ -225,6 +241,7 @@
                        // Re-enable buttons
                        $('.demo-import-btn, .demo-restore-btn').prop('disabled', false);
                    }
+               }
                },
                error: function(xhr, status, error) {
                    hideSpinner();
