@@ -813,63 +813,116 @@ function chow_create_categories( $demo ) {
  */
 function chow_create_products( $demo, $attachment_ids, $category_ids ) {
     $demo_id = isset( $demo['id'] ) ? $demo['id'] : '';
+    $product_count = 0;
+    $success_count = 0;
+    $error_count = 0;
+    
+    if ( empty( $demo['products'] ) ) {
+        chow_importer_log( "⚠ No hay productos en la configuración de la demo", 'WARNING' );
+        return true;
+    }
+    
+    $total_products = count( $demo['products'] );
+    chow_importer_log( "Total de productos a crear: $total_products" );
     
     foreach ( $demo['products'] as $product_data ) {
+        $product_count++;
+        @set_time_limit( 60 );
+        
+        $product_name = isset( $product_data['name'] ) ? $product_data['name'] : "Producto $product_count";
+        chow_importer_log( "  ($product_count/$total_products) Procesando: $product_name" );
+        
         // Verificar si el producto ya existe (usando búsqueda optimizada)
-        $existing_id = chow_product_exists_by_title( $product_data['name'], $demo_id );
+        $existing_id = chow_product_exists_by_title( $product_name, $demo_id );
         
         if ( $existing_id ) {
+            chow_importer_log( "    - Producto ya existe (ID: $existing_id)" );
+            $success_count++;
             continue;
         }
         
         // Get category ID
         $category_name = isset( $product_data['category'] ) ? $product_data['category'] : '';
         $category_id = isset( $category_ids[ $category_name ] ) ? $category_ids[ $category_name ] : 0;
+        chow_importer_log( "    - Categoría: $category_name (ID: $category_id)" );
         
         // Create product post
         $product_post = array(
-            'post_title'   => $product_data['name'],
-            'post_content' => $product_data['description'],
-            'post_excerpt' => $product_data['short_description'],
+            'post_title'   => $product_name,
+            'post_content' => isset( $product_data['description'] ) ? $product_data['description'] : '',
+            'post_excerpt' => isset( $product_data['short_description'] ) ? $product_data['short_description'] : '',
             'post_type'    => 'product',
             'post_status'  => 'publish',
         );
         
         $product_id = wp_insert_post( $product_post );
         
-        if ( ! is_wp_error( $product_id ) ) {
+        if ( is_wp_error( $product_id ) ) {
+            $error_msg = $product_id->get_error_message();
+            chow_importer_log( "    ✗ Error creando post: $error_msg", 'ERROR' );
+            $error_count++;
+            continue;
+        }
+        
+        if ( ! $product_id ) {
+            chow_importer_log( "    ✗ wp_insert_post retornó 0", 'ERROR' );
+            $error_count++;
+            continue;
+        }
+        
+        chow_importer_log( "    - Post creado (ID: $product_id)" );
+        
+        try {
             // Create WooCommerce product object
             $product = new WC_Product_Simple( $product_id );
             
             // Set basic product data
-            $product->set_price( $product_data['price'] );
+            if ( isset( $product_data['price'] ) ) {
+                $product->set_price( $product_data['price'] );
+                chow_importer_log( "    - Precio: " . $product_data['price'] );
+            }
+            
             if ( ! empty( $product_data['sale_price'] ) ) {
                 $product->set_sale_price( $product_data['sale_price'] );
+                chow_importer_log( "    - Precio en oferta: " . $product_data['sale_price'] );
             }
             
             // Set stock
-            $product->set_stock_quantity( $product_data['stock'] );
-            $product->set_manage_stock( true );
-            $product->set_stock_status( $product_data['stock'] > 0 ? 'instock' : 'outofstock' );
+            if ( isset( $product_data['stock'] ) ) {
+                $product->set_stock_quantity( $product_data['stock'] );
+                $product->set_manage_stock( true );
+                $product->set_stock_status( $product_data['stock'] > 0 ? 'instock' : 'outofstock' );
+                chow_importer_log( "    - Stock: " . $product_data['stock'] );
+            }
             
             // Set featured
             if ( isset( $product_data['featured'] ) && $product_data['featured'] ) {
                 $product->set_featured( true );
+                chow_importer_log( "    - Marcado como destacado" );
             }
             
             // Save product
             $product->save();
+            chow_importer_log( "    - Producto guardado en WooCommerce" );
             
             // Set product category
             if ( $category_id > 0 ) {
-                wp_set_post_terms( $product_id, array( $category_id ), 'product_cat' );
+                $terms_result = wp_set_post_terms( $product_id, array( $category_id ), 'product_cat' );
+                if ( is_wp_error( $terms_result ) ) {
+                    chow_importer_log( "    ⚠ Error asignando categoría: " . $terms_result->get_error_message(), 'WARNING' );
+                } else {
+                    chow_importer_log( "    - Categoría asignada" );
+                }
             }
             
             // Set product image
             if ( isset( $product_data['image'] ) ) {
-                $image_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $product_data['image'] );
+                $image_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif', '.webp' ), '', $product_data['image'] );
                 if ( isset( $attachment_ids[ $image_key ] ) ) {
                     set_post_thumbnail( $product_id, $attachment_ids[ $image_key ] );
+                    chow_importer_log( "    - Imagen asignada" );
+                } else {
+                    chow_importer_log( "    ⚠ Imagen no encontrada: " . $product_data['image'], 'WARNING' );
                 }
             }
             
@@ -879,10 +932,19 @@ function chow_create_products( $demo, $attachment_ids, $category_ids ) {
             // Add bestseller badge if specified
             if ( isset( $product_data['bestseller'] ) && $product_data['bestseller'] ) {
                 update_post_meta( $product_id, '_bestseller', 'yes' );
+                chow_importer_log( "    - Marcado como bestseller" );
             }
+            
+            chow_importer_log( "    ✓ Producto creado exitosamente" );
+            $success_count++;
+            
+        } catch ( Exception $e ) {
+            chow_importer_log( "    ✗ Excepción: " . $e->getMessage(), 'ERROR' );
+            $error_count++;
         }
     }
     
+    chow_importer_log( "✓ Productos procesados - Exitosos: $success_count, Errores: $error_count, Total: $total_products" );
     return true;
 }
 
