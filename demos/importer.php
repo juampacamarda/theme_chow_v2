@@ -410,19 +410,20 @@ function chow_import_images( $demo_id ) {
          
          $attach_id = wp_insert_attachment( $attachment, $dest_path );
          
-         if ( ! is_wp_error( $attach_id ) ) {
-             // Generate attachment metadata
-             $attach_data = wp_generate_attachment_metadata( $attach_id, $dest_path );
-             wp_update_attachment_metadata( $attach_id, $attach_data );
-             
-             // Mark attachment as demo content
-             update_post_meta( $attach_id, '_demo_id', $demo_id );
-             
-             // Store the mapping without the extension and demo prefix for consistent lookup
-             $clean_filename = str_replace( $demo_id . '-', '', basename( $dest_path ) );
-             $key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $clean_filename );
-             $attachment_ids[ $key ] = $attach_id;
-         }
+          if ( ! is_wp_error( $attach_id ) ) {
+              // Generate attachment metadata
+              $attach_data = wp_generate_attachment_metadata( $attach_id, $dest_path );
+              wp_update_attachment_metadata( $attach_id, $attach_data );
+              
+              // Mark attachment as demo content
+              update_post_meta( $attach_id, '_demo_id', $demo_id );
+              
+              // Store the mapping: just remove the extension for consistent lookup
+              // Keep the full filename (with demo prefix if it has one)
+              $base_filename = basename( $dest_path );
+              $key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $base_filename );
+              $attachment_ids[ $key ] = $attach_id;
+          }
      }
     
     return $attachment_ids;
