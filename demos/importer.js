@@ -252,15 +252,18 @@
         const spinner = $('#chow-import-spinner');
         spinner.fadeIn(300);
         
+        // Iniciar mensajes dinámicos
+        startDynamicMessages();
+        
         // Simulate progress
         let progress = 0;
         const progressInterval = setInterval(function() {
             progress += Math.random() * 15;
-            if (progress > 90) {
-                progress = 90;
+            if (progress > 85) {
+                progress = 85; // Cap at 85% until complete
             }
             $('#progress-fill').css('width', progress + '%');
-        }, 500);
+        }, 800);
         
         // Store interval ID for cleanup
         spinner.data('progressInterval', progressInterval);
@@ -271,6 +274,9 @@
      */
     function hideSpinner() {
         const spinner = $('#chow-import-spinner');
+        
+        // Stop dynamic messages
+        stopDynamicMessages();
         
         // Clear progress interval
         const progressInterval = spinner.data('progressInterval');
@@ -346,6 +352,51 @@
                 '<button type="button" class="notice-dismiss"><span class="screen-reader-text">Descartar</span></button>' +
                 '</div>';
      }
+    
+    // Mensajes dinámicos para narrar el proceso
+    const importMessages = [
+        '⏳ Preparando importación...',
+        '📥 Descargando imágenes del demo...',
+        '🖼️ Procesando galería de productos...',
+        '📝 Creando categorías de productos...',
+        '🛍️ Importando catálogo de productos...',
+        '📄 Generando páginas del sitio...',
+        '📋 Configurando formularios de contacto...',
+        '🎨 Aplicando estilos y colores...',
+        '📱 Configurando menú de navegación...',
+        '⚙️ Optimizando base de datos...',
+        '✨ Últimos ajustes finales...',
+        '🔄 Sincronizando configuración...',
+    ];
+    
+    let messageInterval = null;
+    let currentMessageIndex = 0;
+    
+    function startDynamicMessages() {
+        currentMessageIndex = 0;
+        clearInterval(messageInterval);
+        
+        // Cambiar mensajes cada 2.5 segundos para que parezcan diferentes
+        messageInterval = setInterval(function() {
+            currentMessageIndex = (currentMessageIndex + 1) % importMessages.length;
+            const messageEl = $('#dynamic-message');
+            
+            // Animación de transición
+            messageEl.removeClass('fade-in').addClass('fade-out');
+            setTimeout(function() {
+                messageEl.text(importMessages[currentMessageIndex]);
+                messageEl.removeClass('fade-out').addClass('fade-in');
+                
+                // Animar barra de progreso pseudo-aleatoria
+                const currentProgress = Math.min(95, Math.random() * 50 + 80);
+                $('#progress-fill').css('width', currentProgress + '%');
+            }, 400);
+        }, 2500);
+    }
+    
+    function stopDynamicMessages() {
+        clearInterval(messageInterval);
+    }
     
     /**
      * Close the message

@@ -913,6 +913,16 @@ section#seccion-redes {
 		background-color: var(--chow_secundario);
 		border-color: #fff;
 		transition: all .4s ease-in;
+		border-radius: 50%;
+    /* padding: 5px; */
+    display: block;
+    text-decoration: none;
+    width: 40px;
+    height: 40px;
+}
+
+#seccion-redes a i{
+	bottom: 0px!important;
 }
 
 .redes li a {

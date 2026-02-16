@@ -227,7 +227,16 @@ $demos[] = chow_get_demo_libreria();
     <div class="spinner-overlay"></div>
     <div class="spinner-content">
         <div class="spinner"></div>
-        <p><?php esc_html_e( 'Importando demo...', 'chow-theme' ); ?></p>
+        <h3 class="spinner-title">Importando Demo</h3>
+        
+        <!-- Sección de mensajes dinámicos -->
+        <div class="dynamic-messages-container">
+            <div class="dynamic-message fade-in" id="dynamic-message">
+                <?php esc_html_e( 'Preparando importación...', 'chow-theme' ); ?>
+            </div>
+        </div>
+        
+        <p class="spinner-subtitle"><?php esc_html_e( 'Por favor, espera mientras tu sitio se actualiza', 'chow-theme' ); ?></p>
         <div class="progress-bar">
             <div class="progress-fill" id="progress-fill"></div>
         </div>
@@ -527,6 +536,64 @@ $demos[] = chow_get_demo_libreria();
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.spinner-title {
+    margin: 20px 0 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.spinner-subtitle {
+    margin: 15px 0 15px;
+    font-size: 13px;
+    color: #999;
+}
+
+.dynamic-messages-container {
+    min-height: 45px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dynamic-message {
+    text-align: center;
+    color: #667eea;
+    font-weight: 500;
+    font-size: 14px;
+    min-height: 20px;
+    padding: 0 20px;
+}
+
+.dynamic-message.fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+.dynamic-message.fade-out {
+    animation: fadeOut 0.4s ease-in-out forwards;
+}
 }
 
 .progress-bar {
