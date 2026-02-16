@@ -259,7 +259,8 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
 <li><strong>Horario de atención:</strong> Lunes a Viernes, 9:00 - 18:00 hs</li>
 <li><strong>Dirección:</strong> Av. Corrientes 1234, Buenos Aires, Argentina</li>
 </ul>',
-                    'template' => 'default',
+                    'template' => 'flexible-page',
+                    'codigo_form' => 'Contacto Librería',
                 ),
             ),
             
@@ -340,9 +341,12 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                      'descripcion'      => 'Recibe ofertas exclusivas y novedades literarias directamente en tu inbox',
                      'news_bg'          => 'fondo-news.png',
                      'formulario_news'  => 'Newsletter Librería', // Will be replaced with actual form ID
-                 ),
-                
-                // Redes (social) section (GROUP field)
+                  ),
+                 
+                 // Product inquiry form (stored in ACF options)
+                 'formulario_producto' => 'Contacto Productos Librería',
+                 
+                 // Redes (social) section (GROUP field)
                 'redes_seccion' => array(
                     'titulo'      => 'Síguenos en Redes',
                     'descripcion' => 'Conecta con nosotros en nuestras redes sociales',

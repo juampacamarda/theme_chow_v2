@@ -593,28 +593,38 @@ function chow_create_pages( $demo, $attachment_ids, $form_ids ) {
         $page_id = wp_insert_post( $page_post );
         
          if ( ! is_wp_error( $page_id ) ) {
-             // Set page template if specified
-             if ( isset( $page_data['template'] ) ) {
-                 if ( 'flexible-page' === $page_data['template'] ) {
-                     update_post_meta( $page_id, '_wp_page_template', 'flexible-page.php' );
-                     
-                     // Para páginas flexible, guardar contenido en ACF field (no en post_content)
-                     if ( isset( $page_data['content'] ) ) {
-                         update_field( 'texto_contenido', $page_data['content'], $page_id );
-                     }
-                     
-                     // Guardar collapses si existen
-                     if ( isset( $page_data['collapses'] ) ) {
-                         update_field( 'collapses', $page_data['collapses'], $page_id );
-                     }
-                 } elseif ( 'index-plantilla' === $page_data['template'] ) {
-                     update_post_meta( $page_id, '_wp_page_template', 'indexplantilla-page.php' );
-                 }
-             }
-             
-             // Mark as demo content
-             update_post_meta( $page_id, '_demo_id', $demo_id );
-         }
+              // Set page template if specified
+              if ( isset( $page_data['template'] ) ) {
+                  if ( 'flexible-page' === $page_data['template'] ) {
+                      update_post_meta( $page_id, '_wp_page_template', 'flexible-page.php' );
+                      
+                      // Para páginas flexible, guardar contenido en ACF field (no en post_content)
+                      if ( isset( $page_data['content'] ) ) {
+                          update_field( 'texto_contenido', $page_data['content'], $page_id );
+                      }
+                      
+                      // Guardar collapses si existen
+                      if ( isset( $page_data['collapses'] ) ) {
+                          update_field( 'collapses', $page_data['collapses'], $page_id );
+                      }
+                      
+                      // Guardar código del formulario si existe
+                      if ( isset( $page_data['codigo_form'] ) && ! empty( $page_data['codigo_form'] ) ) {
+                          // Find the form ID by name
+                          if ( isset( $form_ids[ $page_data['codigo_form'] ] ) ) {
+                              $form_id = $form_ids[ $page_data['codigo_form'] ];
+                              $form_shortcode = '[contact-form-7 id="' . $form_id . '" title="' . $page_data['codigo_form'] . '"]';
+                              update_field( 'codigo_form', $form_shortcode, $page_id );
+                          }
+                      }
+                  } elseif ( 'index-plantilla' === $page_data['template'] ) {
+                      update_post_meta( $page_id, '_wp_page_template', 'indexplantilla-page.php' );
+                  }
+              }
+              
+              // Mark as demo content
+              update_post_meta( $page_id, '_demo_id', $demo_id );
+          }
     }
     
     return true;
@@ -632,16 +642,19 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
         $company = $demo['company'];
         $company_data = array();
         
-        // Process logo fields (convert image filenames to IDs)
-        $logo_fields = array( 'logo_header_desktop', 'logo_header_mobile', 'logo_footer' );
-        foreach ( $logo_fields as $logo_field ) {
-            if ( isset( $company[ $logo_field ] ) && ! empty( $company[ $logo_field ] ) ) {
-                $logo_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $company[ $logo_field ] );
-                $company_data[ $logo_field ] = isset( $attachment_ids[ $logo_key ] ) ? $attachment_ids[ $logo_key ] : 0;
-            } else {
-                $company_data[ $logo_field ] = 0;
-            }
-        }
+        // Process logo fields (convert image filenames to IDs then to URLs)
+         $logo_fields = array( 'logo_header_desktop', 'logo_header_mobile', 'logo_footer' );
+         foreach ( $logo_fields as $logo_field ) {
+             if ( isset( $company[ $logo_field ] ) && ! empty( $company[ $logo_field ] ) ) {
+                 $logo_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $company[ $logo_field ] );
+                 $logo_id = isset( $attachment_ids[ $logo_key ] ) ? $attachment_ids[ $logo_key ] : 0;
+                 // Convert ID to URL (ACF field return_format is "url")
+                 $logo_url = $logo_id ? wp_get_attachment_url( $logo_id ) : '';
+                 $company_data[ $logo_field ] = $logo_url ?: '';
+             } else {
+                 $company_data[ $logo_field ] = '';
+             }
+         }
         
         // Add other company fields
         $other_fields = array( 'color_principal', 'color_secundario', 'color_texto', 'color_fondo', 
@@ -756,10 +769,21 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
                   'formulario_news' => '[contact-form-7 id="' . $news_form_id . '" title="' . $newsletter['formulario_news'] . '"]',
               );
              
-             update_field( 'newsletter', $newsletter_data, 'option' );
+              update_field( 'newsletter', $newsletter_data, 'option' );
+          }
+         
+         // Update formulario_producto (product inquiry form)
+         if ( isset( $home_config['formulario_producto'] ) && function_exists( 'update_field' ) ) {
+             $product_form_name = $home_config['formulario_producto'];
+             $product_form_id = isset( $form_ids[ $product_form_name ] ) ? $form_ids[ $product_form_name ] : 0;
+             
+             if ( $product_form_id ) {
+                 $product_form_shortcode = '[contact-form-7 id="' . $product_form_id . '" title="' . $product_form_name . '"]';
+                 update_field( 'formulario_producto', $product_form_shortcode, 'option' );
+             }
          }
-        
-        // Update redes_seccion (as GROUP field)
+         
+         // Update redes_seccion (as GROUP field)
         if ( isset( $home_config['redes_seccion'] ) && function_exists( 'update_field' ) ) {
             $redes = $home_config['redes_seccion'];
             $redes_bg_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $redes['fondo_redes'] );
