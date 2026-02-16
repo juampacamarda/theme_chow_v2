@@ -473,6 +473,17 @@ footer{
     background-color: var(--chow_txt) !important;
 }
 CSS,
+            
+            // Menu configuration (shared across all demos)
+            'menu' => array(
+                'name'  => 'Menú Principal',
+                'items' => array(
+                    array( 'title' => 'Inicio', 'slug' => 'home', 'parent' => null ),
+                    array( 'title' => 'Sobre Nosotros', 'slug' => 'sobre-nosotros', 'parent' => null ),
+                    array( 'title' => 'Preguntas Frecuentes', 'slug' => 'preguntas-frecuentes', 'parent' => null ),
+                    array( 'title' => 'Contacto', 'slug' => 'contacto', 'parent' => null ),
+                ),
+            ),
         );
     }
 }
