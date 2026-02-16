@@ -339,13 +339,13 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     ),
                 ),
                 
-                // Newsletter section (GROUP field)
-                'newsletter' => array(
-                    'titulo'       => 'Suscribite a Nuestro Newsletter',
-                    'descripcion'  => 'Recibe ofertas exclusivas y novedades literarias directamente en tu inbox',
-                    'fondo'        => 'fondo-news.png',
-                    'form_id'      => 'Newsletter Librería', // Will be replaced with actual form ID
-                ),
+                 // Newsletter section (GROUP field)
+                 'newsletter' => array(
+                     'titulo'           => 'Suscribite a Nuestro Newsletter',
+                     'descripcion'      => 'Recibe ofertas exclusivas y novedades literarias directamente en tu inbox',
+                     'news_bg'          => 'fondo-news.png',
+                     'formulario_news'  => 'Newsletter Librería', // Will be replaced with actual form ID
+                 ),
                 
                 // Redes (social) section (GROUP field)
                 'redes_seccion' => array(
@@ -354,51 +354,39 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'fondo_redes' => 'fondo-redes.png',
                 ),
                 
-                // Productos destacados (REPEATER field - 6 productos)
-                'carrusel_productos_destacados' => array(
-                    array(
-                        'nombre'      => 'El Quijote de la Mancha',
-                        'descripcion' => 'La novela clásica de Miguel de Cervantes',
-                        'imagen'      => 'libreria-producto01.png',
-                        'link'        => '/?p=1',
-                        'precio'      => '34.99',
-                    ),
-                    array(
-                        'nombre'      => 'Orgullo y Prejuicio',
-                        'descripcion' => 'Novela romántica de Jane Austen',
-                        'imagen'      => 'libreria-producto02.png',
-                        'link'        => '/?p=2',
-                        'precio'      => '29.99',
-                    ),
-                    array(
-                        'nombre'      => 'Cien Años de Soledad',
-                        'descripcion' => 'Obra maestra de García Márquez',
-                        'imagen'      => 'libreria-producto03.png',
-                        'link'        => '/?p=3',
-                        'precio'      => '35.99',
-                    ),
-                    array(
-                        'nombre'      => 'La Metamorfosis',
-                        'descripcion' => 'Novela de Franz Kafka',
-                        'imagen'      => 'libreria-producto04.png',
-                        'link'        => '/?p=4',
-                        'precio'      => '18.99',
-                    ),
-                    array(
-                        'nombre'      => 'El Gran Gatsby',
-                        'descripcion' => 'Novela de F. Scott Fitzgerald',
-                        'imagen'      => 'libreria-producto05.png',
-                        'link'        => '/?p=5',
-                        'precio'      => '22.99',
-                    ),
-                    array(
-                        'nombre'      => '1984',
-                        'descripcion' => 'Novela distópica de George Orwell',
-                        'imagen'      => 'libreria-producto06.png',
-                        'link'        => '/?p=6',
-                        'precio'      => '25.99',
-                    ),
-                ),
+                 // Productos destacados (REPEATER field - 6 productos)
+                 'carrusel_productos_destacados' => array(
+                     array(
+                         'imagen'            => 'libreria-producto01.png',
+                         'nombre_del_link'   => 'El Quijote de la Mancha',
+                         'link'              => array( 'url' => '/?p=1', 'title' => 'El Quijote de la Mancha', 'target' => '' ),
+                     ),
+                     array(
+                         'imagen'            => 'libreria-producto02.png',
+                         'nombre_del_link'   => 'Orgullo y Prejuicio',
+                         'link'              => array( 'url' => '/?p=2', 'title' => 'Orgullo y Prejuicio', 'target' => '' ),
+                     ),
+                     array(
+                         'imagen'            => 'libreria-producto03.png',
+                         'nombre_del_link'   => 'Cien Años de Soledad',
+                         'link'              => array( 'url' => '/?p=3', 'title' => 'Cien Años de Soledad', 'target' => '' ),
+                     ),
+                     array(
+                         'imagen'            => 'libreria-producto04.png',
+                         'nombre_del_link'   => 'La Metamorfosis',
+                         'link'              => array( 'url' => '/?p=4', 'title' => 'La Metamorfosis', 'target' => '' ),
+                     ),
+                     array(
+                         'imagen'            => 'libreria-producto05.png',
+                         'nombre_del_link'   => 'El Gran Gatsby',
+                         'link'              => array( 'url' => '/?p=5', 'title' => 'El Gran Gatsby', 'target' => '' ),
+                     ),
+                     array(
+                         'imagen'            => 'libreria-producto06.png',
+                         'nombre_del_link'   => '1984',
+                         'link'              => array( 'url' => '/?p=6', 'title' => '1984', 'target' => '' ),
+                     ),
+                 ),
                 
                 // Sections visibility
                 'sections' => array(

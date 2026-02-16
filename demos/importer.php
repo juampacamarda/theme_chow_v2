@@ -742,25 +742,25 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
             update_field( 'bloques_productos', $home_config['product_blocks'], 'option' );
         }
         
-        // Update newsletter (as GROUP field)
-        if ( isset( $home_config['newsletter'] ) && function_exists( 'update_field' ) ) {
-            $newsletter = $home_config['newsletter'];
-            $news_bg_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $newsletter['fondo'] );
-            $news_bg_id = isset( $attachment_ids[ $news_bg_key ] ) ? $attachment_ids[ $news_bg_key ] : 0;
-            
-            // Find the newsletter form ID
-            $news_form_id = isset( $form_ids[ $newsletter['form_id'] ] ) ? $form_ids[ $newsletter['form_id'] ] : 0;
-            
-            // Save as GROUP field
-            $newsletter_data = array(
-                'titulo' => $newsletter['titulo'],
-                'descripcion' => $newsletter['descripcion'],
-                'fondo' => $news_bg_id,
-                'form_id' => $news_form_id,
-            );
-            
-            update_field( 'newsletter', $newsletter_data, 'option' );
-        }
+         // Update newsletter (as GROUP field)
+         if ( isset( $home_config['newsletter'] ) && function_exists( 'update_field' ) ) {
+             $newsletter = $home_config['newsletter'];
+             $news_bg_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $newsletter['news_bg'] );
+             $news_bg_id = isset( $attachment_ids[ $news_bg_key ] ) ? $attachment_ids[ $news_bg_key ] : 0;
+             
+             // Find the newsletter form ID
+             $news_form_id = isset( $form_ids[ $newsletter['formulario_news'] ] ) ? $form_ids[ $newsletter['formulario_news'] ] : 0;
+             
+             // Save as GROUP field
+             $newsletter_data = array(
+                 'titulo' => $newsletter['titulo'],
+                 'descripcion' => $newsletter['descripcion'],
+                 'news_bg' => $news_bg_id,
+                 'formulario_news' => $news_form_id,
+             );
+             
+             update_field( 'newsletter', $newsletter_data, 'option' );
+         }
         
         // Update redes_seccion (as GROUP field)
         if ( isset( $home_config['redes_seccion'] ) && function_exists( 'update_field' ) ) {
@@ -778,26 +778,24 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
             update_field( 'redes_seccion', $redes_data, 'option' );
         }
         
-        // Update carrusel_productos_destacados (as REPEATER field)
-        if ( isset( $home_config['carrusel_productos_destacados'] ) && function_exists( 'update_field' ) ) {
-            $carrusel = $home_config['carrusel_productos_destacados'];
-            $carrusel_data = array();
-            
-            foreach ( $carrusel as $producto ) {
-                $prod_image_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $producto['imagen'] );
-                $prod_image_id = isset( $attachment_ids[ $prod_image_key ] ) ? $attachment_ids[ $prod_image_key ] : 0;
-                
-                $carrusel_data[] = array(
-                    'nombre' => $producto['nombre'],
-                    'descripcion' => $producto['descripcion'],
-                    'imagen' => $prod_image_id,
-                    'link' => $producto['link'],
-                    'precio' => $producto['precio'],
-                );
-            }
-            
-            update_field( 'carrusel_productos_destacados', $carrusel_data, 'option' );
-        }
+         // Update carrusel_productos_destacados (as REPEATER field)
+         if ( isset( $home_config['carrusel_productos_destacados'] ) && function_exists( 'update_field' ) ) {
+             $carrusel = $home_config['carrusel_productos_destacados'];
+             $carrusel_data = array();
+             
+             foreach ( $carrusel as $producto ) {
+                 $prod_image_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $producto['imagen'] );
+                 $prod_image_id = isset( $attachment_ids[ $prod_image_key ] ) ? $attachment_ids[ $prod_image_key ] : 0;
+                 
+                 $carrusel_data[] = array(
+                     'imagen' => $prod_image_id,
+                     'nombre_del_link' => $producto['nombre_del_link'],
+                     'link' => $producto['link'],
+                 );
+             }
+             
+             update_field( 'carrusel_productos_destacados', $carrusel_data, 'option' );
+         }
     }
     
     // Store demo info
@@ -857,15 +855,15 @@ function chow_update_menu( $demo ) {
         }
     }
     
-    // Set as Primary Menu
-    $theme_locations = get_theme_mod( 'nav_menu_locations' );
-    if ( ! $theme_locations ) {
-        $theme_locations = array();
-    }
-    
-    // Assuming the primary menu location is 'primary' (adjust if needed)
-    $theme_locations['primary'] = $menu_id;
-    set_theme_mod( 'nav_menu_locations', $theme_locations );
+     // Set as Primary Menu (theme location is 'superior')
+     $theme_locations = get_theme_mod( 'nav_menu_locations' );
+     if ( ! $theme_locations ) {
+         $theme_locations = array();
+     }
+     
+     // Theme registers menu location as 'superior'
+     $theme_locations['superior'] = $menu_id;
+     set_theme_mod( 'nav_menu_locations', $theme_locations );
     
     // Mark menu as demo content
     update_term_meta( $menu_id, '_demo_id', $demo_id );
