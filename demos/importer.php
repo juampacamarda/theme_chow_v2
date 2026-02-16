@@ -1387,11 +1387,13 @@ function chow_update_menu( $demo ) {
         $menu_item_object_id = 0;
         
         // Special handling for "Tienda" - link to WooCommerce shop page dynamically
+        $menu_item_object = '';
         if ( 'Tienda' === $item_data['title'] && function_exists( 'wc_get_page_id' ) ) {
             $shop_page_id = wc_get_page_id( 'shop' );
-            if ( $shop_page_id ) {
+            if ( $shop_page_id && $shop_page_id > 0 ) {
                 // Use WooCommerce Shop page as menu item object
                 $menu_item_type = 'post_type';
+                $menu_item_object = 'page';
                 $menu_item_object_id = $shop_page_id;
                 $item_url = get_permalink( $shop_page_id );
             }
@@ -1410,6 +1412,7 @@ function chow_update_menu( $demo ) {
             $item_args['menu-item-url'] = $item_url;
         } else {
             $item_args['menu-item-object-id'] = $menu_item_object_id;
+            $item_args['menu-item-object'] = $menu_item_object;
         }
         
         // Update existing item or create new one
