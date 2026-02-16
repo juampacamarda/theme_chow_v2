@@ -1054,14 +1054,39 @@ function chow_update_menu( $demo ) {
             }
         }
         
-        // Update existing item or create new one
-        wp_update_nav_menu_item( $menu_id, $item_id, array(
+        // Prepare menu item arguments
+        $item_url = $item_data['url'];
+        $menu_item_type = 'custom';
+        $menu_item_object_id = 0;
+        
+        // Special handling for "Tienda" - link to WooCommerce shop page dynamically
+        if ( 'Tienda' === $item_data['title'] && function_exists( 'wc_get_page_id' ) ) {
+            $shop_page_id = wc_get_page_id( 'shop' );
+            if ( $shop_page_id ) {
+                // Use WooCommerce Shop page as menu item object
+                $menu_item_type = 'post_type';
+                $menu_item_object_id = $shop_page_id;
+                $item_url = get_permalink( $shop_page_id );
+            }
+        }
+        
+        // Build menu item arguments
+        $item_args = array(
             'menu-item-title'      => $item_data['title'],
-            'menu-item-url'        => $item_data['url'],
             'menu-item-status'     => 'publish',
-            'menu-item-type'       => 'custom',
+            'menu-item-type'       => $menu_item_type,
             'menu-item-parent-id'  => $item_data['parent'] ?? 0,
-        ) );
+        );
+        
+        // Add type-specific attributes
+        if ( 'custom' === $menu_item_type ) {
+            $item_args['menu-item-url'] = $item_url;
+        } else {
+            $item_args['menu-item-object-id'] = $menu_item_object_id;
+        }
+        
+        // Update existing item or create new one
+        wp_update_nav_menu_item( $menu_id, $item_id, $item_args );
     }
     
      // Set as Primary Menu (theme location is 'superior')
