@@ -20,6 +20,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
             'description' => 'Un sitio elegante para una tienda de libros con catálogo de novelas, poesía y autoayuda. Incluye 8 productos destacados, página de preguntas frecuentes y formularios de contacto.',
             'image'       => 'libreria-cover.png', // Demo card image
             'version'     => '1.0',
+            'card_style'  => 'hover_visual', // Estilo de tarjeta por defecto: 'classic' o 'hover_visual'
             
             // Company Configuration
             'company' => array(
@@ -325,7 +326,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                         'cantidad'    => 4,
                         'layout'      => 'columnas',
                         'columnas'    => 'col-lg-3',
-                        'card_style'  => 'classic',
+                        'card_style'  => 'hover_visual',
                     ),
                     array(
                         'titulo'      => 'Recomendados',

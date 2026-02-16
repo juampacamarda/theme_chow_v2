@@ -653,12 +653,17 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
         update_field( 'empresa', $company_data, 'option' );
     }
     
-    // Update colors
-    if ( isset( $demo['theme_options'] ) && function_exists( 'update_field' ) ) {
-        foreach ( $demo['theme_options'] as $field_name => $field_value ) {
-            update_field( $field_name, $field_value, 'option' );
-        }
-    }
+     // Update colors
+     if ( isset( $demo['theme_options'] ) && function_exists( 'update_field' ) ) {
+         foreach ( $demo['theme_options'] as $field_name => $field_value ) {
+             update_field( $field_name, $field_value, 'option' );
+         }
+     }
+     
+     // Update card_style (product card design for this demo)
+     if ( isset( $demo['card_style'] ) && function_exists( 'update_field' ) ) {
+         update_field( 'card_style_default', $demo['card_style'], 'option' );
+     }
     
     // Update home configuration
     if ( isset( $demo['home'] ) ) {
