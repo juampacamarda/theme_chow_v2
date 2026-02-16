@@ -359,7 +359,10 @@ function chow_do_import_internal( $demo_id, $action_type = 'import' ) {
     }
     
     // Step 5: Create pages
-    chow_importer_log( "PASO 5: Creando páginas" );
+    chow_importer_log( "PASO 5: Creando páginas" ) ;
+    if ( empty( $demo['pages'] ) ) {
+        chow_importer_log( "⚠ No hay páginas en la configuración de la demo", 'WARNING' );
+    }
     $pages = chow_create_pages( $demo, $attachment_ids, $form_ids );
     if ( is_wp_error( $pages ) ) {
         $error = $pages->get_error_message();
@@ -816,10 +819,11 @@ function chow_create_products( $demo, $attachment_ids, $category_ids ) {
     $product_count = 0;
     $success_count = 0;
     $error_count = 0;
+    $products_created = array();
     
     if ( empty( $demo['products'] ) ) {
         chow_importer_log( "⚠ No hay productos en la configuración de la demo", 'WARNING' );
-        return true;
+        return $products_created;
     }
     
     $total_products = count( $demo['products'] );
@@ -937,6 +941,7 @@ function chow_create_products( $demo, $attachment_ids, $category_ids ) {
             
             chow_importer_log( "    ✓ Producto creado exitosamente" );
             $success_count++;
+            $products_created[] = $product_id;
             
         } catch ( Exception $e ) {
             chow_importer_log( "    ✗ Excepción: " . $e->getMessage(), 'ERROR' );
@@ -945,7 +950,7 @@ function chow_create_products( $demo, $attachment_ids, $category_ids ) {
     }
     
     chow_importer_log( "✓ Productos procesados - Exitosos: $success_count, Errores: $error_count, Total: $total_products" );
-    return true;
+    return $products_created;
 }
 
 /**
@@ -953,6 +958,7 @@ function chow_create_products( $demo, $attachment_ids, $category_ids ) {
  */
 function chow_create_pages( $demo, $attachment_ids, $form_ids ) {
     $demo_id = isset( $demo['id'] ) ? $demo['id'] : '';
+    $pages_created = array();
     
     foreach ( $demo['pages'] as $page_data ) {
         // Check if page already exists
@@ -1046,10 +1052,11 @@ function chow_create_pages( $demo, $attachment_ids, $form_ids ) {
                
                // Mark as demo content
                update_post_meta( $page_id, '_demo_id', $demo_id );
+               $pages_created[] = $page_id;
            }
     }
     
-    return true;
+    return $pages_created;
 }
 
 /**
