@@ -360,7 +360,7 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                         'titulo'      => 'Productos Destacados',
                         'descripcion' => 'Nuestras creaciones más populares',
                         'tipo'        => 'destacados',
-                        'cantidad'    => 6,
+                        'cantidad'    => 4,
                         'layout'      => 'columnas',
                         'columnas'    => 'col-lg-4',
                         'card_style'  => 'hover_visual',
@@ -369,7 +369,7 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                         'titulo'      => 'Todas Nuestras Delicias',
                         'descripcion' => 'Explora nuestro catálogo completo',
                         'tipo'        => 'ultimos',
-                        'cantidad'    => 6,
+                        'cantidad'    => 3,
                         'layout'      => 'carousel',
                         'columnas'    => 'col-lg-4',
                         'card_style'  => 'hover_visual',
@@ -392,6 +392,39 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                     'titulo'      => 'Síguenos en Redes',
                     'descripcion' => 'Conecta con nosotros para ver nuestras últimas creaciones',
                     'fondo_redes' => 'pasteleria-redesbg.webp',
+                ),
+                
+                // Featured carousel title
+                'titulo_carrusel_destacados' => 'Nuestras Tentaciones',
+                'descripcion_carrusel_destacados' => 'Las creaciones que nuestros clientes más aman',
+                
+                // Featured products carousel with static images
+                'carrusel_productos_destacados' => array(
+                    array(
+                        'imagen'            => 'pasteleria-tentacion-01.webp',
+                        'nombre_del_link'   => 'Croissant de Mantequilla',
+                        'link'              => array( 'url' => '/shop', 'title' => 'Croissant de Mantequilla', 'target' => '' ),
+                    ),
+                    array(
+                        'imagen'            => 'pasteleria-tentacion-02.webp',
+                        'nombre_del_link'   => 'Lemon Pie Casero',
+                        'link'              => array( 'url' => '/shop', 'title' => 'Lemon Pie Casero', 'target' => '' ),
+                    ),
+                    array(
+                        'imagen'            => 'pasteleria-tentacion-03.webp',
+                        'nombre_del_link'   => 'Torta Red Velvet',
+                        'link'              => array( 'url' => '/shop', 'title' => 'Torta Red Velvet', 'target' => '' ),
+                    ),
+                    array(
+                        'imagen'            => 'pasteleria-tentacion-04.webp',
+                        'nombre_del_link'   => 'Torta Chocolate',
+                        'link'              => array( 'url' => '/shop', 'title' => 'Torta Chocolate', 'target' => '' ),
+                    ),
+                    array(
+                        'imagen'            => 'pasteleria-tentacion-05.webp',
+                        'nombre_del_link'   => 'Chipa Paraguaya',
+                        'link'              => array( 'url' => '/shop', 'title' => 'Chipa Paraguaya', 'target' => '' ),
+                    ),
                 ),
                 
                 // Sections visibility
