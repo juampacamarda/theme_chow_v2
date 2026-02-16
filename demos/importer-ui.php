@@ -163,20 +163,49 @@ $demos[] = chow_get_demo_libreria();
                 </p>
             </div>
             
-            <div id="modal-content-existing" class="modal-content-section" style="display: none;">
-                <p><?php esc_html_e( 
-                    'Ya existe contenido en tu sitio. ¿Deseas sobrescribirlo con el demo?', 
-                    'chow-theme' 
-                ); ?></p>
-                <p class="demo-name-display" style="font-weight: bold; margin: 15px 0;"></p>
-                <div class="alert alert-danger">
-                    <strong><?php esc_html_e( 'Advertencia:', 'chow-theme' ); ?></strong><br>
-                    <?php esc_html_e( 
-                        'Este demo sobrescribirá tu contenido actual. Asegúrate de tener una copia de seguridad.', 
-                        'chow-theme' 
-                    ); ?>
-                </div>
-            </div>
+             <div id="modal-content-existing" class="modal-content-section" style="display: none;">
+                 <p><?php esc_html_e( 
+                     'Ya existe contenido en tu sitio. ¿Deseas sobrescribirlo con el demo?', 
+                     'chow-theme' 
+                 ); ?></p>
+                 <p class="demo-name-display" style="font-weight: bold; margin: 15px 0;"></p>
+                 <div class="alert alert-danger">
+                     <strong><?php esc_html_e( 'Advertencia:', 'chow-theme' ); ?></strong><br>
+                     <?php esc_html_e( 
+                         'Este demo sobrescribirá tu contenido actual. Asegúrate de tener una copia de seguridad.', 
+                         'chow-theme' 
+                     ); ?>
+                 </div>
+             </div>
+             
+             <div id="modal-content-restore" class="modal-content-section" style="display: none;">
+                 <p style="color: #dc3545; font-weight: bold; margin-bottom: 15px;">
+                     ⚠️ <?php esc_html_e( '¡ATENCIÓN! Restaurará la plantilla original', 'chow-theme' ); ?>
+                 </p>
+                 <p class="demo-name-display" style="font-weight: bold; margin: 15px 0;"></p>
+                 
+                 <div class="alert alert-danger" style="background: #f8d7da; border: 2px solid #f5c6cb; padding: 15px; margin: 15px 0;">
+                     <strong><?php esc_html_e( '⚠️ Se ELIMINARÁ TODO:', 'chow-theme' ); ?></strong>
+                     <ul style="margin: 10px 0 0 20px;">
+                         <li><?php esc_html_e( 'Todos los productos personalizados', 'chow-theme' ); ?></li>
+                         <li><?php esc_html_e( 'Todas las páginas personalizadas', 'chow-theme' ); ?></li>
+                         <li><?php esc_html_e( 'Todos los ajustes personalizados', 'chow-theme' ); ?></li>
+                         <li><?php esc_html_e( 'Colores, imágenes y configuración personalizada', 'chow-theme' ); ?></li>
+                         <li><?php esc_html_e( 'Formularios y estructuras de menú personalizadas', 'chow-theme' ); ?></li>
+                     </ul>
+                 </div>
+                 
+                 <div style="background: #e8f4f8; border-left: 4px solid #0099cc; padding: 12px; margin: 15px 0;">
+                     <strong style="color: #0066aa;"><?php esc_html_e( '✓ Se restaurará:', 'chow-theme' ); ?></strong>
+                     <p style="margin: 8px 0 0 0; color: #333;">
+                         <?php esc_html_e( 'La plantilla original del demo con todos sus contenidos, estilos y configuración por defecto.', 'chow-theme' ); ?>
+                     </p>
+                 </div>
+                 
+                 <p style="color: #dc3545; margin-top: 15px;">
+                     <strong><?php esc_html_e( 'Esta acción NO se puede deshacer. Se recomienda hacer backup antes de continuar.', 'chow-theme' ); ?></strong>
+                 </p>
+             </div>
         </div>
         
         <div class="chow-modal-footer">

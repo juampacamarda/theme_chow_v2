@@ -91,18 +91,29 @@
           
           // If this is a restore or reimport, show the overwrite dialog directly
           if (isReimport || isRestore) {
-              modal.find('#modal-content-initial').hide();
-              modal.find('#modal-content-existing').show();
               modal.find('#confirm-import-btn').hide();
               modal.find('#confirm-overwrite-btn').show();
               
               // Customize message based on action type
               if (isRestore) {
-                  modal.find('#modal-content-existing p:first').text('¿Deseas restaurar la plantilla original? Se eliminará TODO el contenido actual (productos, páginas personalizadas, etc.) y será reemplazado con la plantilla original.');
-                  modal.find('#confirm-overwrite-btn').text('Restaurar Plantilla');
+                  // Show restore-specific warning
+                  modal.find('#modal-content-initial').hide();
+                  modal.find('#modal-content-existing').hide();
+                  modal.find('#modal-content-restore').show();
+                  modal.find('#confirm-overwrite-btn').text('Restaurar Plantilla').css({
+                      'background-color': '#dc3545',
+                      'border-color': '#dc3545'
+                  });
               } else {
+                  // Show reimport warning (less aggressive)
+                  modal.find('#modal-content-initial').hide();
+                  modal.find('#modal-content-existing').show();
+                  modal.find('#modal-content-restore').hide();
                   modal.find('#modal-content-existing p:first').text('¿Deseas reimportar este demo? El contenido anterior será eliminado y reemplazado con la versión actualizada.');
-                  modal.find('#confirm-overwrite-btn').text('Sobrescribir y Continuar');
+                  modal.find('#confirm-overwrite-btn').text('Sobrescribir y Continuar').css({
+                      'background-color': '#dc3545',
+                      'border-color': '#dc3545'
+                  });
               }
           } else {
               // Check if there's existing content by sending an AJAX check
@@ -113,14 +124,19 @@
                       // Show the "existing content" version
                       modal.find('#modal-content-initial').hide();
                       modal.find('#modal-content-existing').show();
+                      modal.find('#modal-content-restore').hide();
                       modal.find('#confirm-import-btn').hide();
                       modal.find('#confirm-overwrite-btn').show();
                       modal.find('#modal-content-existing p:first').text('Ya existe contenido en tu sitio. ¿Deseas sobrescribirlo con el demo?');
-                      modal.find('#confirm-overwrite-btn').text('Sobrescribir y Continuar');
+                      modal.find('#confirm-overwrite-btn').text('Sobrescribir y Continuar').css({
+                          'background-color': '#dc3545',
+                          'border-color': '#dc3545'
+                      });
                   } else {
                       // Show the regular version
                       modal.find('#modal-content-initial').show();
                       modal.find('#modal-content-existing').hide();
+                      modal.find('#modal-content-restore').hide();
                       modal.find('#confirm-import-btn').show();
                       modal.find('#confirm-overwrite-btn').hide();
                   }
