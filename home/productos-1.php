@@ -93,8 +93,18 @@
                         if ( 'carousel' === $layout ) :
                             // Layout: Carrusel Owl Carousel
                             if ( $products_query->have_posts() ) :
+                                // Detectar qué demo está activo para agregar clase específica
+                                $demo_activo = null;
+                                $demos_disponibles = array('pasteleria', 'libreria', 'yoga', 'consultorio', 'academia', 'restaurante');
+                                foreach ($demos_disponibles as $demo_id) {
+                                    if (get_option('chow_demo_'.$demo_id.'_active')) {
+                                        $demo_activo = $demo_id;
+                                        break;
+                                    }
+                                }
+                                $clase_carousel_productos = $demo_activo ? 'productos-carousel-'.$demo_activo : '';
                                 ?>
-                                <ul class="products productos-carousel owl-carousel owl-theme">
+                                <ul class="products productos-carousel owl-carousel owl-theme <?php echo esc_attr($clase_carousel_productos); ?>">
                                     <?php
                                     while ( $products_query->have_posts() ) : $products_query->the_post();
                                         global $product;
