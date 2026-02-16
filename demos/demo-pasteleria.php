@@ -445,7 +445,7 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
 }
 
 .main-slider-class {
-    height: 600px !important;
+    height: 500px !important;
 }
 .main-slider-class .slick-list,
 .main-slider-class .slick-track,
