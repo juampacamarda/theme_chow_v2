@@ -1458,23 +1458,9 @@ function chow_update_menu( $demo ) {
         $menu_item_object_id = 0;
         $page_found = false;
         
-        // Special handling for "Tienda" - detect Shop page slug and title dynamically
+        // Skip "Tienda" here if present in demo config, we will handle it centrally at the end
         if ( 'Tienda' === $item_data['title'] ) {
-            $shop_details = chow_get_shop_page_details();
-            
-            if ( $shop_details ) {
-                // Usar URL con el slug real de la Shop page
-                $item_url = home_url( '/' . $shop_details['shop_slug'] . '/' );
-                $item_data['title'] = $shop_details['shop_title']; // Usar el título real de la Shop page
-                chow_importer_log( "    → Tienda detectado: slug='{$shop_details['shop_slug']}', título='{$shop_details['shop_title']}'" );
-            } else {
-                // Fallback si WooCommerce no está disponible
-                $item_url = home_url( '/shop/' );
-                chow_importer_log( "    ⚠ Shop page no detectable, usando /shop/ como fallback", 'WARNING' );
-            }
-            
-            $menu_item_type = 'custom';
-            $page_found = true;
+            continue;
         }
         
         // Buscar página normal por slug
@@ -1521,38 +1507,28 @@ function chow_update_menu( $demo ) {
         }
     }
     
-    // Always add "Tienda" item to the menu if it doesn't already exist
-    // This ensures Shop page link is always present, independent of demo configuration
-    $tienda_exists = false;
-    foreach ( $demo['menu']['items'] as $item ) {
-        if ( 'Tienda' === $item['title'] ) {
-            $tienda_exists = true;
-            break;
-        }
-    }
+    // Always add "Tienda" item to the menu - this is now the ONLY place where Tienda is added
+    // This ensures consistency regardless of whether demo config has it or not
+    chow_importer_log( "  + Agregando item 'Tienda' (Shop Page) al menú" );
     
-    if ( ! $tienda_exists ) {
-        chow_importer_log( "  + Agregando automáticamente item 'Tienda' al menú" );
-        
-        $shop_details = chow_get_shop_page_details();
-        $tienda_title = $shop_details ? $shop_details['shop_title'] : 'Tienda';
-        $tienda_url = $shop_details ? home_url( '/' . $shop_details['shop_slug'] . '/' ) : home_url( '/shop/' );
-        
-        $tienda_args = array(
-            'menu-item-status'  => 'publish',
-            'menu-item-type'    => 'custom',
-            'menu-item-title'   => $tienda_title,
-            'menu-item-url'     => $tienda_url,
-            'menu-item-parent-id' => 0,
-        );
-        
-        $tienda_result = wp_update_nav_menu_item( $menu_id, 0, $tienda_args );
-        
-        if ( is_wp_error( $tienda_result ) ) {
-            chow_importer_log( "    ✗ Error creando menu item 'Tienda': " . $tienda_result->get_error_message(), 'ERROR' );
-        } else {
-            chow_importer_log( "    ✓ 'Tienda' creado como Custom Link (URL: {$tienda_url}, Título: {$tienda_title})" );
-        }
+    $shop_details = chow_get_shop_page_details();
+    $tienda_title = $shop_details ? $shop_details['shop_title'] : 'Tienda';
+    $tienda_url = $shop_details ? home_url( '/' . $shop_details['shop_slug'] . '/' ) : home_url( '/shop/' );
+    
+    $tienda_args = array(
+        'menu-item-status'  => 'publish',
+        'menu-item-type'    => 'custom',
+        'menu-item-title'   => $tienda_title,
+        'menu-item-url'     => $tienda_url,
+        'menu-item-parent-id' => 0,
+    );
+    
+    $tienda_result = wp_update_nav_menu_item( $menu_id, 0, $tienda_args );
+    
+    if ( is_wp_error( $tienda_result ) ) {
+        chow_importer_log( "    ✗ Error creando menu item 'Tienda': " . $tienda_result->get_error_message(), 'ERROR' );
+    } else {
+        chow_importer_log( "    ✓ 'Tienda' creado como Custom Link (URL: {$tienda_url}, Título: {$tienda_title})" );
     }
     
      // Set as Primary Menu (theme location is 'superior')
