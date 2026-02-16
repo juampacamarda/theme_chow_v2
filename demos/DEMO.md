@@ -274,20 +274,44 @@ array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
 
 ---
 
-### ⚠️ PROBLEMA 5: Imágenes no Cargan (General)
+### ✅ PROBLEMA 5: Imágenes no Cargan (General) - **RESUELTO**
 
-**Síntoma**: Logos, imágenes de productos, sliders y fondos de secciones no se visualizan.
+**Síntoma**: Logos, imágenes de productos, sliders y fondos de secciones no se visualizaban.
 
-**Causa**: Inconsistencia en la generación de `keys` para `$attachment_ids` y la forma en que los campos ACF esperaban el valor (ID vs URL).
+**Causa**: Inconsistencia en el formato de `keys` al buscar attachment IDs. La función `chow_import_images` incluía `.webp` al generar keys (línea 668), pero las búsquedas en 10 lugares NO incluían `.webp` en sus arrays de extensiones.
 
-**SOLUCIÓN**:
-1. **Key Generation:** La función `chow_import_images` ahora genera keys manteniendo el nombre completo del archivo (ej. `libreria-logo-color`) en lugar de remover el prefijo (`logo-color`).
-2. **Background Image Filenames:** `demos/demo-libreria.php` fue actualizado para referenciar `fondo-news.png` y `fondo-redes.png` con el prefijo `libreria-` (ej. `libreria-fondo-news.png`), para que coincida con la convención de nombres.
-3. **Logo Storage:** Los campos de logo en ACF ahora almacenan directamente el `ID` del attachment, permitiendo que ACF maneje la conversión a `URL` según su configuración `return_format`.
+**Ejemplo del problema**:
+```php
+// Al generar keys (línea 668) - INCLUÍA .webp ✅
+$key = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $base_filename );
+
+// Al buscar keys (líneas 1014, 1121, etc.) - NO INCLUÍA .webp ❌
+$logo_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $company['logo_field'] );
+```
+
+**Resultado**: Si el archivo era `libreria-logo-color.webp`:
+- Key generada: `libreria-logo-color` ✅
+- Key buscada: `libreria-logo-color.webp` ❌ (no coincidía)
+
+**SOLUCIÓN APLICADA** (Commit ed4646c):
+Agregado `.webp` a todos los `str_replace` que buscan keys de imágenes:
+1. **Línea 1014**: Imágenes de portada de páginas
+2. **Línea 1075**: Logos de empresa (desktop, mobile, footer)
+3. **Líneas 1121-1173**: Sliders 1 a 5 del home
+4. **Línea 1193**: Fondo de newsletter
+5. **Línea 1224**: Fondo de sección redes sociales
+6. **Línea 1243**: Imágenes del carousel de productos
 
 **Archivos Modificados**:
-- `demos/importer.php`: Lógica de generación de keys y almacenamiento de IDs.
-- `demos/demo-libreria.php`: Referencias de nombres de archivos de fondo.
+- `demos/importer.php`: 10 líneas actualizadas con soporte completo para `.webp`
+- Ahora todas las búsquedas de keys incluyen: `array( '.webp', '.png', '.jpg', '.jpeg', '.gif' )`
+
+**Verificación**:
+```bash
+# Todas las búsquedas ahora usan el mismo formato
+grep -n "str_replace.*\.webp.*\.png" demos/importer.php
+# Resultado: 11 coincidencias (generación + 10 búsquedas) ✅
+```
 
 ---
 
@@ -935,9 +959,11 @@ echo 'OK!' . PHP_EOL;
 ## Troubleshooting
 
 ### Logos no aparecen
-1. Verificar que el archivo existe en `demos/[nombre]/images/`
-2. Verificar que el nombre coincide (mayúsculas/minúsculas)
-3. Verificar que ACF esté guardando el ID de attachment, no la URL (ver "Logo Storage Format" en "Problemas Comunes")
+1. ✅ **RESUELTO (Commit ed4646c)**: Soporte completo para extensión .webp agregado
+2. Verificar que el archivo existe en `demos/[nombre]/images/`
+3. Verificar que el nombre coincide exactamente (mayúsculas/minúsculas)
+4. Verificar formato: debe ser `[demo-id]-[nombre].[extensión]` (ej. `libreria-logo-color.webp`)
+5. Verificar que ACF esté guardando el ID de attachment, no la URL
 
 ### Formularios no se muestran
 1. Verificar que `formulario_news` contiene el nombre del formulario, no un shortcode
@@ -954,8 +980,12 @@ echo 'OK!' . PHP_EOL;
 2. Verificar que pages existan con los slugs correctos
 
 ### Imágenes de fondo no cargan
-1. Verificar que el nombre del archivo en `demo-[nombre].php` incluye el prefijo del demo (ej. `libreria-fondo-news.png`)
-2. Verificar que el archivo existe con ese nombre exacto en `demos/[nombre]/images/`
+1. ✅ **RESUELTO (Commit ed4646c)**: Soporte completo para .webp en backgrounds (newsletter, redes)
+2. Verificar que el nombre del archivo en `demo-[nombre].php` incluye el prefijo del demo:
+   - ✅ Correcto: `'news_bg' => 'libreria-fondo-news.webp'`
+   - ❌ Incorrecto: `'news_bg' => 'fondo-news.webp'`
+3. Verificar que el archivo existe con ese nombre exacto en `demos/[nombre]/images/`
+4. Las extensiones soportadas son: `.webp`, `.png`, `.jpg`, `.jpeg`, `.gif`
 
 ---
 
