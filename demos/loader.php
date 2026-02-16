@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 $chow_available_demos = array(
     'libreria',
+    'pasteleria',
     'yoga',
     'consultorio',
     'academia',

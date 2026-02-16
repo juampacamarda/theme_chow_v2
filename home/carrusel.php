@@ -19,12 +19,24 @@
             <?php endif; ?>
         </div>
         <?php 
+        // Detectar qué demo está activo para agregar clase específica
+        $demo_activo = null;
+        $demos_disponibles = array('pasteleria', 'libreria', 'yoga', 'consultorio', 'academia', 'restaurante');
+        foreach ($demos_disponibles as $demo_id) {
+            if (get_option('chow_demo_'.$demo_id.'_active')) {
+                $demo_activo = $demo_id;
+                break;
+            }
+        }
+        $clase_carrusel = $demo_activo ? 'carrusel-'.$demo_activo : 'carrusel-default';
+        $clase_carrusel = apply_filters('chow_slide_prod_classes', $clase_carrusel);
+        
         // Acceder directamente al campo repeater
         $carrusel_productos = get_field('carrusel_productos_destacados', 'option') ?: array();
         
         if (!empty($carrusel_productos)) {
         ?>
-        <ul id="slide-prod" class="productos owl-carousel owl-theme">
+        <ul id="slide-prod" class="productos owl-carousel owl-theme <?php echo esc_attr($clase_carrusel); ?>">
             <?php foreach ($carrusel_productos as $producto) {
                 $imagen = isset($producto['imagen']) ? $producto['imagen'] : '';
                 $link = isset($producto['link']) ? $producto['link'] : array();
