@@ -138,7 +138,96 @@ $demos[] = chow_get_demo_pasteleria();
             </div>
         <?php endforeach; ?>
     </div>
+    
+    <!-- Logs Section -->
+    <div class="chow-importer-logs" style="margin-top: 40px; padding: 20px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 5px;">
+        <h3><?php esc_html_e( '📋 Registro de Importación', 'chow-theme' ); ?></h3>
+        <p><?php esc_html_e( 'Si hay problemas con la importación, revisa el registro de actividad:', 'chow-theme' ); ?></p>
+        
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button type="button" class="button button-secondary chow-view-logs-btn">
+                <?php esc_html_e( '📄 Ver Logs', 'chow-theme' ); ?>
+            </button>
+            <button type="button" class="button button-secondary chow-download-logs-btn">
+                <?php esc_html_e( '💾 Descargar Logs', 'chow-theme' ); ?>
+            </button>
+            <button type="button" class="button button-secondary chow-clear-logs-btn">
+                <?php esc_html_e( '🗑️ Limpiar Logs', 'chow-theme' ); ?>
+            </button>
+        </div>
+        
+        <div id="chow-logs-content" style="
+            margin-top: 15px; 
+            background: white; 
+            border: 1px solid #ccc; 
+            border-radius: 3px; 
+            padding: 15px; 
+            max-height: 400px; 
+            overflow-y: auto; 
+            font-family: monospace; 
+            font-size: 12px; 
+            display: none;
+            white-space: pre-wrap;
+            word-break: break-word;
+        "></div>
+    </div>
 </div>
+
+<script>
+jQuery(function($) {
+    $(document).on('click', '.chow-view-logs-btn', function(e) {
+        e.preventDefault();
+        var $btn = $(this);
+        $btn.prop('disabled', true);
+        
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'chow_get_importer_logs',
+                nonce: '<?php echo wp_create_nonce( 'chow_importer_logs' ); ?>'
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('#chow-logs-content').html(response.data).show();
+                } else {
+                    $('#chow-logs-content').html('Error: ' + response.data).show();
+                }
+            },
+            complete: function() {
+                $btn.prop('disabled', false);
+            }
+        });
+    });
+    
+    $(document).on('click', '.chow-download-logs-btn', function(e) {
+        e.preventDefault();
+        window.location.href = '<?php echo admin_url( 'admin-ajax.php' ); ?>?action=chow_download_importer_logs&nonce=<?php echo wp_create_nonce( 'chow_importer_logs' ); ?>';
+    });
+    
+    $(document).on('click', '.chow-clear-logs-btn', function(e) {
+        e.preventDefault();
+        if (!confirm('¿Estás seguro? Esto eliminará todos los logs.')) return;
+        
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'chow_clear_importer_logs',
+                nonce: '<?php echo wp_create_nonce( 'chow_importer_logs' ); ?>'
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Logs eliminados');
+                    $('#chow-logs-content').html('').hide();
+                } else {
+                    alert('Error: ' + response.data);
+                }
+            }
+        });
+    });
+});
+</script>
 
 <!-- Import Confirmation Modal -->
 <div id="chow-import-modal" class="chow-modal" style="display: none;">

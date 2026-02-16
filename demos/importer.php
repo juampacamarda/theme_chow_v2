@@ -69,17 +69,56 @@ function chow_importer_enqueue_assets( $hook ) {
     ) );
 }
 
+/**
+ * Inicializar error logging
+ */
+function chow_init_error_logging() {
+    set_error_handler( function( $errno, $errstr, $errfile, $errline ) {
+        $error_msg = sprintf(
+            "[%s] %s:%d - %s",
+            date( 'Y-m-d H:i:s' ),
+            basename( $errfile ),
+            $errline,
+            $errstr
+        );
+        chow_importer_log( $error_msg, 'ERROR' );
+        return false; // Let WordPress handle it too
+    });
+}
+
+/**
+ * Logging function for demo import process
+ */
+function chow_importer_log( $message, $level = 'INFO' ) {
+    $upload_dir = wp_upload_dir();
+    $log_file = $upload_dir['basedir'] . '/chow-importer.log';
+    $timestamp = date( 'Y-m-d H:i:s' );
+    $log_message = sprintf( "[%s] [%s] %s\n", $timestamp, $level, $message );
+    
+    @error_log( $log_message, 3, $log_file );
+}
+
 // AJAX handler for importing demo
 add_action( 'wp_ajax_chow_import_demo', 'chow_handle_import_ajax' );
 
 function chow_handle_import_ajax() {
+    chow_init_error_logging();
+    chow_importer_log( '=== INICIANDO IMPORTACIÓN DE DEMO ===' );
+    
+    // Aumentar límites
+    @set_time_limit( 900 );
+    @ini_set( 'memory_limit', '512M' );
+    chow_importer_log( 'Límites configurados: timeout=900s, memory=512M' );
+    
     // Verify nonce
     if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'chow_import_demo' ) ) {
+        chow_importer_log( 'Error: Verificación de nonce fallida', 'ERROR' );
         wp_send_json_error( array( 'message' => 'Verificación de seguridad fallida' ) );
     }
     
     // Check permissions
     if ( ! current_user_can( 'manage_options' ) ) {
+        chow_importer_log( 'Error: Usuario sin permisos', 'ERROR' );
         wp_send_json_error( array( 'message' => 'No tienes permisos para realizar esta acción' ) );
     }
     
@@ -87,19 +126,32 @@ function chow_handle_import_ajax() {
     $demo_id = isset( $_POST['demo_id'] ) ? sanitize_text_field( $_POST['demo_id'] ) : '';
     $action_type = isset( $_POST['action_type'] ) ? sanitize_text_field( $_POST['action_type'] ) : 'import';
     
+    chow_importer_log( "Parámetros: demo_id=$demo_id, action_type=$action_type" );
+    
     if ( empty( $demo_id ) ) {
+        chow_importer_log( 'Error: Demo ID vacío', 'ERROR' );
         wp_send_json_error( array( 'message' => 'Demo ID no válido' ) );
     }
     
     // Call the import function
+    chow_importer_log( "Iniciando importación de $demo_id ($action_type)" );
     $result = chow_do_import( $demo_id, $action_type );
     
     if ( is_wp_error( $result ) ) {
-        wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+        $error_msg = $result->get_error_message();
+        $error_data = $result->get_error_data();
+        chow_importer_log( "Error en importación: $error_msg", 'ERROR' );
+        if ( $error_data ) {
+            chow_importer_log( "Datos del error: " . json_encode( $error_data ), 'ERROR' );
+        }
+        wp_send_json_error( array( 'message' => $error_msg ) );
     }
     
     // Disparar hook para que otros complementos ejecuten tareas post-importación
     do_action( 'chow_demo_imported', $demo_id );
+    
+    chow_importer_log( "Importación completada exitosamente para $demo_id" );
+    chow_importer_log( '=== FIN DE IMPORTACIÓN ===' );
     
     // $result now contains success + skipped_plugins info
     wp_send_json_success( $result );
@@ -211,71 +263,171 @@ function chow_do_import( $demo_id, $action_type = 'import' ) {
  */
 function chow_do_import_internal( $demo_id, $action_type = 'import' ) {
     // Get demo configuration
+    chow_importer_log( "Obteniendo configuración para demo: $demo_id" );
+    
     if ( 'libreria' === $demo_id ) {
         $demo = chow_get_demo_libreria();
     } elseif ( 'pasteleria' === $demo_id ) {
         $demo = chow_get_demo_pasteleria();
     } else {
-        return new WP_Error( 'invalid_demo', 'Demo no encontrada' );
+        $error = "Demo no encontrada: $demo_id";
+        chow_importer_log( $error, 'ERROR' );
+        return new WP_Error( 'invalid_demo', $error );
     }
+    chow_importer_log( "Configuración cargada: " . $demo['name'] );
     
     // Detect missing plugins early
     $missing_plugins = chow_get_missing_plugins();
+    $missing_list = ! empty( $missing_plugins ) ? implode( ', ', array_keys( $missing_plugins ) ) : 'ninguno';
+    chow_importer_log( "Plugins faltantes: $missing_list" );
     
     // Check if demo already exists
     $demo_marker = 'chow_demo_' . $demo_id . '_imported';
     $demo_exists = get_option( $demo_marker );
+    chow_importer_log( "Demo ya importado: " . ( $demo_exists ? 'sí' : 'no' ) );
     
     // If demo exists and action is 'import', check for user content
     if ( $demo_exists && 'import' === $action_type ) {
-        // Check if there's user content (products, pages, etc.)
+        chow_importer_log( "Verificando contenido de usuario existente" );
         $has_user_content = chow_has_user_content();
         
         if ( $has_user_content ) {
-            return new WP_Error( 'content_exists', 'Ya existe contenido. Por favor, elige sobrescribir.' );
+            $error = 'Ya existe contenido. Por favor, elige sobrescribir.';
+            chow_importer_log( $error, 'WARNING' );
+            return new WP_Error( 'content_exists', $error );
         }
     }
     
     // Clear existing content if overwriting
     if ( 'overwrite' === $action_type ) {
+        chow_importer_log( "Limpiando contenido existente del demo" );
         chow_clear_demo_content( $demo_id );
     }
     
     // Step 1: Import images
+    chow_importer_log( "PASO 1: Importando imágenes" );
     $attachment_ids = chow_import_images( $demo_id );
     if ( is_wp_error( $attachment_ids ) ) {
+        $error = $attachment_ids->get_error_message();
+        chow_importer_log( "Error importando imágenes: $error", 'ERROR' );
         return $attachment_ids;
     }
+    chow_importer_log( "✓ Imágenes importadas: " . count( $attachment_ids ) . " archivos" );
     
     // Step 2: Create Contact Form 7 forms (OPTIONAL - skip if plugin missing)
     $form_ids = array();
     if ( ! isset( $missing_plugins['cf7'] ) ) {
+        chow_importer_log( "PASO 2: Creando formularios Contact Form 7" );
         $form_ids = chow_create_forms( $demo, $attachment_ids );
         if ( is_wp_error( $form_ids ) ) {
+            $error = $form_ids->get_error_message();
+            chow_importer_log( "Error creando formularios: $error", 'ERROR' );
             return $form_ids;
         }
+        chow_importer_log( "✓ Formularios creados: " . count( $form_ids ) );
+    } else {
+        chow_importer_log( "⊘ Paso 2 omitido: Contact Form 7 no instalado" );
     }
     
     // Step 3: Create product categories (OPTIONAL - skip if plugin missing)
     $category_ids = array();
     if ( ! isset( $missing_plugins['woocommerce'] ) ) {
+        chow_importer_log( "PASO 3: Creando categorías de productos" );
         $category_ids = chow_create_categories( $demo );
         if ( is_wp_error( $category_ids ) ) {
+            $error = $category_ids->get_error_message();
+            chow_importer_log( "Error creando categorías: $error", 'ERROR' );
             return $category_ids;
         }
+        chow_importer_log( "✓ Categorías creadas: " . count( $category_ids ) );
+    } else {
+        chow_importer_log( "⊘ Paso 3 omitido: WooCommerce no instalado" );
     }
     
     // Step 4: Create products (OPTIONAL - skip if plugin missing)
     if ( ! isset( $missing_plugins['woocommerce'] ) ) {
+        chow_importer_log( "PASO 4: Creando productos" );
         $products = chow_create_products( $demo, $attachment_ids, $category_ids );
         if ( is_wp_error( $products ) ) {
+            $error = $products->get_error_message();
+            chow_importer_log( "Error creando productos: $error", 'ERROR' );
             return $products;
         }
+        chow_importer_log( "✓ Productos creados: " . count( $products ) );
+    } else {
+        chow_importer_log( "⊘ Paso 4 omitido: WooCommerce no instalado" );
     }
     
     // Step 5: Create pages
+    chow_importer_log( "PASO 5: Creando páginas" );
     $pages = chow_create_pages( $demo, $attachment_ids, $form_ids );
     if ( is_wp_error( $pages ) ) {
+        $error = $pages->get_error_message();
+        chow_importer_log( "Error creando páginas: $error", 'ERROR' );
+        return $pages;
+    }
+    chow_importer_log( "✓ Páginas creadas: " . count( $pages ) );
+    
+    // Step 5.5: Set front page to "Inicio" if it exists
+    chow_importer_log( "PASO 5.5: Configurando página de inicio" );
+    $inicio_page = get_page_by_title( 'Inicio', OBJECT, 'page' );
+    if ( $inicio_page ) {
+        update_option( 'page_on_front', $inicio_page->ID );
+        update_option( 'show_on_front', 'page' );
+        chow_importer_log( "✓ Página de inicio configurada (ID: " . $inicio_page->ID . ")" );
+    } else {
+        chow_importer_log( "⚠ Página 'Inicio' no encontrada", 'WARNING' );
+    }
+    
+    // Step 6: Update theme options (OPTIONAL - skip if plugin missing)
+    if ( ! isset( $missing_plugins['acf'] ) && ! isset( $missing_plugins['scf'] ) ) {
+        chow_importer_log( "PASO 6: Actualizando opciones del tema" );
+        $result = chow_update_theme_options( $demo, $attachment_ids, $form_ids );
+        if ( is_wp_error( $result ) ) {
+            $error = $result->get_error_message();
+            chow_importer_log( "Error actualizando opciones: $error", 'ERROR' );
+            return $result;
+        }
+        chow_importer_log( "✓ Opciones del tema actualizadas" );
+    } else {
+        chow_importer_log( "⊘ Paso 6 omitido: ACF/SCF no instalado" );
+    }
+    
+    // Step 7: Create/update navigation menu
+    chow_importer_log( "PASO 7: Actualizando menú de navegación" );
+    $result = chow_update_menu( $demo );
+    if ( is_wp_error( $result ) ) {
+        $error = $result->get_error_message();
+        chow_importer_log( "Error actualizando menú: $error", 'ERROR' );
+        return $result;
+    }
+    chow_importer_log( "✓ Menú de navegación creado" );
+    
+    // Step 8: Apply custom CSS
+    chow_importer_log( "PASO 8: Aplicando CSS personalizado" );
+    $result = chow_apply_custom_css( $demo );
+    if ( is_wp_error( $result ) ) {
+        $error = $result->get_error_message();
+        chow_importer_log( "Error aplicando CSS: $error", 'ERROR' );
+        return $result;
+    }
+    chow_importer_log( "✓ CSS personalizado aplicado" );
+    
+    // Mark demo as imported
+    chow_importer_log( "Marcando demo como importado" );
+    update_option( $demo_marker, time() );
+    update_option( 'chow_demo_' . $demo_id . '_active', 1 );
+    update_option( 'chow_active_demo', $demo_id );
+    
+    // Return success with information about skipped plugins
+    chow_importer_log( "✓✓✓ Importación completada exitosamente", 'SUCCESS' );
+    
+    return array(
+        'message' => 'Demo importada correctamente',
+        'redirect' => home_url(),
+        'skipped_plugins' => $missing_plugins,
+    );
+}
         return $pages;
     }
     
@@ -447,67 +599,137 @@ function chow_clear_demo_content( $demo_id ) {
  * Import images from demo folder to WordPress media library
  */
 function chow_import_images( $demo_id ) {
+    @set_time_limit( 600 );
+    @ini_set( 'memory_limit', '256M' );
+    
     $demo_images_path = get_template_directory() . '/demos/' . $demo_id . '/images/';
     $attachment_ids = array();
     
+    chow_importer_log( "Importando imágenes desde: $demo_images_path" );
+    
     // Check if demo images folder exists
     if ( ! is_dir( $demo_images_path ) ) {
-        return new WP_Error( 'missing_images', 'Carpeta de imágenes del demo no encontrada' );
+        $error = "Carpeta no encontrada: $demo_images_path";
+        chow_importer_log( $error, 'ERROR' );
+        return new WP_Error( 'missing_images', $error );
     }
+    chow_importer_log( "✓ Carpeta encontrada" );
     
-    // Scan for image files
-    $image_files = glob( $demo_images_path . '*.{png,jpg,jpeg,gif}', GLOB_BRACE );
+    // Scan for image files - buscar WebP primero, luego PNG
+    $image_files = glob( $demo_images_path . '*.webp', GLOB_BRACE );
+    if ( empty( $image_files ) ) {
+        chow_importer_log( "No se encontraron WebP, buscando PNG/JPG" );
+        $image_files = glob( $demo_images_path . '*.{png,jpg,jpeg,gif}', GLOB_BRACE );
+    }
     
     if ( empty( $image_files ) ) {
-        return new WP_Error( 'no_images', 'No se encontraron imágenes en la carpeta del demo' );
+        $error = "No se encontraron imágenes en: $demo_images_path";
+        chow_importer_log( $error, 'ERROR' );
+        return new WP_Error( 'no_images', $error );
     }
     
-    // Load WordPress media upload functions
-    require_once( ABSPATH . 'wp-admin/includes/file.php' );
-    require_once( ABSPATH . 'wp-admin/includes/image.php' );
-    require_once( ABSPATH . 'wp-admin/includes/media.php' );
+    chow_importer_log( "Imágenes encontradas: " . count( $image_files ) );
     
-     foreach ( $image_files as $image_path ) {
-         $filename = basename( $image_path );
-         
-         // Check if filename already starts with demo_id prefix to avoid duplication
-         $has_prefix = strpos( $filename, $demo_id . '-' ) === 0;
-         $dest_filename = $has_prefix ? $filename : $demo_id . '-' . $filename;
-         
-         // Copy image to uploads folder
-         $uploads_dir = wp_upload_dir();
-         $dest_path = $uploads_dir['path'] . '/' . $dest_filename;
-         
-         if ( ! copy( $image_path, $dest_path ) ) {
-             continue; // Skip if copy fails
-         }
-         
-         // Create WordPress attachment
-         $file_type = wp_check_filetype( $dest_path );
-         $attachment = array(
-             'post_mime_type' => $file_type['type'],
-             'post_title'     => sanitize_file_name( $filename ),
-             'post_content'   => '',
-             'post_status'    => 'inherit',
-         );
-         
-         $attach_id = wp_insert_attachment( $attachment, $dest_path );
-         
-          if ( ! is_wp_error( $attach_id ) ) {
+    // Load WordPress media upload functions
+    try {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        require_once( ABSPATH . 'wp-admin/includes/image.php' );
+        require_once( ABSPATH . 'wp-admin/includes/media.php' );
+        chow_importer_log( "Funciones de media de WP cargadas" );
+    } catch ( Exception $e ) {
+        chow_importer_log( "Error cargando funciones de media: " . $e->getMessage(), 'ERROR' );
+        return new WP_Error( 'media_load_error', $e->getMessage() );
+    }
+    
+    $uploads_dir = wp_upload_dir();
+    chow_importer_log( "Directorio de uploads: " . $uploads_dir['path'] );
+    
+    $error_count = 0;
+    $success_count = 0;
+     
+    foreach ( $image_files as $i => $image_path ) {
+        @set_time_limit( 60 );
+        
+        $filename = basename( $image_path );
+        
+        // Check if filename already starts with demo_id prefix to avoid duplication
+        $has_prefix = strpos( $filename, $demo_id . '-' ) === 0;
+        $dest_filename = $has_prefix ? $filename : $demo_id . '-' . $filename;
+        
+        // Copy image to uploads folder
+        $dest_path = $uploads_dir['path'] . '/' . $dest_filename;
+        
+        if ( file_exists( $dest_path ) ) {
+            chow_importer_log( "  (" . ( $i + 1 ) . "/" . count( $image_files ) . ") $filename [ya existe]" );
+            $success_count++;
+            continue;
+        }
+        
+        if ( ! @copy( $image_path, $dest_path ) ) {
+            $error_count++;
+            chow_importer_log( "  ✗ Error copiando: $filename", 'ERROR' );
+            continue;
+        }
+        
+        chow_importer_log( "  (" . ( $i + 1 ) . "/" . count( $image_files ) . ") Copiado: $filename" );
+        
+        try {
+            // Create WordPress attachment
+            $file_type = wp_check_filetype( $dest_path );
+            
+            if ( empty( $file_type['type'] ) ) {
+                chow_importer_log( "    ⚠ Tipo MIME no identificado para: $filename", 'WARNING' );
+            }
+            
+            $attachment = array(
+                'post_mime_type' => $file_type['type'],
+                'post_title'     => sanitize_file_name( $filename ),
+                'post_content'   => '',
+                'post_status'    => 'inherit',
+            );
+            
+            $attach_id = wp_insert_attachment( $attachment, $dest_path );
+            
+             if ( is_wp_error( $attach_id ) ) {
+                $error_count++;
+                chow_importer_log( "    ✗ Error creando attachment: " . $attach_id->get_error_message(), 'ERROR' );
+                continue;
+             }
+
+             if ( ! $attach_id ) {
+                $error_count++;
+                chow_importer_log( "    ✗ wp_insert_attachment retornó 0 para: $filename", 'ERROR' );
+                continue;
+             }
+            
               // Generate attachment metadata
+              @set_time_limit( 60 );
               $attach_data = wp_generate_attachment_metadata( $attach_id, $dest_path );
               wp_update_attachment_metadata( $attach_id, $attach_data );
               
               // Mark attachment as demo content
               update_post_meta( $attach_id, '_demo_id', $demo_id );
               
-              // Store the mapping: just remove the extension for consistent lookup
-              // Keep the full filename (with demo prefix if it has one)
+              // Store the mapping
               $base_filename = basename( $dest_path );
-              $key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $base_filename );
+              $key = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $base_filename );
               $attachment_ids[ $key ] = $attach_id;
-          }
-     }
+              $success_count++;
+              
+              // Free memory
+              wp_cache_flush();
+              
+        } catch ( Exception $e ) {
+            $error_count++;
+            chow_importer_log( "    ✗ Excepción procesando: " . $e->getMessage(), 'ERROR' );
+        }
+    }
+    
+    chow_importer_log( "Importación de imágenes completada: $success_count éxito, $error_count errores" );
+    
+    if ( $error_count > 0 && $success_count === 0 ) {
+        return new WP_Error( 'image_import_failed', "No se pudieron importar las imágenes ($error_count errores)" );
+    }
     
     return $attachment_ids;
 }
@@ -1130,3 +1352,66 @@ function chow_apply_custom_css( $demo ) {
     
     return true;
 }
+
+/**
+ * AJAX Handlers for viewing/downloading logs
+ */
+
+add_action( 'wp_ajax_chow_get_importer_logs', 'chow_ajax_get_importer_logs' );
+function chow_ajax_get_importer_logs() {
+    check_ajax_referer( 'chow_importer_logs' );
+    
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json_error( 'Sin permisos' );
+    }
+    
+    $log_file = wp_upload_dir()['basedir'] . '/chow-importer.log';
+    
+    if ( ! file_exists( $log_file ) ) {
+        wp_send_json_success( 'No hay logs aún.' );
+    }
+    
+    $content = file_get_contents( $log_file );
+    $lines = array_reverse( explode( "\n", $content ) );
+    $content = implode( "\n", $lines );
+    
+    wp_send_json_success( $content );
+}
+
+add_action( 'wp_ajax_chow_download_importer_logs', 'chow_ajax_download_importer_logs' );
+function chow_ajax_download_importer_logs() {
+    check_ajax_referer( 'chow_importer_logs' );
+    
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( 'Sin permisos' );
+    }
+    
+    $log_file = wp_upload_dir()['basedir'] . '/chow-importer.log';
+    
+    if ( ! file_exists( $log_file ) ) {
+        wp_die( 'No hay logs' );
+    }
+    
+    header( 'Content-Type: text/plain' );
+    header( 'Content-Disposition: attachment; filename="chow-importer-' . date( 'Y-m-d-H-i-s' ) . '.log"' );
+    readfile( $log_file );
+    exit;
+}
+
+add_action( 'wp_ajax_chow_clear_importer_logs', 'chow_ajax_clear_importer_logs' );
+function chow_ajax_clear_importer_logs() {
+    check_ajax_referer( 'chow_importer_logs' );
+    
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json_error( 'Sin permisos' );
+    }
+    
+    $log_file = wp_upload_dir()['basedir'] . '/chow-importer.log';
+    
+    if ( file_exists( $log_file ) ) {
+        @unlink( $log_file );
+    }
+    
+    wp_send_json_success( 'Logs limpiados' );
+}
+
