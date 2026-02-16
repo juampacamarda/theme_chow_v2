@@ -428,52 +428,6 @@ function chow_do_import_internal( $demo_id, $action_type = 'import' ) {
         'skipped_plugins' => $missing_plugins,
     );
 }
-        return $pages;
-    }
-    
-    // Step 5.5: Set front page to "Inicio" if it exists
-    $inicio_page = get_page_by_title( 'Inicio', OBJECT, 'page' );
-    if ( $inicio_page ) {
-        update_option( 'page_on_front', $inicio_page->ID );
-        update_option( 'show_on_front', 'page' );
-    }
-    
-    // Step 6: Update theme options (OPTIONAL - skip if plugin missing)
-    if ( ! isset( $missing_plugins['acf'] ) ) {
-        $result = chow_update_theme_options( $demo, $attachment_ids, $form_ids );
-        if ( is_wp_error( $result ) ) {
-            return $result;
-        }
-    }
-    
-    // Step 7: Create/update navigation menu
-    $result = chow_update_menu( $demo );
-    if ( is_wp_error( $result ) ) {
-        return $result;
-    }
-    
-    // Step 8: Apply custom CSS
-    $result = chow_apply_custom_css( $demo );
-    if ( is_wp_error( $result ) ) {
-        return $result;
-    }
-    
-    // Mark demo as imported
-    update_option( $demo_marker, time() );
-    
-    // Mark demo as active (para que el loader cargue sus funciones)
-    update_option( 'chow_demo_' . $demo_id . '_active', 1 );
-    
-    // Store demo info for future reference
-    update_option( 'chow_active_demo', $demo_id );
-    
-    // Return success with information about skipped plugins
-    return array(
-        'message' => 'Demo importada correctamente',
-        'redirect' => home_url(),
-        'skipped_plugins' => $missing_plugins,
-    );
-}
 
 /**
  * Check if there's user-created content (excluding demo content)
