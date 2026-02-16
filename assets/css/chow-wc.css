@@ -558,7 +558,7 @@ img.attachment-woocommerce_thumbnail {
  * Contenedor de Tarjeta Clásica (01)
  * Estructura vertical: imagen + título + precio + botón
  */
-.chow-product-card-01 {
+.products:not(.productos-row) .chow-product-card-01 {
     width: 100%;
     height: auto;
     display: flex;
@@ -598,7 +598,7 @@ ul.products li.product.chow-product-card-01:hover, .woocommerce-page ul.products
 
 
 #productos-dinamicos.woocommerce ul.products .chow-product-card-02,
-.chow-product-card-02 {
+.products:not(.productos-row) .chow-product-card-02 {
     width: 100%;
     height: auto;
     padding-bottom: 0px!important;

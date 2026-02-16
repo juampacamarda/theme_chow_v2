@@ -1,6 +1,7 @@
 <?php
 // Include modular files
 require_once get_template_directory() . '/inc/acf-config.php';
+require_once get_template_directory() . '/demos/importer.php';
 
 /*Este código muestra los estilos que aplicamos en el archivo custom-login-styles.css dentro de la carpeta login*/
 function custom_login() {

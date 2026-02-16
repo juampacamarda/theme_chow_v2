@@ -139,7 +139,7 @@
                             // Layout: Grid de columnas (por defecto)
                             if ( $products_query->have_posts() ) :
                                 ?>
-                                <div class="products d-flex flex-wrap">
+                                <div class="products productos-row d-flex flex-wrap">
                                     <?php
                                     while ( $products_query->have_posts() ) : $products_query->the_post();
                                         global $product;
