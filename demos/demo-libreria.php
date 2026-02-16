@@ -210,7 +210,12 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
 <li>Comunidad activa de lectores y clubes de lectura</li>
 </ul>
 <p>Creemos que cada libro es una puerta a nuevos mundos, y estamos aquí para ayudarte a encontrar tu próxima lectura favorita.</p>',
-                    'template' => 'default',
+                    'template' => 'flexible-page',
+                    'imagen_portada' => 'libreria-bannerflexible.png',
+                    'activo_encabezado' => true,
+                    'pre_txt' => 'NUESTRA HISTORIA',
+                    'titulo' => 'Sobre Nosotros',
+                    'header_bajada' => 'Más de 25 años dedicados a la magia de los libros',
                 ),
                 
                 // Page 2: Preguntas Frecuentes
