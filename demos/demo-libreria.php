@@ -493,6 +493,17 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
     height: 650px !important;
 }
 CSS,
+            
+            // Menu
+            'menu' => array(
+                'name'  => 'Menú Principal',
+                'items' => array(
+                    array( 'title' => 'Inicio', 'slug' => 'home', 'parent' => null ),
+                    array( 'title' => 'Sobre Nosotros', 'slug' => 'sobre-nosotros', 'parent' => null ),
+                    array( 'title' => 'Preguntas Frecuentes', 'slug' => 'preguntas-frecuentes', 'parent' => null ),
+                    array( 'title' => 'Contacto', 'slug' => 'contacto', 'parent' => null ),
+                ),
+            ),
         );
     }
 }
