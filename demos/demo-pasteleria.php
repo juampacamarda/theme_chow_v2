@@ -355,7 +355,7 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                 ),
                 
                 // Product blocks
-                'bloques_productos' => array(
+                'product_blocks' => array(
                     array(
                         'titulo'      => 'Productos Destacados',
                         'descripcion' => 'Nuestras creaciones más populares',
