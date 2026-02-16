@@ -382,7 +382,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                 ),
                 
                 // Product blocks
-                'bloques_productos' => array(
+                'product_blocks' => array(
                     array(
                         'titulo'      => 'Novedades',
                         'descripcion' => 'Las últimas incorporaciones a nuestro catálogo',
@@ -499,7 +499,6 @@ CSS,
                 'name'  => 'Menú Principal',
                 'items' => array(
                     array( 'title' => 'Inicio', 'slug' => 'home', 'parent' => null ),
-                    array( 'title' => 'Tienda', 'parent' => null ), // No slug - usará WooCommerce Shop
                     array( 'title' => 'Sobre Nosotros', 'slug' => 'sobre-nosotros', 'parent' => null ),
                     array( 'title' => 'Preguntas Frecuentes', 'slug' => 'preguntas-frecuentes', 'parent' => null ),
                     array( 'title' => 'Contacto', 'slug' => 'contacto', 'parent' => null ),
