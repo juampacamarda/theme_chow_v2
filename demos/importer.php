@@ -1037,30 +1037,31 @@ function chow_update_menu( $demo ) {
         $menu_id = $menu->term_id;
     }
     
-    // Add menu items
+    // Add menu items (update existing or create new)
     foreach ( $demo['menu']['items'] as $item_data ) {
         // Check if item already exists in this menu
         $existing_items = wp_get_nav_menu_items( $menu_id );
+        $item_id = 0;
         $item_exists = false;
         
         if ( $existing_items ) {
             foreach ( $existing_items as $existing_item ) {
                 if ( $existing_item->title === $item_data['title'] ) {
+                    $item_id = $existing_item->ID;
                     $item_exists = true;
                     break;
                 }
             }
         }
         
-        if ( ! $item_exists ) {
-            wp_update_nav_menu_item( $menu_id, 0, array(
-                'menu-item-title'      => $item_data['title'],
-                'menu-item-url'        => $item_data['url'],
-                'menu-item-status'     => 'publish',
-                'menu-item-type'       => 'custom',
-                'menu-item-parent-id'  => $item_data['parent'] ?? 0,
-            ) );
-        }
+        // Update existing item or create new one
+        wp_update_nav_menu_item( $menu_id, $item_id, array(
+            'menu-item-title'      => $item_data['title'],
+            'menu-item-url'        => $item_data['url'],
+            'menu-item-status'     => 'publish',
+            'menu-item-type'       => 'custom',
+            'menu-item-parent-id'  => $item_data['parent'] ?? 0,
+        ) );
     }
     
      // Set as Primary Menu (theme location is 'superior')
