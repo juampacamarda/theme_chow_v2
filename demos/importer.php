@@ -1011,11 +1011,7 @@ function chow_create_pages( $demo, $attachment_ids, $form_ids ) {
                            update_field( 'activo_encabezado', true, $page_id );
                            
                            // Convert filename to attachment ID
-                           $header_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $page_data['imagen_portada'] );
-                           $header_image_id = isset( $attachment_ids[ $header_key ] ) ? $attachment_ids[ $header_key ] : 0;
-                           
-                           // Store the attachment ID - ACF will convert to URL based on return_format
-                           update_field( 'imagen_portada', $header_image_id, $page_id );
+                       $header_key = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $page_data['imagen_portada'] );
                        }
                        
                        // Save header metadata if present
@@ -1072,7 +1068,7 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
          $logo_fields = array( 'logo_header_desktop', 'logo_header_mobile', 'logo_footer' );
           foreach ( $logo_fields as $logo_field ) {
               if ( isset( $company[ $logo_field ] ) && ! empty( $company[ $logo_field ] ) ) {
-                  $logo_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $company[ $logo_field ] );
+                  $logo_key = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $company[ $logo_field ] );
                   $logo_id = isset( $attachment_ids[ $logo_key ] ) ? $attachment_ids[ $logo_key ] : 0;
                   // Store the attachment ID directly - ACF will convert to URL based on return_format
                   $company_data[ $logo_field ] = $logo_id;
@@ -1118,7 +1114,7 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
         if ( function_exists( 'update_field' ) ) {
             // Update slider_1
             if ( isset( $home_config['slider_1'] ) ) {
-                $image_key_1 = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $home_config['slider_1']['imagen'] );
+                $image_key_1 = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $home_config['slider_1']['imagen'] );
                 $image_id_1 = isset( $attachment_ids[ $image_key_1 ] ) ? $attachment_ids[ $image_key_1 ] : 0;
                 
                 $slider_1_data = array(
@@ -1131,7 +1127,7 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
             
             // Update slider_2
             if ( isset( $home_config['slider_2'] ) ) {
-                $image_key_2 = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $home_config['slider_2']['imagen'] );
+                $image_key_2 = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $home_config['slider_2']['imagen'] );
                 $image_id_2 = isset( $attachment_ids[ $image_key_2 ] ) ? $attachment_ids[ $image_key_2 ] : 0;
                 
                 $slider_2_data = array(
@@ -1144,7 +1140,7 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
             
             // Update slider_3
             if ( isset( $home_config['slider_3'] ) ) {
-                $image_key_3 = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $home_config['slider_3']['imagen'] );
+                $image_key_3 = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $home_config['slider_3']['imagen'] );
                 $image_id_3 = isset( $attachment_ids[ $image_key_3 ] ) ? $attachment_ids[ $image_key_3 ] : 0;
                 
                 $slider_3_data = array(
@@ -1157,7 +1153,7 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
             
             // Update slider_4
             if ( isset( $home_config['slider_4'] ) ) {
-                $image_key_4 = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $home_config['slider_4']['imagen'] );
+                $image_key_4 = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $home_config['slider_4']['imagen'] );
                 $image_id_4 = ( ! empty( $home_config['slider_4']['imagen'] ) && isset( $attachment_ids[ $image_key_4 ] ) ) ? $attachment_ids[ $image_key_4 ] : 0;
                 
                 $slider_4_data = array(
@@ -1170,7 +1166,7 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
             
             // Update slider_5
             if ( isset( $home_config['slider_5'] ) ) {
-                $image_key_5 = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $home_config['slider_5']['imagen'] );
+                $image_key_5 = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $home_config['slider_5']['imagen'] );
                 $image_id_5 = ( ! empty( $home_config['slider_5']['imagen'] ) && isset( $attachment_ids[ $image_key_5 ] ) ) ? $attachment_ids[ $image_key_5 ] : 0;
                 
                 $slider_5_data = array(
@@ -1190,7 +1186,7 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
          // Update newsletter (as GROUP field)
          if ( isset( $home_config['newsletter'] ) && function_exists( 'update_field' ) ) {
              $newsletter = $home_config['newsletter'];
-             $news_bg_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $newsletter['news_bg'] );
+             $news_bg_key = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $newsletter['news_bg'] );
              $news_bg_id = isset( $attachment_ids[ $news_bg_key ] ) ? $attachment_ids[ $news_bg_key ] : 0;
              
              // Find the newsletter form ID
@@ -1221,7 +1217,7 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
          // Update redes_seccion (as GROUP field)
         if ( isset( $home_config['redes_seccion'] ) && function_exists( 'update_field' ) ) {
             $redes = $home_config['redes_seccion'];
-            $redes_bg_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $redes['fondo_redes'] );
+            $redes_bg_key = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $redes['fondo_redes'] );
             $redes_bg_id = isset( $attachment_ids[ $redes_bg_key ] ) ? $attachment_ids[ $redes_bg_key ] : 0;
             
             // Save as GROUP field
@@ -1240,7 +1236,7 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
              $carrusel_data = array();
              
              foreach ( $carrusel as $producto ) {
-                 $prod_image_key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $producto['imagen'] );
+                 $prod_image_key = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $producto['imagen'] );
                  $prod_image_id = isset( $attachment_ids[ $prod_image_key ] ) ? $attachment_ids[ $prod_image_key ] : 0;
                  
                  $carrusel_data[] = array(
