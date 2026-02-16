@@ -475,9 +475,9 @@ footer{
 }
 CSS,
             
-            // Menu for Pastelería demo
+            // Menu configuration (shared across all demos)
             'menu' => array(
-                'name'  => 'Menú Pastelería',
+                'name'  => 'Menú Principal',
                 'items' => array(
                     array( 'title' => 'Inicio', 'url' => '/', 'parent' => null ),
                     array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),

@@ -496,7 +496,7 @@ CSS,
             
             // Menu
             'menu' => array(
-                'name'  => 'Menú Librería',
+                'name'  => 'Menú Principal',
                 'items' => array(
                     array( 'title' => 'Inicio', 'url' => '/', 'parent' => null ),
                     array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
