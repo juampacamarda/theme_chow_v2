@@ -1503,11 +1503,16 @@ function chow_update_menu( $demo ) {
         
         // Build menu item arguments
         $item_args = array(
-            'menu-item-title'      => $item_data['title'],
             'menu-item-status'     => 'publish',
             'menu-item-type'       => $menu_item_type,
             'menu-item-parent-id'  => $item_data['parent'] ?? 0,
         );
+        
+        // Para custom links, usar el título del config
+        // Para post_type, WordPress obtiene el título del post automáticamente
+        if ( 'custom' === $menu_item_type ) {
+            $item_args['menu-item-title'] = $item_data['title'];
+        }
         
         // Add type-specific attributes
         if ( 'custom' === $menu_item_type ) {
@@ -1515,7 +1520,6 @@ function chow_update_menu( $demo ) {
         } else {
             $item_args['menu-item-object-id'] = $menu_item_object_id;
             $item_args['menu-item-object'] = $menu_item_object;
-            $item_args['menu-item-url'] = $item_url; // Añadir URL también para post_type
         }
         
         // Create new menu item
