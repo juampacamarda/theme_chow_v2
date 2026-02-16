@@ -466,6 +466,7 @@ img.attachment-woocommerce_thumbnail.size-woocommerce_thumbnail {
     overflow: hidden;
     max-height: 300px;
     width: 100%!important;
+    object-fit: cover;
 }
 
 span.price {
