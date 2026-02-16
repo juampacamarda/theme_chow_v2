@@ -173,7 +173,7 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                     'title'   => 'Inicio',
                     'slug'    => 'home',
                     'content' => '<p>Bienvenido a <strong>Harina & Miel</strong>, tu pastelería artesanal de confianza.</p>',
-                    'template' => 'home',
+                    'template' => 'index-plantilla',
                 ),
                 array(
                     'title'   => 'Sobre Nosotros',
@@ -355,7 +355,7 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                 ),
                 
                 // Product blocks
-                'product_blocks' => array(
+                'bloques_productos' => array(
                     array(
                         'titulo'      => 'Productos Destacados',
                         'descripcion' => 'Nuestras creaciones más populares',
