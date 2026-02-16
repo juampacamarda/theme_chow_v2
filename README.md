@@ -93,7 +93,7 @@ El tema utiliza un sistema centralizado de opciones (SCF) con sub-páginas:
 - `home/slide.php` - Slider principal
 - `home/news.php` - Newsletter con fondo
 - `home/redes.php` - Redes sociales con fondo
-- `home/productos.php` - Carrusel de productos destacados
+- `home/carrusel.php` - Carrusel/galería configurable de productos o imágenes
 - `home/clientes.php` - Carrusel de logos
 - `home/productos-1.php` - Bloques dinámicos de productos
 

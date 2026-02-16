@@ -48,7 +48,7 @@ Cada producto: `name`, `slug`, `description`, `short_description`, `price`, `sal
 2. `home/productos-1` — Bloque 1: "Tortas destacadas" (layout carousel)
 3. `home/news` — Newsletter
 4. `home/productos-1` — Bloque 2: "Boxes & Regalos" (grid)
-5. `home/productos.php` — Sección "Tentaciones" (galería de imágenes sin link)
+5. `home/carrusel.php` — Sección "Tentaciones" (galería de imágenes sin link)
 6. `home/redes` — Sección redes sociales
 
 ## Campos ACF relevantes
@@ -69,7 +69,7 @@ Cada producto: `name`, `slug`, `description`, `short_description`, `price`, `sal
 - `formulario_news` — Newsletter (email)
 
 ## Galería "Tentaciones"
-- Ubicación: `home/productos.php`
+- Ubicación: `home/carrusel.php`
 - Comportamiento: mostrar imágenes sin link (inspiracional)
 - Campo: `carrusel_productos_destacados` usado sin `link` o nuevo `carrusel_tentaciones`
 
