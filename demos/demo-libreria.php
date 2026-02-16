@@ -25,7 +25,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
             // Company Configuration
             'company' => array(
                 'color_principal'       => '#2c3e50',
-                'color_secundario'      => '#fdf5e6',
+                'color_secundario'      => '#aebcbe', // Changed for better contrast
                 'color_texto'           => '#5f5f5f',
                 'color_fondo'           => '#ffffff',
                 'logo_header_desktop'   => 'libreria-logo-color.png',
@@ -455,6 +455,18 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
             'custom_css' => '/* Librería Demo - Estilos personalizados */
 #clientes-botonera { 
     display: none !important; 
+}
+
+/* Ajuste de altura del slider a 600px */
+/* Reemplaza '.main-slider-class' con la clase o ID real de tu slider si es diferente */
+.main-slider-class {
+    height: 600px !important;
+}
+.main-slider-class .slick-list,
+.main-slider-class .slick-track,
+.main-slider-class .slick-slide img {
+    height: 100% !important;
+    object-fit: cover !important;
 }',
             
             // Menu

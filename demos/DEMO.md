@@ -1,4 +1,4 @@
-# 📚 Guía de Creación de Demos - Chow Theme
+# 📚 Guía Definitiva de Creación de Demos - Chow Theme
 
 ## Tabla de Contenidos
 1. [Introducción](#introducción)
@@ -6,8 +6,13 @@
 3. [Estructura General de un Demo](#estructura-general-de-un-demo)
 4. [Problemas Comunes y Soluciones](#problemas-comunes-y-soluciones)
 5. [Referencia de Campos ACF](#referencia-de-campos-acf)
-6. [Checklist Pre-Importación](#checklist-pre-importación)
-7. [Ejemplos de Código Correcto](#ejemplos-de-código-correcto)
+6. [Detalles de Estilos y Ajustes Visuales](#detalles-de-estilos-y-ajustes-visuales)
+7. [Guía de Prompts de Imágenes](#guía-de-prompts-de-imágenes)
+8. [Checklist Pre-Importación](#checklist-pre-importación)
+9. [Ejemplos de Código Correcto](#ejemplos-de-código-correcto)
+10. [Validation Script](#validation-script)
+11. [Troubleshooting](#troubleshooting)
+12. [Contacto y Reportes](#contacto-y-reportes)
 
 ---
 
@@ -22,7 +27,7 @@ Esta guía documenta cómo crear demos correctamente para evitar errores comunes
 
 ---
 
-## Restaurar Plantilla
+## Restaurar Plantilla (Función Rápida de Testing)
 
 ### Propósito
 
@@ -269,6 +274,23 @@ array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
 
 ---
 
+### ⚠️ PROBLEMA 5: Imágenes no Cargan (General)
+
+**Síntoma**: Logos, imágenes de productos, sliders y fondos de secciones no se visualizan.
+
+**Causa**: Inconsistencia en la generación de `keys` para `$attachment_ids` y la forma en que los campos ACF esperaban el valor (ID vs URL).
+
+**SOLUCIÓN**:
+1. **Key Generation:** La función `chow_import_images` ahora genera keys manteniendo el nombre completo del archivo (ej. `libreria-logo-color`) en lugar de remover el prefijo (`logo-color`).
+2. **Background Image Filenames:** `demos/demo-libreria.php` fue actualizado para referenciar `fondo-news.png` y `fondo-redes.png` con el prefijo `libreria-` (ej. `libreria-fondo-news.png`), para que coincida con la convención de nombres.
+3. **Logo Storage:** Los campos de logo en ACF ahora almacenan directamente el `ID` del attachment, permitiendo que ACF maneje la conversión a `URL` según su configuración `return_format`.
+
+**Archivos Modificados**:
+- `demos/importer.php`: Lógica de generación de keys y almacenamiento de IDs.
+- `demos/demo-libreria.php`: Referencias de nombres de archivos de fondo.
+
+---
+
 ## Referencia de Campos ACF
 
 ### 🏢 GROUP: Empresa
@@ -281,7 +303,7 @@ array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
 | Campo | Tipo | Ejemplo | Notas |
 |-------|------|---------|-------|
 | `color_principal` | color_picker | `#2c3e50` | Color primario |
-| `color_secundario` | color_picker | `#fdf5e6` | Color secundario |
+| `color_secundario` | color_picker | `#aebcbe` | Color secundario (actualizado para contraste) |
 | `color_texto` | color_picker | `#5f5f5f` | Color de texto |
 | `color_fondo` | color_picker | `#ffffff` | Color de fondo |
 | `logo_header_desktop` | image | `logo-desktop.png` | Nombre del archivo de imagen |
@@ -300,7 +322,7 @@ array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
 ```php
 'company' => array(
     'color_principal'       => '#2c3e50',
-    'color_secundario'      => '#fdf5e6',
+    'color_secundario'      => '#aebcbe', // Nuevo color
     'color_texto'           => '#5f5f5f',
     'color_fondo'           => '#ffffff',
     'logo_header_desktop'   => 'libreria-logo-color.png',
@@ -338,12 +360,12 @@ array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
     'slider_1' => array(
         'imagen' => 'libreria-slide01.png',
         'texto' => 'Descubre Nuevos Mundos',
-        'link' => '/tienda',
+        'link' => '/shop',
     ),
     'slider_2' => array(
         'imagen' => 'libreria-slide02.png',
         'texto' => 'Literatura Premium',
-        'link' => '/tienda',
+        'link' => '/shop',
     ),
     // ... slider_3 a slider_5
 ),
@@ -362,25 +384,15 @@ array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
 |-------|------|---------|-----------|
 | `titulo` | text | `Suscribite a Nuestro Newsletter` | - |
 | `descripcion` | textarea | `Recibe ofertas exclusivas...` | - |
-| `news_bg` | image | `fondo-news.png` | Nombre del archivo |
+| `news_bg` | image | `libreria-fondo-news.png` | Nombre del archivo (con prefijo) |
 | `formulario_news` | textarea | `[contact-form-7 id="42" ...]` | **DEBE SER SHORTCODE** |
-
-**INCORRECTO**:
-```php
-'newsletter' => array(
-    'titulo'       => 'Suscribite...',
-    'descripcion'  => 'Recibe...',
-    'fondo'        => 'fondo-news.png',        // ❌ Campo incorrecto
-    'form_id'      => 'Newsletter Librería',   // ❌ Debe ser shortcode
-),
-```
 
 **CORRECTO**:
 ```php
 'newsletter' => array(
     'titulo'           => 'Suscribite a Nuestro Newsletter',
     'descripcion'      => 'Recibe ofertas exclusivas...',
-    'news_bg'          => 'fondo-news.png',    // ✅ Campo correcto
+    'news_bg'          => 'libreria-fondo-news.png', // ✅ Con prefijo
     'formulario_news'  => 'Newsletter Librería', // El importer lo convierte a shortcode
 ),
 ```
@@ -400,24 +412,11 @@ array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
 | `nombre_del_link` | text | `El Quijote` | Título del producto |
 | `link` | link (ACF) | Array con url/title/target | **DEBE SER ARRAY** |
 
-**INCORRECTO**:
-```php
-'carrusel_productos_destacados' => array(
-    array(
-        'nombre'      => 'El Quijote',           // ❌ Campo incorrecto
-        'descripcion' => 'Novela clásica',       // ❌ No en schema
-        'imagen'      => 'producto01.png',
-        'link'        => '/?p=1',                // ❌ Debe ser array
-        'precio'      => '34.99',                // ❌ No en schema
-    ),
-),
-```
-
 **CORRECTO**:
 ```php
 'carrusel_productos_destacados' => array(
     array(
-        'imagen'            => 'producto01.png',
+        'imagen'            => 'libreria-producto01.png',
         'nombre_del_link'   => 'El Quijote de la Mancha',
         'link'              => array(
             'url'    => '/?p=1',
@@ -441,14 +440,14 @@ array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
 |-------|------|---------|
 | `titulo` | text | `Síguenos en Redes` |
 | `descripcion` | textarea | `Conecta con nosotros...` |
-| `fondo_redes` | image | `fondo-redes.png` |
+| `fondo_redes` | image | `libreria-fondo-redes.png` |
 
-**Ejemplo Correcto**:
+**CORRECTO**:
 ```php
 'redes_seccion' => array(
     'titulo'      => 'Síguenos en Redes',
     'descripcion' => 'Conecta con nosotros en nuestras redes',
-    'fondo_redes' => 'fondo-redes.png',
+    'fondo_redes' => 'libreria-fondo-redes.png', // ✅ Con prefijo
 ),
 ```
 
@@ -473,27 +472,6 @@ array(
     'titulo_collapse'   => 'Título de la pregunta',
     'contenido_collapse' => 'Contenido de la respuesta',
 )
-```
-
-**INCORRECTO**:
-```php
-array(
-    'title'   => 'Sobre Nosotros',
-    'slug'    => 'sobre-nosotros',
-    'content' => '<p>Contenido...</p>',
-    'template' => 'flexible-page',
-    'flexible_content' => array(  // ❌ Nombre incorrecto
-        array(
-            'acf_fc_layout' => 'collapse_accordion',
-            'items' => array(      // ❌ Estructura anidada
-                array(
-                    'title'   => '¿Pregunta?',
-                    'content' => 'Respuesta...',
-                ),
-            ),
-        ),
-    ),
-),
 ```
 
 **CORRECTO**:
@@ -534,11 +512,26 @@ array(
 'forms' => array(
     array(
         'name'     => 'Contacto Librería',
-        'form_tag' => '[text* nombre placeholder "Tu nombre"][email* email placeholder "Tu email"][text* asunto placeholder "Asunto"][textarea mensaje placeholder "Tu mensaje"]',
+        'form_tag' => '<label> Tu nombre
+    [text* nombre autocomplete:name] </label>
+
+<label> Tu correo electrónico
+    [email* email autocomplete:email] </label>
+
+<label> Asunto
+    [text* asunto] </label>
+
+<label> Tu mensaje (opcional)
+    [textarea mensaje] </label>
+
+[submit "Enviar"]',
     ),
     array(
         'name'     => 'Newsletter Librería',
-        'form_tag' => '[email* your-email placeholder "Ingresá tu e-mail"][submit "ENVIAR"]',
+        'form_tag' => '<div id="news-form"><div class="row">
+<div class="col-xs-12 col-lg-9"><label> [email* email placeholder"Ingresá tu e-mail"] </label></div>
+<div class="col-xs-12 col-lg-3">[submit "ENVIAR"]</div>
+</div></div>',
     ),
 ),
 ```
@@ -576,6 +569,107 @@ array(
     ),
 ),
 ```
+
+---
+
+## Detalles de Estilos y Ajustes Visuales
+
+Estos son los ajustes visuales que se aplicaron a la demo `Librería` para mejorar la estética y el contraste.
+
+### Color Secundario Actualizado
+- **Cambio**: De `#fdf5e6` (beige muy claro) a `#aebcbe` (gris azulado medio).
+- **Razón**: El color `fdf5e6` generaba bajo contraste con textos y logos blancos, dificultando la legibilidad. El nuevo color `#aebcbe` proporciona un contraste mucho mayor y mejora la visibilidad de los elementos claros.
+
+### Altura del Slider Ajustada
+- **Cambio**: Altura del slider principal aumentada a `600px`.
+- **Implementación**: Añadido CSS personalizado a la sección `custom_css` del `demo-libreria.php`.
+- **Código CSS**:
+    ```css
+    /* Ajuste de altura del slider a 600px */
+    /* Reemplaza '.main-slider-class' con la clase o ID real de tu slider si es diferente */
+    .main-slider-class {
+        height: 600px !important;
+    }
+    .main-slider-class .slick-list,
+    .main-slider-class .slick-track,
+    .main-slider-class .slick-slide img {
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+    ```
+- **Nota**: La clase `.main-slider-class` es un placeholder y puede necesitar ser ajustada (`id="home-slider"`, `.hero-slider`, etc.) si el HTML del tema utiliza una clase o ID diferente para el slider principal.
+
+---
+
+## Guía de Prompts de Imágenes
+
+Este archivo contiene todos los prompts diseñados para ser usados con un generador de imágenes (como Midjourney, DALL-E, etc.) para crear los assets visuales de las demos del theme.
+
+---
+
+### Demo 1: "Páginas de Tinta" (Librería Elegante y Moderna)
+
+**Estilo General:** Fotografías limpias, con luz suave y natural. Paleta de colores cálidos (marrones, beiges, naranjas suaves) con toques de azul oscuro. Minimalista pero acogedor.
+
+#### Prompts
+
+- **Logo:**
+  `Logotipo minimalista para una librería elegante llamada "Páginas de Tinta". Utiliza una pluma o un icono de libro abierto, tipografía serif, colores: azul marino oscuro y beige. --style raw`
+
+- **Slider (3 imágenes, relación de aspecto 16:9):**
+  1. `Una foto hermosa, brillante y minimalista de una pila de libros de tapa dura con cubiertas artísticas, junto a una taza de café de cerámica sobre una mesa de madera. Luz suave de la mañana. --ar 16:9 --style raw`
+  2. `Foto del interior de una librería moderna y limpia con estanterías organizadas, un cómodo sillón de lectura en una esquina y una gran ventana. --ar 16:9 --style raw`
+  3. `Foto de primer plano de las manos de una persona sosteniendo un libro abierto, con páginas bellamente diseñadas. El fondo está ligeramente desenfocado. --ar 16:9 --style raw`
+
+- **Productos (12 imágenes, relación de aspecto 3:4):**
+  `Genera 12 imágenes. Foto limpia y minimalista de un solo libro de pie sobre un fondo beige liso. La portada del libro debe ser artística y minimalista. --ar 3:4 --style raw`
+
+- **Banner para Página Flexible (relación de aspecto 21:9):**
+  `Una foto elegante y plana de un cuaderno abierto, una pluma estilográfica, gafas y una pequeña planta en un escritorio blanco y limpio. --ar 21:9 --style raw`
+
+---
+
+### Demo 2: "Paso Firme" (Zapatería Urbana y Juvenil)
+
+**Estilo General:** Fotografías vibrantes, con estética urbana. Sombras duras, fondos de cemento o ladrillo. Paleta de colores fríos con un color de acento fuerte (ej. amarillo neón).
+
+#### Prompts
+
+- **Logo:**
+  `Logotipo moderno, audaz y urbano para una tienda de zapatillas llamada "Paso Firme". Utiliza un icono estilizado de huella de zapatilla, tipografía sans-serif, fuente en negrita. Colores: negro, blanco y amarillo neón. --style raw`
+
+- **Slider (3 imágenes, relación de aspecto 16:9):**
+  1. `Foto vibrante y dinámica de una persona usando zapatillas urbanas con estilo, saltando en el aire contra una pared de concreto con grafitis. --ar 16:9 --style raw`
+  2. `Foto centrada en el producto de tres pares diferentes de zapatillas coloridas dispuestas ordenadamente en escalones de concreto. Estilo urbano, callejero. --ar 16:9 --style raw`
+  3. `Foto de estilo de vida de un grupo de jóvenes sentados en un banco, mostrando sus diferentes estilos de zapatillas. Enfocarse en los zapatos. --ar 16:9 --style raw`
+
+- **Productos (12 imágenes, relación de aspecto 3:4):**
+  `Genera 12 imágenes. Foto de estudio profesional de una sola zapatilla urbana sobre un fondo gris sólido. La zapatilla debe tener un diseño moderno y colorido. Vista lateral. --ar 3:4 --style raw`
+
+- **Banner para Página Flexible (relación de aspecto 21:9):**
+  `Foto panorámica de una colección de cordones de zapatos en diferentes colores vibrantes, dispersos artísticamente. --ar 21:9 --style raw`
+
+---
+
+### Demo 3: "Bazar Dragón" (Productos Importados de China)
+
+**Estilo General:** Colorido y ecléctico. Fondos con texturas y patrones. Mucho color rojo y dorado. Sensación de abundancia y variedad.
+
+#### Prompts
+
+- **Logo:**
+  `Logotipo para una tienda de productos importados de China llamada "Bazar Dragón". Utiliza un icono de dragón amigable y simple combinado con una linterna china. Colores: rojo, dorado y blanco. --style raw`
+
+- **Slider (3 imágenes, relación de aspecto 16:9):**
+  1. `Foto colorida y vibrante de un puesto de mercado lleno de una variedad de productos chinos: farolillos de papel, juegos de té, pequeñas estatuas y abanicos. --ar 16:9 --style raw`
+  2. `Foto de primer plano de un hermoso juego de té de cerámica china, con vapor saliendo de la tetera. --ar 16:9 --style raw`
+  3. `Una foto plana de varios productos chinos divertidos y peculiaños como unidades USB novedosas, papelería colorida y pequeños juguetes sobre un fondo rojo texturizado. --ar 16:9 --style raw`
+
+- **Productos (12 imágenes, relación de aspecto 3:4):**
+  `Genera 12 imágenes. Una foto limpia y bien iluminada de un solo producto chino importado e interesante sobre un fondo blanco sólido. Ejemplos: un abanico de mano, una pequeña planta de jade, un tazón de cerámica único. --ar 3:4 --style raw`
+
+- **Banner para Página Flexible (relación de aspecto 21:9):**
+  `Foto de una colección de coloridos gatos de la suerte chinos (Maneki-neko) saludando al unísono. --ar 21:9 --style raw`
 
 ---
 
@@ -640,7 +734,7 @@ Antes de crear un nuevo demo, verificar:
   - [ ] Cover: `libreria-cover.png`
   - [ ] Productos: `libreria-producto0*.png`
   - [ ] Slides: `libreria-slide0*.png`
-  - [ ] Fondos: `fondo-*.png`
+  - [ ] Fondos: `libreria-fondo-*.png` (¡Con prefijo!)
 
 ### ✅ Importer Logic (importer.php)
 - [ ] No hay sección `'theme_options'` que duplique colores
@@ -668,7 +762,7 @@ function chow_get_demo_tienda() {
         // EMPRESA (colores y logos)
         'company' => array(
             'color_principal'       => '#2c3e50',
-            'color_secundario'      => '#fdf5e6',
+            'color_secundario'      => '#aebcbe', // Ejemplo: nuevo color
             'color_texto'           => '#5f5f5f',
             'color_fondo'           => '#ffffff',
             'logo_header_desktop'   => 'tienda-logo.png',
@@ -769,13 +863,13 @@ function chow_get_demo_tienda() {
             'newsletter' => array(
                 'titulo'           => 'Newsletter',
                 'descripcion'      => 'Suscribite a nuestro newsletter',
-                'news_bg'          => 'fondo-news.png',
+                'news_bg'          => 'libreria-fondo-news.png', // Ejemplo: con prefijo
                 'formulario_news'  => 'Contacto',  // Nombre del formulario CF7
             ),
             'redes_seccion' => array(
                 'titulo'      => 'Síguenos',
                 'descripcion' => 'En nuestras redes sociales',
-                'fondo_redes' => 'fondo-redes.png',
+                'fondo_redes' => 'libreria-fondo-redes.png', // Ejemplo: con prefijo
             ),
             'carrusel_productos_destacados' => array(
                 array(
@@ -843,7 +937,7 @@ echo 'OK!' . PHP_EOL;
 ### Logos no aparecen
 1. Verificar que el archivo existe en `demos/[nombre]/images/`
 2. Verificar que el nombre coincide (mayúsculas/minúsculas)
-3. Verificar que la sección `'theme_options'` no exista (eliminar si existe)
+3. Verificar que ACF esté guardando el ID de attachment, no la URL (ver "Logo Storage Format" en "Problemas Comunes")
 
 ### Formularios no se muestran
 1. Verificar que `formulario_news` contiene el nombre del formulario, no un shortcode
@@ -851,24 +945,17 @@ echo 'OK!' . PHP_EOL;
 3. Si no aparece, revisar que CF7 esté instalado
 
 ### Páginas flexible sin contenido
-1. Verificar que `'content'` se guarda en `'texto_contenido'` (no post_content)
-2. Verificar que `'flexible_content'` se renombró a `'collapses'`
-3. Verificar estructura de collapses: `'titulo_collapse'` y `'contenido_collapse'`
+1. Verificar que `'content'` se guarda en `\'texto_contenido\'` (no post_content)
+2. Verificar que `'flexible_content'` se renombró a `\'collapses\'`
+3. Verificar estructura de collapses: `\'titulo_collapse\'` y `\'contenido_collapse\'`
 
 ### Menú incorrecto
 1. Verificar que URLs son `/shop` (no `/tienda`)
 2. Verificar que pages existan con los slugs correctos
 
----
-
-## Historial de Cambios
-
-### v1.0 (2026-02-15)
-- Documentación inicial
-- 4 problemas comunes identificados y documentados
-- Checklist pre-importación
-- Ejemplos de código correcto
-- Troubleshooting
+### Imágenes de fondo no cargan
+1. Verificar que el nombre del archivo en `demo-[nombre].php` incluye el prefijo del demo (ej. `libreria-fondo-news.png`)
+2. Verificar que el archivo existe con ese nombre exacto en `demos/[nombre]/images/`
 
 ---
 
@@ -881,4 +968,3 @@ Si encuentras nuevos problemas o casos especiales, documenta:
 4. La solución aplicada
 
 Luego actualiza este documento para que otros developers lo eviten.
-
