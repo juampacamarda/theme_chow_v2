@@ -97,6 +97,9 @@ function chow_handle_import_ajax() {
         wp_send_json_error( array( 'message' => $result->get_error_message() ) );
     }
     
+    // Disparar hook para que otros complementos ejecuten tareas post-importación
+    do_action( 'chow_demo_imported', $demo_id );
+    
     // $result now contains success + skipped_plugins info
     wp_send_json_success( $result );
 }

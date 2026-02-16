@@ -396,6 +396,43 @@ function chow_load_product_card( $product, $card_style = 'classic' ) {
 }
 
 /**
+ * Corregir URLs de menú después de importar demos
+ * Mapea /shop, /cart, /checkout a las URLs correctas de WooCommerce
+ * sin importar el slug (shop vs tienda según configuración)
+ */
+function chow_fix_demo_menu_links() {
+    // Mapeo dinámico de URLs estándar
+    $url_map = array(
+        '/shop'     => get_permalink( wc_get_page_id('shop') ),
+        '/cart'     => wc_get_cart_url(),
+        '/checkout' => wc_get_checkout_url(),
+    );
+    
+    // Obtener todos los menús y actualizar URLs
+    $menus = wp_get_nav_menus();
+    foreach ( $menus as $menu ) {
+        $items = wp_get_nav_menu_items( $menu->term_id );
+        if ( $items ) {
+            foreach ( $items as $item ) {
+                foreach ( $url_map as $old_url => $new_url ) {
+                    // Comparar URL exacta o parcial
+                    if ( $item->url === $old_url || strpos( $item->url, $old_url ) !== false ) {
+                        wp_update_nav_menu_item(
+                            $menu->term_id,
+                            $item->ID,
+                            array( 'menu-item-url' => $new_url )
+                        );
+                    }
+                }
+            }
+        }
+    }
+}
+// Ejecutar después de importar demos o cambiar tema
+add_action( 'after_switch_theme', 'chow_fix_demo_menu_links' );
+add_action( 'chow_demo_imported', 'chow_fix_demo_menu_links' );
+
+/**
  * Remover hooks por defecto de WooCommerce que no necesitamos en nuestro diseño personalizado
  */
 remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open' );
