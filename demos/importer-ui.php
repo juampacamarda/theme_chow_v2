@@ -110,12 +110,21 @@ $demos[] = chow_get_demo_libreria();
                 <!-- Action Button -->
                 <div class="demo-card-footer">
                     <?php if ( $is_active ) : ?>
-                        <button type="button" 
-                                class="button button-secondary demo-import-btn" 
-                                disabled
-                                title="<?php esc_attr_e( 'Este demo ya está activo', 'chow-theme' ); ?>">
-                            <?php esc_html_e( 'Activo', 'chow-theme' ); ?>
-                        </button>
+                        <div class="demo-card-actions">
+                            <button type="button" 
+                                    class="button button-secondary" 
+                                    disabled
+                                    title="<?php esc_attr_e( 'Este demo ya está activo', 'chow-theme' ); ?>">
+                                <?php esc_html_e( 'Activo', 'chow-theme' ); ?>
+                            </button>
+                            <button type="button" 
+                                    class="button button-primary demo-reimport-btn" 
+                                    data-demo-id="<?php echo esc_attr( $demo['id'] ); ?>"
+                                    data-demo-name="<?php echo esc_attr( $demo['name'] ); ?>"
+                                    title="<?php esc_attr_e( 'Reimportar este demo y sobrescribir el contenido', 'chow-theme' ); ?>">
+                                <?php esc_html_e( 'Reimportar Demo', 'chow-theme' ); ?>
+                            </button>
+                        </div>
                     <?php else : ?>
                         <button type="button" 
                                 class="button button-primary demo-import-btn" 
@@ -344,7 +353,21 @@ $demos[] = chow_get_demo_libreria();
     border-top: 1px solid #eee;
 }
 
-.demo-import-btn {
+.demo-card-actions {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+}
+
+.demo-card-actions .button {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.demo-import-btn,
+.demo-reimport-btn {
     width: 100%;
     padding: 10px;
     font-size: 14px;

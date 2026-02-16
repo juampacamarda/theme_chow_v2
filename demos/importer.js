@@ -27,82 +27,102 @@
      * Initialize all event listeners
      */
     function initializeImporter() {
-        // Import button clicks
-        $(document).on('click', '.demo-import-btn', function(e) {
-            console.log('Demo import button clicked!');
-            e.preventDefault();
-            currentDemoId = $(this).data('demo-id');
-            currentDemoName = $(this).data('demo-name');
-            openModal();
-        });
-        
-        // Modal close buttons
-        $(document).on('click', '.close-modal, .cancel-modal, .chow-modal-overlay', function(e) {
-            if ($(this).hasClass('chow-modal-overlay') && !$(e.target).hasClass('chow-modal-overlay')) {
-                return;
-            }
-            closeModal();
-        });
-        
-        // Confirm import buttons
-        $(document).on('click', '#confirm-import-btn', function(e) {
-            e.preventDefault();
-            performImport('import');
-        });
-        
-        $(document).on('click', '#confirm-overwrite-btn', function(e) {
-            e.preventDefault();
-            performImport('overwrite');
-        });
-        
-        // Message close
-        $(document).on('click', '.message-close-btn', function(e) {
-            e.preventDefault();
-            closeMessage();
-            // Optionally redirect
-            if (window.location.href.indexOf('admin.php') > -1) {
-                window.location.reload();
-            }
-        });
-        
-        // Dismiss warnings
-        $(document).on('click', '.chow-importer-warning .notice-dismiss', function(e) {
-            $(this).closest('.notice').slideUp(200);
-        });
-    }
+         // Import button clicks
+         $(document).on('click', '.demo-import-btn', function(e) {
+             console.log('Demo import button clicked!');
+             e.preventDefault();
+             currentDemoId = $(this).data('demo-id');
+             currentDemoName = $(this).data('demo-name');
+             openModal();
+         });
+         
+         // Reimport button clicks (for active demos)
+         $(document).on('click', '.demo-reimport-btn', function(e) {
+             console.log('Demo reimport button clicked!');
+             e.preventDefault();
+             currentDemoId = $(this).data('demo-id');
+             currentDemoName = $(this).data('demo-name');
+             openModal(true); // Pass true to indicate this is a reimport
+         });
+         
+         // Modal close buttons
+         $(document).on('click', '.close-modal, .cancel-modal, .chow-modal-overlay', function(e) {
+             if ($(this).hasClass('chow-modal-overlay') && !$(e.target).hasClass('chow-modal-overlay')) {
+                 return;
+             }
+             closeModal();
+         });
+         
+         // Confirm import buttons
+         $(document).on('click', '#confirm-import-btn', function(e) {
+             e.preventDefault();
+             performImport('import');
+         });
+         
+         $(document).on('click', '#confirm-overwrite-btn', function(e) {
+             e.preventDefault();
+             performImport('overwrite');
+         });
+         
+         // Message close
+         $(document).on('click', '.message-close-btn', function(e) {
+             e.preventDefault();
+             closeMessage();
+             // Optionally redirect
+             if (window.location.href.indexOf('admin.php') > -1) {
+                 window.location.reload();
+             }
+         });
+         
+         // Dismiss warnings
+         $(document).on('click', '.chow-importer-warning .notice-dismiss', function(e) {
+             $(this).closest('.notice').slideUp(200);
+         });
+     }
     
-    /**
-     * Open the confirmation modal
-     */
-    function openModal() {
-        const modal = $('#chow-import-modal');
-        
-        // Update demo name in modal
-        modal.find('.demo-name-display').text(currentDemoName);
-        
-        // Check if there's existing content by sending an AJAX check
-        checkExistingContent(function(hasContent) {
-            hasExistingContent = hasContent;
-            
-            if (hasContent) {
-                // Show the "existing content" version
-                modal.find('#modal-content-initial').hide();
-                modal.find('#modal-content-existing').show();
-                modal.find('#confirm-import-btn').hide();
-                modal.find('#confirm-overwrite-btn').show();
-            } else {
-                // Show the regular version
-                modal.find('#modal-content-initial').show();
-                modal.find('#modal-content-existing').hide();
-                modal.find('#confirm-import-btn').show();
-                modal.find('#confirm-overwrite-btn').hide();
-            }
-        });
-        
-        // Show modal with fade
-        modal.fadeIn(300);
-        modal.find('.chow-modal-content').css('opacity', '0').animate({opacity: 1}, 300);
-    }
+     /**
+      * Open the confirmation modal
+      */
+     function openModal(isReimport) {
+         const modal = $('#chow-import-modal');
+         
+         // Update demo name in modal
+         modal.find('.demo-name-display').text(currentDemoName);
+         
+         // If this is a reimport, show the overwrite dialog directly
+         if (isReimport) {
+             modal.find('#modal-content-initial').hide();
+             modal.find('#modal-content-existing').show();
+             modal.find('#confirm-import-btn').hide();
+             modal.find('#confirm-overwrite-btn').show();
+             // Update the message for reimport
+             modal.find('#modal-content-existing p:first').text('¿Deseas reimportar este demo? El contenido anterior será eliminado y reemplazado con la versión actualizada.');
+         } else {
+             // Check if there's existing content by sending an AJAX check
+             checkExistingContent(function(hasContent) {
+                 hasExistingContent = hasContent;
+                 
+                 if (hasContent) {
+                     // Show the "existing content" version
+                     modal.find('#modal-content-initial').hide();
+                     modal.find('#modal-content-existing').show();
+                     modal.find('#confirm-import-btn').hide();
+                     modal.find('#confirm-overwrite-btn').show();
+                     modal.find('#modal-content-existing p:first').text('Ya existe contenido en tu sitio. ¿Deseas sobrescribirlo con el demo?');
+                 } else {
+                     // Show the regular version
+                     modal.find('#modal-content-initial').show();
+                     modal.find('#modal-content-existing').hide();
+                     modal.find('#confirm-import-btn').show();
+                     modal.find('#confirm-overwrite-btn').hide();
+                 }
+             });
+         }
+         
+         // Show modal with fade
+         modal.fadeIn(300);
+         modal.find('.chow-modal-content').css('opacity', '0').animate({opacity: 1}, 300);
+     }
     
     /**
      * Close the modal
@@ -124,82 +144,82 @@
         callback(false); // Default to no content
     }
     
-     /**
-      * Perform the import
-      */
-     function performImport(actionType) {
-         closeModal();
-         showSpinner();
-         
-         // Disable buttons while importing
-         $('.demo-import-btn').prop('disabled', true);
-         
-         $.ajax({
-             url: chowImporter.ajax_url,
-             type: 'POST',
-             dataType: 'json',
-             data: {
-                 action: 'chow_import_demo',
-                 nonce: chowImporter.nonce,
-                 demo_id: currentDemoId,
-                 action_type: actionType,
-             },
-             success: function(response) {
-                 hideSpinner();
-                 
-                 if (response.success) {
-                     // Build message text
-                     let messageText = 'El demo "' + currentDemoName + '" ha sido importado correctamente. Tu sitio ha sido actualizado con los nuevos contenidos y estilos.';
-                     
-                     // Check if there are skipped plugins
-                     if (response.data && response.data.skipped_plugins && Object.keys(response.data.skipped_plugins).length > 0) {
-                         const skippedPlugins = response.data.skipped_plugins;
-                         const pluginNames = Object.values(skippedPlugins).join(', ');
-                         messageText += '\n\n⚠️ Nota: Los siguientes plugins opcionales no están instalados: ' + pluginNames + '. Algunas características pueden no estar completamente configuradas.';
-                     }
-                     
-                     // Show success message
-                     showMessage(
-                         'success',
-                         '¡Demo Importada!',
-                         messageText,
-                         response.data ? response.data.skipped_plugins : null
-                     );
-                     
-                     // Re-enable buttons
-                     $('.demo-import-btn').prop('disabled', false);
-                     
-                     // After closing the message, the page will reload
-                 } else {
-                     // Show error message
-                     showMessage(
-                         'error',
-                         'Error en la Importación',
-                         response.data && response.data.message ? response.data.message : 'Ocurrió un error al importar el demo.'
-                     );
-                     
-                     // Re-enable buttons
-                     $('.demo-import-btn').prop('disabled', false);
-                 }
-             },
-             error: function(xhr, status, error) {
-                 hideSpinner();
-                 
-                 // Show error message
-                 showMessage(
-                     'error',
-                     'Error de Conexión',
-                     'No se pudo conectar con el servidor. Por favor, intenta nuevamente.'
-                 );
-                 
-                 // Re-enable buttons
-                 $('.demo-import-btn').prop('disabled', false);
-                 
-                 console.error('AJAX Error:', error, status, xhr);
-             },
-             timeout: 300000, // 5 minutes timeout
-         });
-     }
+      /**
+       * Perform the import
+       */
+      function performImport(actionType) {
+          closeModal();
+          showSpinner();
+          
+          // Disable buttons while importing
+          $('.demo-import-btn, .demo-reimport-btn').prop('disabled', true);
+          
+          $.ajax({
+              url: chowImporter.ajax_url,
+              type: 'POST',
+              dataType: 'json',
+              data: {
+                  action: 'chow_import_demo',
+                  nonce: chowImporter.nonce,
+                  demo_id: currentDemoId,
+                  action_type: actionType,
+              },
+              success: function(response) {
+                  hideSpinner();
+                  
+                  if (response.success) {
+                      // Build message text
+                      let messageText = 'El demo "' + currentDemoName + '" ha sido importado correctamente. Tu sitio ha sido actualizado con los nuevos contenidos y estilos.';
+                      
+                      // Check if there are skipped plugins
+                      if (response.data && response.data.skipped_plugins && Object.keys(response.data.skipped_plugins).length > 0) {
+                          const skippedPlugins = response.data.skipped_plugins;
+                          const pluginNames = Object.values(skippedPlugins).join(', ');
+                          messageText += '\n\n⚠️ Nota: Los siguientes plugins opcionales no están instalados: ' + pluginNames + '. Algunas características pueden no estar completamente configuradas.';
+                      }
+                      
+                      // Show success message
+                      showMessage(
+                          'success',
+                          '¡Demo Importada!',
+                          messageText,
+                          response.data ? response.data.skipped_plugins : null
+                      );
+                      
+                      // Re-enable buttons
+                      $('.demo-import-btn, .demo-reimport-btn').prop('disabled', false);
+                      
+                      // After closing the message, the page will reload
+                  } else {
+                      // Show error message
+                      showMessage(
+                          'error',
+                          'Error en la Importación',
+                          response.data && response.data.message ? response.data.message : 'Ocurrió un error al importar el demo.'
+                      );
+                      
+                      // Re-enable buttons
+                      $('.demo-import-btn, .demo-reimport-btn').prop('disabled', false);
+                  }
+              },
+              error: function(xhr, status, error) {
+                  hideSpinner();
+                  
+                  // Show error message
+                  showMessage(
+                      'error',
+                      'Error de Conexión',
+                      'No se pudo conectar con el servidor. Por favor, intenta nuevamente.'
+                  );
+                  
+                  // Re-enable buttons
+                  $('.demo-import-btn, .demo-reimport-btn').prop('disabled', false);
+                  
+                  console.error('AJAX Error:', error, status, xhr);
+              },
+              timeout: 300000, // 5 minutes timeout
+          });
+      }
     
     /**
      * Show the loading spinner
