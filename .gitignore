@@ -21,3 +21,9 @@ vendor/
 # Node
 node_modules/
 npm-debug.log*
+
+# Demo images (keeping only optimized WebP versions)
+demos/*/images/*.png
+demos/*/images/*.jpg
+demos/*/images/*.jpeg
+demos/*/images/*.gif
