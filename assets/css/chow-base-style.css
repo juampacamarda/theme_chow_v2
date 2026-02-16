@@ -1058,6 +1058,10 @@ main#busqueda a {
 		}
 }
 
+.bloque-header.mb-4 {
+    text-align: center;
+}
+
 
 .texto-post {
 		padding: 15px;
@@ -1078,6 +1082,7 @@ main#busqueda a {
 #contact-principal .wpcf7-submit:hover{
 		background-color:#00a5c8
 }
+
 /*footer2*/
 .empresa h3 {
 		font-size: 18px;
