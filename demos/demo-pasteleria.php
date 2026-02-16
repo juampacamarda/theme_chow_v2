@@ -360,7 +360,7 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                         'titulo'      => 'Productos Destacados',
                         'descripcion' => 'Nuestras creaciones más populares',
                         'tipo'        => 'destacados',
-                        'cantidad'    => 4,
+                        'cantidad'    => 6,
                         'layout'      => 'columnas',
                         'columnas'    => 'col-lg-4',
                         'card_style'  => 'hover_visual',
