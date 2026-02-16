@@ -555,6 +555,13 @@ img.attachment-woocommerce_thumbnail {
     padding-bottom: 20px;
 }
 
+.woocommerce .products .chow-card-hover-visual .chow-card-hover-content{
+    transition:all ease .6s;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
 /**
  * Contenedor de Tarjeta Clásica (01)
  * Estructura vertical: imagen + título + precio + botón

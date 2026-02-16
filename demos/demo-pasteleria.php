@@ -462,6 +462,14 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
     color: var(--chow_txt) !important;
 }
 
+#productos-dinamicos.woocommerce .products .chow-product-card-02 .wrap,
+li.product.chow-product-card-02,
+.woocommerce .products .chow-card-hover-content,
+.chow-card-hover-visual{
+    height:480px!important;
+}
+.
+
 footer{
     background-color: var(--chow_txt) !important;
 }
