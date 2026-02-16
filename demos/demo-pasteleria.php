@@ -394,44 +394,6 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                     'fondo_redes' => 'pasteleria-redesbg.webp',
                 ),
                 
-                // Featured carousel title
-                'titulo_carrusel_destacados' => 'Nuestras Tentaciones',
-                'descripcion_carrusel_destacados' => 'Las creaciones que nuestros clientes más aman',
-                
-                // Featured products carousel
-                'carrusel_productos_destacados' => array(
-                    array(
-                        'imagen'            => 'pasteleria-tentacion-01.webp',
-                        'nombre_del_link'   => 'Croissant de Mantequilla',
-                        'link'              => array( 'url' => '/shop', 'title' => 'Croissant de Mantequilla', 'target' => '' ),
-                    ),
-                    array(
-                        'imagen'            => 'pasteleria-tentacion-02.webp',
-                        'nombre_del_link'   => 'Lemon Pie Casero',
-                        'link'              => array( 'url' => '/shop', 'title' => 'Lemon Pie Casero', 'target' => '' ),
-                    ),
-                    array(
-                        'imagen'            => 'pasteleria-tentacion-03.webp',
-                        'nombre_del_link'   => 'Torta Red Velvet',
-                        'link'              => array( 'url' => '/shop', 'title' => 'Torta Red Velvet', 'target' => '' ),
-                    ),
-                    array(
-                        'imagen'            => 'pasteleria-tentacion-04.webp',
-                        'nombre_del_link'   => 'Torta Chocolate',
-                        'link'              => array( 'url' => '/shop', 'title' => 'Torta Chocolate', 'target' => '' ),
-                    ),
-                    array(
-                        'imagen'            => 'pasteleria-tentacion-05.webp',
-                        'nombre_del_link'   => 'Chipa Paraguaya',
-                        'link'              => array( 'url' => '/shop', 'title' => 'Chipa Paraguaya', 'target' => '' ),
-                    ),
-                    array(
-                        'imagen'            => 'pasteleria-tentacion-06.webp',
-                        'nombre_del_link'   => 'Tarta de Frutas',
-                        'link'              => array( 'url' => '/shop', 'title' => 'Tarta de Frutas', 'target' => '' ),
-                    ),
-                ),
-                
                 // Sections visibility
                 'sections' => array(
                     'slide'              => true,
