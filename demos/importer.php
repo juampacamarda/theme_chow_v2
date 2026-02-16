@@ -306,6 +306,9 @@ function chow_do_import_internal( $demo_id, $action_type = 'import' ) {
     // Mark demo as imported
     update_option( $demo_marker, time() );
     
+    // Mark demo as active (para que el loader cargue sus funciones)
+    update_option( 'chow_demo_' . $demo_id . '_active', 1 );
+    
     // Store demo info for future reference
     update_option( 'chow_active_demo', $demo_id );
     
