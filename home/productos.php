@@ -1,7 +1,22 @@
 <section id="prod-botonera">
     <div class="container-fluid">
+        <?php 
+        // Título y descripción personalizables de la sección (opciones del theme)
+        $titulo_seccion = get_field('titulo_carrusel_destacados', 'option');
+        $descripcion_seccion = get_field('descripcion_carrusel_destacados', 'option');
+
+        // Fallback si no hay título configurado
+        if ( ! $titulo_seccion ) {
+            $titulo_seccion = 'Nuestros Productos';
+        }
+        ?>
         <div class="tittle-botonera">
-            <h3 class="text-center cursiva" style="font-weight:900">Nuestros Productos</h3>
+            <h3 class="text-center cursiva" style="font-weight:900"><?php echo esc_html( $titulo_seccion ); ?></h3>
+            <?php if ( $descripcion_seccion ) : ?>
+                <p class="text-center mb-0 descripcion-seccion">
+                    <?php echo wp_kses_post( $descripcion_seccion ); ?>
+                </p>
+            <?php endif; ?>
         </div>
         <?php 
         // Acceder directamente al campo repeater

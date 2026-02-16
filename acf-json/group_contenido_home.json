@@ -359,6 +359,46 @@
             ]
         },
         {
+            "key": "field_titulo_carrusel_destacados",
+            "label": "Título del Carrusel",
+            "name": "titulo_carrusel_destacados",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Título que aparecerá en la sección del carrusel de productos destacados",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Nuestros Productos",
+            "maxlength": "",
+            "placeholder": "Nuestros Productos",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_descripcion_carrusel_destacados",
+            "label": "Descripción del Carrusel",
+            "name": "descripcion_carrusel_destacados",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Descripción opcional que aparecerá debajo del título",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
             "key": "field_carrusel_productos_destacados",
             "label": "Carrusel de Productos Destacados",
             "name": "carrusel_productos_destacados",

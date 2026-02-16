@@ -67,3 +67,25 @@ Este archivo contiene todos los prompts diseñados para ser usados con un genera
 
 - **Banner para Página Flexible (relación de aspecto 21:9):**
   `Foto de una colección de coloridos gatos de la suerte chinos (Maneki-neko) saludando al unísono. --ar 21:9 --style raw`
+
+---
+
+## Demo 4: "Harina & Miel" (Pastelería Artesanal)
+
+**Estilo General:** Fotografías cálidas y apetitosas, con luz natural suave. Fondos en tonos crema, madera clara y detalles en rosa pálido/dorado. Estética artesanal, casera pero prolija (no industrial).
+
+### Prompts
+
+- **Logo:**
+  `Logotipo delicado y moderno para una pastelería artesanal llamada "Harina & Miel". Incluir un ícono simple de torta o cupcake con glaseado, tipografía script elegante combinada con sans-serif limpia. Colores: crema, rosa pálido y dorado suave. --style raw`
+
+- **Slider (3 imágenes, relación de aspecto 16:9):**
+  1. `Foto horizontal de una torta de varios pisos decorada con crema y frutos rojos sobre una mesa de madera clara, con utensilios de pastelería alrededor y fondo desenfocado. Luz natural suave. --ar 16:9 --style raw`
+  2. `Foto del interior de una pastelería pequeña y acogedora con vitrinas llenas de tortas, tartas y macarons; una persona atendiendo sonriente detrás del mostrador. --ar 16:9 --style raw`
+  3. `Primer plano de manos decorando cupcakes con manga pastelera, glaseado color pastel y sprinkles, sobre una encimera limpia de cocina. Fondo ligeramente desenfocado. --ar 16:9 --style raw`
+
+- **Productos (12 imágenes, relación de aspecto 3:4):**
+  `Genera 12 imágenes. Foto limpia y bien iluminada de un solo producto de pastelería artesanal sobre un fondo crema o blanco liso: tortas, tartas de frutas, cupcakes, macarons, cookies decoradas. Estilo de estudio sencillo, enfoque en textura y detalle. --ar 3:4 --style raw`
+
+- **Banner para Página Flexible (relación de aspecto 21:9):**
+  `Foto cenital de una mesa de pastelería: tazón con masa, rodillo de madera, cortantes para galletas, huevos, harina y utensilios cuidadosamente dispuestos, con algunos cupcakes terminados en un lado. Fondo en tonos claros. --ar 21:9 --style raw`
