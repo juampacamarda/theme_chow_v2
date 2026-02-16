@@ -452,7 +452,8 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
             ),
             
             // Custom CSS
-            'custom_css' => '/* Librería Demo - Estilos personalizados */
+            'custom_css' => <<<CSS
+/* Librería Demo - Estilos personalizados */
 #clientes-botonera { 
     display: none !important; 
 }
@@ -467,7 +468,8 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
 .main-slider-class .slick-slide img {
     height: 100% !important;
     object-fit: cover !important;
-}',
+}
+CSS,
             
             // Menu
             'menu' => array(
