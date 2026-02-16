@@ -265,20 +265,73 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
             ),
             
             // Contact Form 7 Forms
-            'forms' => array(
-                array(
-                    'name'     => 'Contacto Librería',
-                    'form_tag' => '[text* nombre placeholder "Tu nombre"][email* email placeholder "Tu email"][text* asunto placeholder "Asunto"][textarea mensaje placeholder "Tu mensaje"]',
-                ),
-                array(
-                    'name'     => 'Newsletter Librería',
-                    'form_tag' => '[email* your-email placeholder "Ingresá tu e-mail"][submit "ENVIAR"]',
-                ),
-                array(
-                    'name'     => 'Contacto Productos Librería',
-                    'form_tag' => '[text* nombre placeholder "Tu nombre"][email* email placeholder "Tu email"][text localidad placeholder "Localidad"][tel telefono placeholder "Teléfono"][textarea mensaje placeholder "Tu mensaje"]',
-                ),
-            ),
+             'forms' => array(
+                 array(
+                     'name'     => 'Contacto Librería',
+                     'form_tag' => '<label> Tu nombre
+    [text* nombre autocomplete:name] </label>
+
+<label> Tu correo electrónico
+    [email* email autocomplete:email] </label>
+
+<label> Asunto
+    [text* asunto] </label>
+
+<label> Tu mensaje (opcional)
+    [textarea mensaje] </label>
+
+[submit "Enviar"]',
+                 ),
+                 array(
+                     'name'     => 'Newsletter Librería',
+                     'form_tag' => '<div id="news-form"><div class="row">
+<div class="col-xs-12 col-lg-9"><label> [email* email placeholder"Ingresá tu e-mail"] </label></div>
+<div class="col-xs-12 col-lg-3">[submit "ENVIAR"]</div>
+</div></div>',
+                 ),
+                 array(
+                     'name'     => 'Contacto Productos Librería',
+                     'form_tag' => '<div class="prod-form row d-flex justify-content-center">
+
+<div class="col-12 col-md-6">
+<label> Nombre (obligatorio)
+    [text* nombre] </label>
+</div>
+
+<div class="col-12 col-md-6">
+<label> Correo electrónico (obligatorio)
+    [email* email] </label>
+</div>
+
+</div>
+
+<div class="prod-form row d-flex justify-content-center">
+<div class="col-12 col-md-6">
+<label> Localidad
+    [text localidad] </label>
+</div>
+
+<div class="col-12 col-md-6">
+<label> Teléfono
+    [text telefono] </label>
+</div>
+
+</div>
+
+<div class="prod-form row d-flex justify-content-center">
+
+<div class="col-12 col-md-12">
+<label> Mensaje
+    [textarea mensaje] </label>
+</div>
+
+<div class="col-12 col-md-12">
+[submit "Enviar"]
+</div>
+
+</div>',
+                 ),
+             ),
             
             // Home Configuration
             'home' => array(

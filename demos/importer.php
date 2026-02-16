@@ -314,6 +314,50 @@ function chow_clear_demo_content( $demo_id ) {
     foreach ( $categories as $category ) {
         wp_delete_term( $category->term_id, 'product_cat' );
     }
+    
+    // Delete CF7 forms created by this demo
+    $demo_forms = get_posts( array(
+        'post_type' => 'wpcf7_contact_form',
+        'meta_key' => '_demo_id',
+        'meta_value' => $demo_id,
+        'posts_per_page' => -1,
+    ) );
+    
+    foreach ( $demo_forms as $form ) {
+        wp_delete_post( $form->ID, true );
+    }
+    
+    // Delete images/attachments created by this demo
+    $demo_attachments = get_posts( array(
+        'post_type' => 'attachment',
+        'meta_key' => '_demo_id',
+        'meta_value' => $demo_id,
+        'posts_per_page' => -1,
+    ) );
+    
+    foreach ( $demo_attachments as $attachment ) {
+        wp_delete_attachment( $attachment->ID, true );
+    }
+    
+    // Reset ACF options to demo defaults
+    $active_demo = get_option( 'chow_active_demo' );
+    if ( $active_demo === $demo_id ) {
+        $acf_fields_to_clear = array(
+            'color_principal', 'color_secundario', 'color_texto', 'color_fondo',
+            'logo_header_desktop', 'logo_header_mobile', 'logo_footer',
+            'direccion', 'telefonos', 'mail',
+            'facebook_link', 'instagram_link', 'twitter_link', 'wsp_link',
+            'logos_legales',
+            'slider_1', 'slider_2', 'slider_3', 'slider_4', 'slider_5',
+            'bloques_productos', 'newsletter', 'formulario_producto',
+            'redes_seccion', 'carrusel_productos_destacados',
+            'card_style_default',
+        );
+        
+        foreach ( $acf_fields_to_clear as $field_name ) {
+            delete_field( $field_name, 'option' );
+        }
+    }
 }
 
 /**
@@ -340,38 +384,46 @@ function chow_import_images( $demo_id ) {
     require_once( ABSPATH . 'wp-admin/includes/image.php' );
     require_once( ABSPATH . 'wp-admin/includes/media.php' );
     
-    foreach ( $image_files as $image_path ) {
-        $filename = basename( $image_path );
-        
-        // Copy image to uploads folder with demo prefix
-        $uploads_dir = wp_upload_dir();
-        $dest_path = $uploads_dir['path'] . '/' . $demo_id . '-' . $filename;
-        
-        if ( ! copy( $image_path, $dest_path ) ) {
-            continue; // Skip if copy fails
-        }
-        
-        // Create WordPress attachment
-        $file_type = wp_check_filetype( $dest_path );
-        $attachment = array(
-            'post_mime_type' => $file_type['type'],
-            'post_title'     => sanitize_file_name( $filename ),
-            'post_content'   => '',
-            'post_status'    => 'inherit',
-        );
-        
-        $attach_id = wp_insert_attachment( $attachment, $dest_path );
-        
-        if ( ! is_wp_error( $attach_id ) ) {
-            // Generate attachment metadata
-            $attach_data = wp_generate_attachment_metadata( $attach_id, $dest_path );
-            wp_update_attachment_metadata( $attach_id, $attach_data );
-            
-            // Store the mapping without the extension
-            $key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $filename );
-            $attachment_ids[ $key ] = $attach_id;
-        }
-    }
+     foreach ( $image_files as $image_path ) {
+         $filename = basename( $image_path );
+         
+         // Check if filename already starts with demo_id prefix to avoid duplication
+         $has_prefix = strpos( $filename, $demo_id . '-' ) === 0;
+         $dest_filename = $has_prefix ? $filename : $demo_id . '-' . $filename;
+         
+         // Copy image to uploads folder
+         $uploads_dir = wp_upload_dir();
+         $dest_path = $uploads_dir['path'] . '/' . $dest_filename;
+         
+         if ( ! copy( $image_path, $dest_path ) ) {
+             continue; // Skip if copy fails
+         }
+         
+         // Create WordPress attachment
+         $file_type = wp_check_filetype( $dest_path );
+         $attachment = array(
+             'post_mime_type' => $file_type['type'],
+             'post_title'     => sanitize_file_name( $filename ),
+             'post_content'   => '',
+             'post_status'    => 'inherit',
+         );
+         
+         $attach_id = wp_insert_attachment( $attachment, $dest_path );
+         
+         if ( ! is_wp_error( $attach_id ) ) {
+             // Generate attachment metadata
+             $attach_data = wp_generate_attachment_metadata( $attach_id, $dest_path );
+             wp_update_attachment_metadata( $attach_id, $attach_data );
+             
+             // Mark attachment as demo content
+             update_post_meta( $attach_id, '_demo_id', $demo_id );
+             
+             // Store the mapping without the extension and demo prefix for consistent lookup
+             $clean_filename = str_replace( $demo_id . '-', '', basename( $dest_path ) );
+             $key = str_replace( array( '.png', '.jpg', '.jpeg', '.gif' ), '', $clean_filename );
+             $attachment_ids[ $key ] = $attach_id;
+         }
+     }
     
     return $attachment_ids;
 }
@@ -439,6 +491,13 @@ function chow_create_forms( $demo, $attachment_ids ) {
         $form_id = $contact_form->save();
         
         if ( $form_id && ! is_wp_error( $form_id ) ) {
+            // Force post_title and post_name to be set correctly
+            wp_update_post( array(
+                'ID'         => $form_id,
+                'post_title' => $form_title,
+                'post_name'  => sanitize_title( $form_title ),
+            ) );
+            
             // Mark as demo content
             update_post_meta( $form_id, '_demo_id', $demo_id );
             
