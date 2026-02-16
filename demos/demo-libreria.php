@@ -382,7 +382,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                 ),
                 
                 // Product blocks
-                'product_blocks' => array(
+                'bloques_productos' => array(
                     array(
                         'titulo'      => 'Novedades',
                         'descripcion' => 'Las últimas incorporaciones a nuestro catálogo',
