@@ -45,11 +45,24 @@ La función "Restaurar Plantilla" permite resetear rápidamente el demo a su est
 
 ### Advertencias
 
-⚠️ **Este proceso es DESTRUCTIVO**:
-- Se eliminarán TODOS los productos actuales
-- Se eliminarán TODAS las páginas personalizadas
-- Se restablecerá la configuración a valores del demo
-- **No se puede deshacer** - asegúrate de tener backup si necesitas preservar algo
+⚠️ **Este proceso es DESTRUCTIVO - Se eliminarán los siguientes ajustes personalizados**:
+
+**SE PERDERÁ TODO ESTO:**
+- ✗ Todos los productos personalizados
+- ✗ Todas las páginas personalizadas
+- ✗ Todos los ajustes personalizados
+- ✗ Colores, imágenes y configuración personalizada
+- ✗ Formularios y estructuras de menú personalizadas
+
+**SE RESTAURARÁ:**
+- ✓ La plantilla original del demo con todos sus contenidos por defecto
+- ✓ Estilos y configuración original del demo
+- ✓ Estructura de páginas y productos de plantilla
+
+**IMPORTANTE:**
+- ⚠️ **No se puede deshacer** - esta acción es irreversible
+- 📌 Asegúrate de tener una **copia de seguridad** si necesitas preservar cambios
+- 🚫 No recuperarás ediciones personalizadas después de restaurar
 
 ### Caso de Uso Real
 
