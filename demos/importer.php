@@ -1521,6 +1521,40 @@ function chow_update_menu( $demo ) {
         }
     }
     
+    // Always add "Tienda" item to the menu if it doesn't already exist
+    // This ensures Shop page link is always present, independent of demo configuration
+    $tienda_exists = false;
+    foreach ( $demo['menu']['items'] as $item ) {
+        if ( 'Tienda' === $item['title'] ) {
+            $tienda_exists = true;
+            break;
+        }
+    }
+    
+    if ( ! $tienda_exists ) {
+        chow_importer_log( "  + Agregando automáticamente item 'Tienda' al menú" );
+        
+        $shop_details = chow_get_shop_page_details();
+        $tienda_title = $shop_details ? $shop_details['shop_title'] : 'Tienda';
+        $tienda_url = $shop_details ? home_url( '/' . $shop_details['shop_slug'] . '/' ) : home_url( '/shop/' );
+        
+        $tienda_args = array(
+            'menu-item-status'  => 'publish',
+            'menu-item-type'    => 'custom',
+            'menu-item-title'   => $tienda_title,
+            'menu-item-url'     => $tienda_url,
+            'menu-item-parent-id' => 0,
+        );
+        
+        $tienda_result = wp_update_nav_menu_item( $menu_id, 0, $tienda_args );
+        
+        if ( is_wp_error( $tienda_result ) ) {
+            chow_importer_log( "    ✗ Error creando menu item 'Tienda': " . $tienda_result->get_error_message(), 'ERROR' );
+        } else {
+            chow_importer_log( "    ✓ 'Tienda' creado como Custom Link (URL: {$tienda_url}, Título: {$tienda_title})" );
+        }
+    }
+    
      // Set as Primary Menu (theme location is 'superior')
      $theme_locations = get_theme_mod( 'nav_menu_locations' );
      if ( ! $theme_locations ) {
