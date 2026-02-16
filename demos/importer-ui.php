@@ -251,6 +251,18 @@ jQuery(function($) {
                         'chow-theme' 
                     ); ?>
                 </p>
+                
+                <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; padding: 15px; margin-top: 20px;">
+                    <label style="display: flex; align-items: center; cursor: pointer; margin: 0;">
+                        <input type="checkbox" id="chow-overwrite-checkbox" style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
+                        <span style="font-weight: 500; color: #856404;">
+                            <?php esc_html_e( 'Sobrescribir contenido existente (si ya existe una demo importada)', 'chow-theme' ); ?>
+                        </span>
+                    </label>
+                    <p style="margin: 8px 0 0 28px; font-size: 12px; color: #856404;">
+                        <?php esc_html_e( 'Marca esta opción si deseas reemplazar completamente el contenido anterior del demo.', 'chow-theme' ); ?>
+                    </p>
+                </div>
             </div>
             
              <div id="modal-content-existing" class="modal-content-section" style="display: none;">

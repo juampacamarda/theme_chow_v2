@@ -291,17 +291,8 @@ function chow_do_import_internal( $demo_id, $action_type = 'import' ) {
     $demo_exists = get_option( $demo_marker );
     chow_importer_log( "Demo ya importado: " . ( $demo_exists ? 'sí' : 'no' ) );
     
-    // If demo exists and action is 'import', check for user content
-    if ( $demo_exists && 'import' === $action_type ) {
-        chow_importer_log( "Verificando contenido de usuario existente" );
-        $has_user_content = chow_has_user_content();
-        
-        if ( $has_user_content ) {
-            $error = 'Ya existe contenido. Por favor, elige sobrescribir.';
-            chow_importer_log( $error, 'WARNING' );
-            return new WP_Error( 'content_exists', $error );
-        }
-    }
+    // Skip content check - user can choose to overwrite via checkbox in UI
+    // This simplifies the flow and avoids showing multiple modals
     
     // Clear existing content if overwriting
     if ( 'overwrite' === $action_type ) {
