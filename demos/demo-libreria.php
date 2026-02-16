@@ -421,6 +421,10 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                      'fondo_redes' => 'libreria-fondo-redes.png',
                  ),
                 
+                // Título y descripción del carrusel de productos
+                'titulo_carrusel_destacados' => 'Nuestros Libros Destacados',
+                'descripcion_carrusel_destacados' => 'Descubre nuestras selecciones especiales, bestsellers y novedades literarias que te enamorarán',
+                
                  // Productos destacados (REPEATER field - 6 productos)
                  'carrusel_productos_destacados' => array(
                      array(
