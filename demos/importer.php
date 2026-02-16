@@ -1362,24 +1362,20 @@ function chow_update_menu( $demo ) {
         }
     } else {
         $menu_id = $menu->term_id;
-    }
-    
-    // Add menu items (update existing or create new)
-    foreach ( $demo['menu']['items'] as $item_data ) {
-        // Check if item already exists in this menu
-        $existing_items = wp_get_nav_menu_items( $menu_id );
-        $item_id = 0;
-        $item_exists = false;
         
+        // Clear existing menu items to avoid orphaned items from previous demos
+        $existing_items = wp_get_nav_menu_items( $menu_id );
         if ( $existing_items ) {
-            foreach ( $existing_items as $existing_item ) {
-                if ( $existing_item->title === $item_data['title'] ) {
-                    $item_id = $existing_item->ID;
-                    $item_exists = true;
-                    break;
-                }
+            chow_importer_log( "  ↻ Limpiando " . count( $existing_items ) . " items existentes del menú" );
+            foreach ( $existing_items as $item ) {
+                wp_delete_post( $item->ID, true );
             }
         }
+    }
+    
+    // Add menu items
+    chow_importer_log( "  + Creando " . count( $demo['menu']['items'] ) . " items de menú" );
+    foreach ( $demo['menu']['items'] as $item_data ) {
         
         // Prepare menu item arguments
         $item_slug = isset( $item_data['slug'] ) ? $item_data['slug'] : '';
@@ -1390,16 +1386,22 @@ function chow_update_menu( $demo ) {
         $page_found = false;
         
         // Special handling for "Tienda" - link to WooCommerce shop page dynamically
-        if ( 'Tienda' === $item_data['title'] && function_exists( 'wc_get_page_id' ) ) {
-            $shop_page_id = wc_get_page_id( 'shop' );
-            if ( $shop_page_id && $shop_page_id > 0 ) {
-                // Use WooCommerce Shop page as menu item object
-                $menu_item_type = 'post_type';
-                $menu_item_object = 'page';
-                $menu_item_object_id = $shop_page_id;
-                $item_url = get_permalink( $shop_page_id );
-                $page_found = true;
-                chow_importer_log( "    → Tienda vinculada a WooCommerce Shop (ID: {$shop_page_id})" );
+        if ( 'Tienda' === $item_data['title'] ) {
+            if ( function_exists( 'wc_get_page_id' ) ) {
+                $shop_page_id = wc_get_page_id( 'shop' );
+                if ( $shop_page_id && $shop_page_id > 0 ) {
+                    // Use WooCommerce Shop page as menu item object
+                    $menu_item_type = 'post_type';
+                    $menu_item_object = 'page';
+                    $menu_item_object_id = $shop_page_id;
+                    $item_url = get_permalink( $shop_page_id );
+                    $page_found = true;
+                    chow_importer_log( "    → Tienda vinculada a WooCommerce Shop (ID: {$shop_page_id})" );
+                } else {
+                    chow_importer_log( "    ⚠ WooCommerce Shop page ID inválido: " . var_export( $shop_page_id, true ), 'WARNING' );
+                }
+            } else {
+                chow_importer_log( "    ⚠ WooCommerce no detectado, intentando buscar página 'shop'", 'WARNING' );
             }
         }
         
@@ -1434,13 +1436,14 @@ function chow_update_menu( $demo ) {
             $item_args['menu-item-object'] = $menu_item_object;
         }
         
-        // Update existing item or create new one
-        $result = wp_update_nav_menu_item( $menu_id, $item_id, $item_args );
+        // Create new menu item
+        $result = wp_update_nav_menu_item( $menu_id, 0, $item_args );
         
         if ( is_wp_error( $result ) ) {
             chow_importer_log( "    ✗ Error creando menu item '{$item_data['title']}': " . $result->get_error_message(), 'ERROR' );
         } else {
-            chow_importer_log( "    ✓ Menu item '{$item_data['title']}' " . ( $item_exists ? 'actualizado' : 'creado' ) );
+            $type_label = ( 'post_type' === $menu_item_type ) ? 'Página' : 'Custom Link';
+            chow_importer_log( "    ✓ '{$item_data['title']}' creado como {$type_label}" );
         }
     }
     
