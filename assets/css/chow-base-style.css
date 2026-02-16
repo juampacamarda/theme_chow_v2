@@ -192,6 +192,14 @@ a.home-link-lg img {
 		margin: auto
 }
 
+
+@media(max-width:768px){
+	header {
+		background-color:var(--chow_ppal)!important
+	}
+}
+
+
 /*fin topbar*/
 
 #info img{

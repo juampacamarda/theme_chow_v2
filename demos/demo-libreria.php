@@ -459,7 +459,6 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
 }
 
 /* Ajuste de altura del slider a 600px */
-/* Reemplaza '.main-slider-class' con la clase o ID real de tu slider si es diferente */
 .main-slider-class {
     height: 600px !important;
 }
@@ -468,6 +467,11 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
 .main-slider-class .slick-slide img {
     height: 100% !important;
     object-fit: cover !important;
+}
+
+/* Alto fijo de 650px para div dentro del carousel-item */
+.carousel-item > div {
+    height: 650px !important;
 }
 CSS,
             
