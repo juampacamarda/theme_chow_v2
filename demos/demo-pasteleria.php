@@ -29,6 +29,7 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                 'instagram_link'        => '#',
                 'twitter_link'          => '#',
                 'wsp_link'              => '5491145678900',
+                'logos_legales'         => '',
             ),
             
             'categories' => array(
