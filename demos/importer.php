@@ -1347,47 +1347,6 @@ function chow_ensure_shop_page_title() {
     }
     
     $shop_page_id = wc_get_page_id( 'shop' );
-    
-    if ( ! $shop_page_id || $shop_page_id <= 0 ) {
-        chow_importer_log( "  ⚠ Shop page ID no válido", 'WARNING' );
-        return false;
-    }
-    
-    $shop_page = get_post( $shop_page_id );
-    
-    if ( ! $shop_page ) {
-        chow_importer_log( "  ⚠ Shop page no existe (ID: {$shop_page_id})", 'WARNING' );
-        return false;
-    }
-    
-    // Check if title is empty or just whitespace
-    if ( empty( trim( $shop_page->post_title ) ) ) {
-        chow_importer_log( "  📝 Shop page sin título, asignando 'Tienda'" );
-        
-        wp_update_post( array(
-            'ID' => $shop_page_id,
-            'post_title' => 'Tienda',
-            'post_status' => 'publish'
-        ));
-        
-        chow_importer_log( "  ✓ Título 'Tienda' asignado a Shop page (ID: {$shop_page_id})" );
-        return true;
-    }
-    
-    chow_importer_log( "  ✓ Shop page ya tiene título: '{$shop_page->post_title}' (ID: {$shop_page_id})" );
-    return true;
-}
-
-/**
- * Ensure WooCommerce Shop page has a proper title
- * Called before menu creation to prevent "(no label)" menu items
- */
-function chow_ensure_shop_page_title() {
-    if ( ! function_exists( 'wc_get_page_id' ) ) {
-        return false;
-    }
-    
-    $shop_page_id = wc_get_page_id( 'shop' );
     chow_importer_log( "  🔍 Verificando Shop page: ID={$shop_page_id}" );
     
     if ( ! $shop_page_id || $shop_page_id <= 0 ) {
