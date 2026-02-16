@@ -1382,12 +1382,14 @@ function chow_update_menu( $demo ) {
         }
         
         // Prepare menu item arguments
-        $item_url = $item_data['url'];
+        $item_slug = isset( $item_data['slug'] ) ? $item_data['slug'] : '';
+        $item_url = isset( $item_data['url'] ) ? $item_data['url'] : '/';
         $menu_item_type = 'custom';
+        $menu_item_object = '';
         $menu_item_object_id = 0;
+        $page_found = false;
         
         // Special handling for "Tienda" - link to WooCommerce shop page dynamically
-        $menu_item_object = '';
         if ( 'Tienda' === $item_data['title'] && function_exists( 'wc_get_page_id' ) ) {
             $shop_page_id = wc_get_page_id( 'shop' );
             if ( $shop_page_id && $shop_page_id > 0 ) {
@@ -1396,6 +1398,23 @@ function chow_update_menu( $demo ) {
                 $menu_item_object = 'page';
                 $menu_item_object_id = $shop_page_id;
                 $item_url = get_permalink( $shop_page_id );
+                $page_found = true;
+                chow_importer_log( "    → Tienda vinculada a WooCommerce Shop (ID: {$shop_page_id})" );
+            }
+        }
+        
+        // Buscar página normal por slug
+        if ( ! $page_found && ! empty( $item_slug ) ) {
+            $page = get_page_by_path( $item_slug, OBJECT, 'page' );
+            if ( $page && 'publish' === $page->post_status ) {
+                $menu_item_type = 'post_type';
+                $menu_item_object = 'page';
+                $menu_item_object_id = $page->ID;
+                $item_url = get_permalink( $page->ID );
+                $page_found = true;
+                chow_importer_log( "    → {$item_data['title']} vinculado a página (ID: {$page->ID})" );
+            } else {
+                chow_importer_log( "    ⚠ Página no encontrada para slug '{$item_slug}', usando custom link", 'WARNING' );
             }
         }
         
@@ -1416,7 +1435,13 @@ function chow_update_menu( $demo ) {
         }
         
         // Update existing item or create new one
-        wp_update_nav_menu_item( $menu_id, $item_id, $item_args );
+        $result = wp_update_nav_menu_item( $menu_id, $item_id, $item_args );
+        
+        if ( is_wp_error( $result ) ) {
+            chow_importer_log( "    ✗ Error creando menu item '{$item_data['title']}': " . $result->get_error_message(), 'ERROR' );
+        } else {
+            chow_importer_log( "    ✓ Menu item '{$item_data['title']}' " . ( $item_exists ? 'actualizado' : 'creado' ) );
+        }
     }
     
      // Set as Primary Menu (theme location is 'superior')
