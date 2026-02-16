@@ -359,7 +359,7 @@ function chow_do_import_internal( $demo_id, $action_type = 'import' ) {
     if ( empty( $demo['pages'] ) ) {
         chow_importer_log( "⚠ No hay páginas en la configuración de la demo", 'WARNING' );
     }
-    $pages = chow_create_pages( $demo, $attachment_ids, $form_ids );
+    $pages = chow_create_pages( $demo, $attachment_ids, $form_ids, $action_type );
     if ( is_wp_error( $pages ) ) {
         $error = $pages->get_error_message();
         chow_importer_log( "Error creando páginas: $error", 'ERROR' );
@@ -953,9 +953,89 @@ function chow_create_products( $demo, $attachment_ids, $category_ids ) {
 }
 
 /**
- * Create pages
+ * Helper function to save ACF fields for a page
+ * 
+ * @param int $page_id - The page ID
+ * @param array $page_data - Page configuration data
+ * @param array $attachment_ids - Map of image keys to attachment IDs
+ * @param array $form_ids - Map of form names to form IDs
  */
-function chow_create_pages( $demo, $attachment_ids, $form_ids ) {
+function chow_save_page_acf_fields( $page_id, $page_data, $attachment_ids, $form_ids ) {
+    // Only process if template is flexible-page
+    if ( ! isset( $page_data['template'] ) || 'flexible-page' !== $page_data['template'] ) {
+        return;
+    }
+    
+    // Set page template
+    update_post_meta( $page_id, '_wp_page_template', 'flexible-page.php' );
+    
+    // Verify template was assigned
+    $assigned_template = get_post_meta( $page_id, '_wp_page_template', true );
+    if ( $assigned_template !== 'flexible-page.php' ) {
+        error_log( "WARNING: Template not assigned correctly for page $page_id" );
+    }
+    
+    // Save header/content fields
+    if ( isset( $page_data['content'] ) ) {
+        update_field( 'texto_contenido', $page_data['content'], $page_id );
+    }
+    
+    // Save collapses section if present
+    if ( isset( $page_data['collapses'] ) && ! empty( $page_data['collapses'] ) ) {
+        // Activate collapses section first
+        update_field( 'activo_collapses', true, $page_id );
+        // Then save collapses data
+        update_field( 'collapses', $page_data['collapses'], $page_id );
+    }
+    
+    // Save header fields (imagen_portada with attachment ID conversion)
+    if ( isset( $page_data['imagen_portada'] ) && ! empty( $page_data['imagen_portada'] ) ) {
+        // Activate header section
+        update_field( 'activo_encabezado', true, $page_id );
+        
+        // Convert filename to attachment ID
+        $header_key = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $page_data['imagen_portada'] );
+        if ( isset( $attachment_ids[ $header_key ] ) ) {
+            update_field( 'imagen_portada', $attachment_ids[ $header_key ], $page_id );
+        }
+    }
+    
+    // Save header metadata if present
+    if ( isset( $page_data['pre_txt'] ) ) {
+        update_field( 'pre_txt', $page_data['pre_txt'], $page_id );
+    }
+    if ( isset( $page_data['titulo'] ) ) {
+        update_field( 'titulo', $page_data['titulo'], $page_id );
+    }
+    if ( isset( $page_data['header_bajada'] ) ) {
+        update_field( 'header_bajada', $page_data['header_bajada'], $page_id );
+    }
+    
+    // Save form section if present
+    if ( isset( $page_data['codigo_form'] ) && ! empty( $page_data['codigo_form'] ) ) {
+        // Find the form ID by name
+        if ( isset( $form_ids[ $page_data['codigo_form'] ] ) ) {
+            // Activate form section first
+            update_field( 'activo_form', true, $page_id );
+            
+            // Then save form code
+            $form_id = $form_ids[ $page_data['codigo_form'] ];
+            $form_shortcode = '[contact-form-7 id="' . $form_id . '" title="' . $page_data['codigo_form'] . '"]';
+            update_field( 'codigo_form', $form_shortcode, $page_id );
+        }
+    }
+}
+
+/**
+ * Create pages
+ * 
+ * @param array $demo - Demo configuration
+ * @param array $attachment_ids - Map of image keys to attachment IDs
+ * @param array $form_ids - Map of form names to form IDs
+ * @param string $action_type - 'import' or 'overwrite'
+ * @return array - Array of created/updated page IDs
+ */
+function chow_create_pages( $demo, $attachment_ids, $form_ids, $action_type = 'import' ) {
     $demo_id = isset( $demo['id'] ) ? $demo['id'] : '';
     $pages_created = array();
     
@@ -964,91 +1044,86 @@ function chow_create_pages( $demo, $attachment_ids, $form_ids ) {
         $existing = get_page_by_title( $page_data['title'], OBJECT, 'page' );
         
         if ( $existing ) {
-            continue;
+            // If not in overwrite mode, skip existing pages
+            if ( 'overwrite' !== $action_type ) {
+                chow_importer_log( "  ⊘ Página omitida (ya existe): {$page_data['title']}" );
+                continue;
+            }
+            
+            // In overwrite mode: check if it's demo content
+            $existing_demo_id = get_post_meta( $existing->ID, '_demo_id', true );
+            
+            if ( ! $existing_demo_id ) {
+                // Protect user-created content
+                chow_importer_log( "  ⊘ Página omitida (contenido usuario): {$page_data['title']}" );
+                continue;
+            }
+            
+            // Update existing demo page
+            $page_id = $existing->ID;
+            $old_demo = $existing_demo_id;
+            
+            chow_importer_log( "  ↻ Actualizando página: {$page_data['title']} (de '$old_demo' a '$demo_id')" );
+            
+            // Update page content
+            $page_post = array(
+                'ID'           => $page_id,
+                'post_title'   => $page_data['title'],
+                'post_content' => ( isset( $page_data['template'] ) && 'flexible-page' === $page_data['template'] ) 
+                                  ? '' 
+                                  : $page_data['content'],
+                'post_name'    => $page_data['slug'],
+                'post_status'  => 'publish',
+            );
+            
+            wp_update_post( $page_post );
+            
+            // Update template if specified
+            if ( isset( $page_data['template'] ) ) {
+                if ( 'flexible-page' === $page_data['template'] ) {
+                    chow_save_page_acf_fields( $page_id, $page_data, $attachment_ids, $form_ids );
+                } elseif ( 'index-plantilla' === $page_data['template'] ) {
+                    update_post_meta( $page_id, '_wp_page_template', 'indexplantilla-page.php' );
+                }
+            }
+            
+            // Update demo marker
+            update_post_meta( $page_id, '_demo_id', $demo_id );
+            $pages_created[] = $page_id;
+            
+        } else {
+            // Create new page
+            chow_importer_log( "  + Creando página: {$page_data['title']}" );
+            
+            $page_post = array(
+                'post_title'   => $page_data['title'],
+                'post_content' => ( isset( $page_data['template'] ) && 'flexible-page' === $page_data['template'] ) 
+                                  ? '' 
+                                  : $page_data['content'],
+                'post_type'    => 'page',
+                'post_status'  => 'publish',
+                'post_name'    => $page_data['slug'],
+            );
+            
+            $page_id = wp_insert_post( $page_post );
+            
+            if ( ! is_wp_error( $page_id ) ) {
+                // Set page template if specified
+                if ( isset( $page_data['template'] ) ) {
+                    if ( 'flexible-page' === $page_data['template'] ) {
+                        chow_save_page_acf_fields( $page_id, $page_data, $attachment_ids, $form_ids );
+                    } elseif ( 'index-plantilla' === $page_data['template'] ) {
+                        update_post_meta( $page_id, '_wp_page_template', 'indexplantilla-page.php' );
+                    }
+                }
+                
+                // Mark as demo content
+                update_post_meta( $page_id, '_demo_id', $demo_id );
+                $pages_created[] = $page_id;
+            } else {
+                chow_importer_log( "  ✗ Error creando página: {$page_data['title']}", 'ERROR' );
+            }
         }
-        
-        // Create page post
-         $page_post = array(
-             'post_title'  => $page_data['title'],
-             'post_content' => ( isset( $page_data['template'] ) && 'flexible-page' === $page_data['template'] ) 
-                              ? '' 
-                              : $page_data['content'], // Only use post_content if NOT flexible page
-             'post_type'   => 'page',
-             'post_status' => 'publish',
-             'post_name'   => $page_data['slug'],
-         );
-        
-        $page_id = wp_insert_post( $page_post );
-        
-          if ( ! is_wp_error( $page_id ) ) {
-               // Set page template if specified
-               if ( isset( $page_data['template'] ) ) {
-                   if ( 'flexible-page' === $page_data['template'] ) {
-                       // Step 1: Assign template first
-                       update_post_meta( $page_id, '_wp_page_template', 'flexible-page.php' );
-                       
-                       // Step 2: Verify template was assigned
-                       $assigned_template = get_post_meta( $page_id, '_wp_page_template', true );
-                       if ( $assigned_template !== 'flexible-page.php' ) {
-                           error_log( "WARNING: Template not assigned correctly for page $page_id" );
-                       }
-                       
-                       // Step 3: Save ACF fields for flexible pages
-                       // Save header/content fields
-                       if ( isset( $page_data['content'] ) ) {
-                           update_field( 'texto_contenido', $page_data['content'], $page_id );
-                       }
-                       
-                       // Save collapses section if present
-                       if ( isset( $page_data['collapses'] ) && ! empty( $page_data['collapses'] ) ) {
-                           // Activate collapses section first
-                           update_field( 'activo_collapses', true, $page_id );
-                           // Then save collapses data
-                           update_field( 'collapses', $page_data['collapses'], $page_id );
-                       }
-                       
-                       // Save header fields (imagen_portada with attachment ID conversion)
-                       if ( isset( $page_data['imagen_portada'] ) && ! empty( $page_data['imagen_portada'] ) ) {
-                           // Activate header section
-                           update_field( 'activo_encabezado', true, $page_id );
-                           
-                           // Convert filename to attachment ID
-                       $header_key = str_replace( array( '.webp', '.png', '.jpg', '.jpeg', '.gif' ), '', $page_data['imagen_portada'] );
-                       }
-                       
-                       // Save header metadata if present
-                       if ( isset( $page_data['pre_txt'] ) ) {
-                           update_field( 'pre_txt', $page_data['pre_txt'], $page_id );
-                       }
-                       if ( isset( $page_data['titulo'] ) ) {
-                           update_field( 'titulo', $page_data['titulo'], $page_id );
-                       }
-                       if ( isset( $page_data['header_bajada'] ) ) {
-                           update_field( 'header_bajada', $page_data['header_bajada'], $page_id );
-                       }
-                       
-                       // Save form section if present
-                       if ( isset( $page_data['codigo_form'] ) && ! empty( $page_data['codigo_form'] ) ) {
-                           // Find the form ID by name
-                           if ( isset( $form_ids[ $page_data['codigo_form'] ] ) ) {
-                               // Activate form section first
-                               update_field( 'activo_form', true, $page_id );
-                               
-                               // Then save form code
-                               $form_id = $form_ids[ $page_data['codigo_form'] ];
-                               $form_shortcode = '[contact-form-7 id="' . $form_id . '" title="' . $page_data['codigo_form'] . '"]';
-                               update_field( 'codigo_form', $form_shortcode, $page_id );
-                           }
-                       }
-                   } elseif ( 'index-plantilla' === $page_data['template'] ) {
-                       update_post_meta( $page_id, '_wp_page_template', 'indexplantilla-page.php' );
-                   }
-               }
-               
-               // Mark as demo content
-               update_post_meta( $page_id, '_demo_id', $demo_id );
-               $pages_created[] = $page_id;
-           }
     }
     
     return $pages_created;

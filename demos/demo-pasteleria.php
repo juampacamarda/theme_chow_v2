@@ -190,7 +190,7 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
 </ul>
 <p>Cada producto es hecho con amor y dedicación para que disfrutes de momentos dulces inolvidables.</p>',
                     'template' => 'flexible-page',
-                    'imagen_portada' => 'pasteleria-hero-01.webp',
+                    'imagen_portada' => 'pasteleria-cover.webp',
                     'activo_encabezado' => true,
                     'pre_txt' => 'NUESTRA HISTORIA',
                     'titulo' => 'Sobre Nosotros',
@@ -201,7 +201,7 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                     'slug'    => 'preguntas-frecuentes',
                     'content' => '<p>Resolvemos tus dudas sobre nuestros productos, pedidos y entregas.</p>',
                     'template' => 'flexible-page',
-                    'imagen_portada' => 'pasteleria-hero-02.webp',
+                    'imagen_portada' => 'pasteleria-cover.webp',
                     'activo_encabezado' => true,
                     'pre_txt' => 'DUDAS',
                     'titulo' => 'Preguntas Frecuentes',
@@ -246,7 +246,7 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
 <li><strong>Dirección:</strong> Av. Corrientes 1234, Buenos Aires, Argentina</li>
 </ul>',
                     'template' => 'flexible-page',
-                    'imagen_portada' => 'pasteleria-hero-02.webp',
+                    'imagen_portada' => 'pasteleria-cover.webp',
                     'activo_encabezado' => true,
                     'pre_txt' => 'CONTACTO',
                     'titulo' => 'Ponte en Contacto',
@@ -337,9 +337,9 @@ if ( ! function_exists( 'chow_get_demo_pasteleria' ) ) {
                 ),
                 
                 'slider_3' => array(
-                    'imagen' => 'pasteleria-cover.webp',
-                    'texto' => 'Pedidos al Mayor',
-                    'link' => '/contacto',
+                    'imagen' => '',
+                    'texto' => '',
+                    'link' => '',
                 ),
                 
                 'slider_4' => array(
