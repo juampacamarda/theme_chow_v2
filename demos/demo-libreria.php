@@ -18,7 +18,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
             'id'          => 'libreria',
             'name'        => 'Librería "Páginas de Tinta"',
             'description' => 'Un sitio elegante para una tienda de libros con catálogo de novelas, poesía y autoayuda. Incluye 8 productos destacados, página de preguntas frecuentes y formularios de contacto.',
-            'image'       => 'libreria-cover.png', // Demo card image
+            'image'       => 'libreria-cover.webp', // Demo card image
             'version'     => '1.0',
             'card_style'  => 'hover_visual', // Estilo de tarjeta por defecto: 'classic' o 'hover_visual'
             
@@ -28,9 +28,9 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                 'color_secundario'      => '#aebcbe', // Changed for better contrast
                 'color_texto'           => '#5f5f5f',
                 'color_fondo'           => '#ffffff',
-                'logo_header_desktop'   => 'libreria-logo-color.png',
-                'logo_header_mobile'    => 'libreria-logo-blanco.png',
-                'logo_footer'           => 'libreria-logo-blanco.png',
+                'logo_header_desktop'   => 'libreria-logo-color.webp',
+                'logo_header_mobile'    => 'libreria-logo-blanco.webp',
+                'logo_footer'           => 'libreria-logo-blanco.webp',
                 'direccion'             => 'Av. Corrientes 1234, Buenos Aires, Argentina',
                 'telefonos'             => '+54 (11) 4567-8900',
                 'mail'                  => 'info@paginasdetinta.com',
@@ -71,7 +71,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'price'             => '34.99',
                     'sale_price'        => '',
                     'stock'             => 50,
-                    'image'             => 'libreria-producto01.png',
+                    'image'             => 'libreria-producto01.webp',
                     'category'          => 'Autoayuda',
                     'featured'          => true,
                     'on_sale'           => false,
@@ -86,7 +86,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'price'             => '49.99',
                     'sale_price'        => '34.99',
                     'stock'             => 35,
-                    'image'             => 'libreria-producto02.png',
+                    'image'             => 'libreria-producto02.webp',
                     'category'          => 'Autoayuda',
                     'featured'          => true,
                     'on_sale'           => true,
@@ -101,7 +101,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'price'             => '89.99',
                     'sale_price'        => '',
                     'stock'             => 0,
-                    'image'             => 'libreria-producto03.png',
+                    'image'             => 'libreria-producto03.webp',
                     'category'          => 'Novelas',
                     'featured'          => false,
                     'on_sale'           => false,
@@ -116,7 +116,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'price'             => '129.99',
                     'sale_price'        => '79.99',
                     'stock'             => 28,
-                    'image'             => 'libreria-producto04.png',
+                    'image'             => 'libreria-producto04.webp',
                     'category'          => 'Autoayuda',
                     'featured'          => true,
                     'on_sale'           => true,
@@ -131,7 +131,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'price'             => '24.99',
                     'sale_price'        => '',
                     'stock'             => 120,
-                    'image'             => 'libreria-producto05.png',
+                    'image'             => 'libreria-producto07.webp',
                     'category'          => 'Novelas',
                     'featured'          => true,
                     'on_sale'           => false,
@@ -147,7 +147,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'price'             => '59.99',
                     'sale_price'        => '',
                     'stock'             => 75,
-                    'image'             => 'libreria-producto06.png',
+                    'image'             => 'libreria-producto06.webp',
                     'category'          => 'Autoayuda',
                     'featured'          => true,
                     'on_sale'           => false,
@@ -162,7 +162,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'price'             => '39.99',
                     'sale_price'        => '27.99',
                     'stock'             => 42,
-                    'image'             => 'libreria-producto07.png',
+                    'image'             => 'libreria-producto05.webp',
                     'category'          => 'Poesía',
                     'featured'          => false,
                     'on_sale'           => true,
@@ -177,7 +177,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'price'             => '199.99',
                     'sale_price'        => '149.99',
                     'stock'             => 15,
-                    'image'             => 'libreria-producto08.png',
+                    'image'             => 'libreria-producto08.webp',
                     'category'          => 'Novelas',
                     'featured'          => true,
                     'on_sale'           => true,
@@ -211,7 +211,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
 </ul>
 <p>Creemos que cada libro es una puerta a nuevos mundos, y estamos aquí para ayudarte a encontrar tu próxima lectura favorita.</p>',
                     'template' => 'flexible-page',
-                    'imagen_portada' => 'libreria-bannerflexible.png',
+                    'imagen_portada' => 'libreria-bannerflexible.webp',
                     'activo_encabezado' => true,
                     'pre_txt' => 'NUESTRA HISTORIA',
                     'titulo' => 'Sobre Nosotros',
@@ -224,7 +224,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                     'slug'    => 'preguntas-frecuentes',
                     'content' => '<p>Encuentra respuestas a las preguntas más comunes de nuestros clientes.</p>',
                     'template' => 'flexible-page',
-                    'imagen_portada' => 'libreria-bannerflexible.png',
+                    'imagen_portada' => 'libreria-bannerflexible.webp',
                     'activo_encabezado' => true,
                     'pre_txt' => 'DUDAS',
                     'titulo' => 'Preguntas Frecuentes',
@@ -270,7 +270,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
 <li><strong>Dirección:</strong> Av. Corrientes 1234, Buenos Aires, Argentina</li>
 </ul>',
                     'template' => 'flexible-page',
-                    'imagen_portada' => 'libreria-bannerflexible.png',
+                    'imagen_portada' => 'libreria-bannerflexible.webp',
                     'activo_encabezado' => true,
                     'pre_txt' => 'CONTACTO',
                     'titulo' => 'Ponte en Contacto',
@@ -352,19 +352,19 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
             'home' => array(
                 // Slider 1 - Individual slider fields (SCF expects slider_1, slider_2, etc.)
                 'slider_1' => array(
-                    'imagen' => 'libreria-slide01.png',
+                    'imagen' => 'libreria-slide01.webp',
                     'texto' => 'Descubre Nuevos Mundos',
                     'link' => '/shop',
                 ),
                 
                 'slider_2' => array(
-                    'imagen' => 'libreria-slide02.png',
+                    'imagen' => 'libreria-slide02.webp',
                     'texto' => 'Literatura Premium',
                     'link' => '/shop',
                 ),
                 
                 'slider_3' => array(
-                    'imagen' => 'libreria-slide03.png',
+                    'imagen' => 'libreria-slide03.webp',
                     'texto' => 'Ediciones Limitadas',
                     'link' => '/shop',
                 ),
@@ -407,7 +407,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                   'newsletter' => array(
                       'titulo'           => 'Suscribite a Nuestro Newsletter',
                       'descripcion'      => 'Recibe ofertas exclusivas y novedades literarias directamente en tu inbox',
-                      'news_bg'          => 'libreria-fondo-news.png',
+                      'news_bg'          => 'libreria-fondo-news.webp',
                       'formulario_news'  => 'Newsletter Librería', // Will be replaced with actual form ID
                    ),
                  
@@ -418,7 +418,7 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                  'redes_seccion' => array(
                      'titulo'      => 'Síguenos en Redes',
                      'descripcion' => 'Conecta con nosotros en nuestras redes sociales',
-                     'fondo_redes' => 'libreria-fondo-redes.png',
+                     'fondo_redes' => 'libreria-fondo-redes.webp',
                  ),
                 
                 // Título y descripción del carrusel de productos
@@ -428,32 +428,32 @@ if ( ! function_exists( 'chow_get_demo_libreria' ) ) {
                  // Productos destacados (REPEATER field - 6 productos)
                  'carrusel_productos_destacados' => array(
                      array(
-                         'imagen'            => 'libreria-producto01.png',
+                         'imagen'            => 'libreria-producto01.webp',
                          'nombre_del_link'   => 'El Quijote de la Mancha',
                          'link'              => array( 'url' => '/?p=1', 'title' => 'El Quijote de la Mancha', 'target' => '' ),
                      ),
                      array(
-                         'imagen'            => 'libreria-producto02.png',
+                         'imagen'            => 'libreria-producto02.webp',
                          'nombre_del_link'   => 'Orgullo y Prejuicio',
                          'link'              => array( 'url' => '/?p=2', 'title' => 'Orgullo y Prejuicio', 'target' => '' ),
                      ),
                      array(
-                         'imagen'            => 'libreria-producto03.png',
+                         'imagen'            => 'libreria-producto03.webp',
                          'nombre_del_link'   => 'Cien Años de Soledad',
                          'link'              => array( 'url' => '/?p=3', 'title' => 'Cien Años de Soledad', 'target' => '' ),
                      ),
                      array(
-                         'imagen'            => 'libreria-producto04.png',
+                         'imagen'            => 'libreria-producto04.webp',
                          'nombre_del_link'   => 'La Metamorfosis',
                          'link'              => array( 'url' => '/?p=4', 'title' => 'La Metamorfosis', 'target' => '' ),
                      ),
                      array(
-                         'imagen'            => 'libreria-producto05.png',
+                         'imagen'            => 'libreria-producto05.webp',
                          'nombre_del_link'   => 'El Gran Gatsby',
                          'link'              => array( 'url' => '/?p=5', 'title' => 'El Gran Gatsby', 'target' => '' ),
                      ),
                      array(
-                         'imagen'            => 'libreria-producto06.png',
+                         'imagen'            => 'libreria-producto06.webp',
                          'nombre_del_link'   => '1984',
                          'link'              => array( 'url' => '/?p=6', 'title' => '1984', 'target' => '' ),
                      ),
