@@ -498,12 +498,11 @@ CSS,
             'menu' => array(
                 'name'  => 'Menú Principal',
                 'items' => array(
-                    array( 'title' => 'Inicio', 'url' => '/', 'parent' => null ),
-                    array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
-                    array( 'title' => 'Sobre Nosotros', 'url' => '/sobre-nosotros', 'parent' => null ),
-                    array( 'title' => 'Preguntas Frecuentes', 'url' => '/preguntas-frecuentes', 'parent' => null ),
-                    array( 'title' => 'Contacto', 'url' => '/contacto', 'parent' => null ),
-                    array( 'title' => 'Blog', 'url' => '/blog', 'parent' => null ),
+                    array( 'title' => 'Inicio', 'slug' => 'home', 'parent' => null ),
+                    array( 'title' => 'Tienda', 'slug' => 'shop', 'parent' => null ),
+                    array( 'title' => 'Sobre Nosotros', 'slug' => 'sobre-nosotros', 'parent' => null ),
+                    array( 'title' => 'Preguntas Frecuentes', 'slug' => 'preguntas-frecuentes', 'parent' => null ),
+                    array( 'title' => 'Contacto', 'slug' => 'contacto', 'parent' => null ),
                 ),
             ),
         );
