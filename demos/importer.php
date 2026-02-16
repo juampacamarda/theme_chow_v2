@@ -582,49 +582,66 @@ function chow_create_pages( $demo, $attachment_ids, $form_ids ) {
         }
         
         // Create page post
-        $page_post = array(
-            'post_title'  => $page_data['title'],
-            'post_content' => $page_data['content'],
-            'post_type'   => 'page',
-            'post_status' => 'publish',
-            'post_name'   => $page_data['slug'],
-        );
+         $page_post = array(
+             'post_title'  => $page_data['title'],
+             'post_content' => ( isset( $page_data['template'] ) && 'flexible-page' === $page_data['template'] ) 
+                              ? '' 
+                              : $page_data['content'], // Only use post_content if NOT flexible page
+             'post_type'   => 'page',
+             'post_status' => 'publish',
+             'post_name'   => $page_data['slug'],
+         );
         
         $page_id = wp_insert_post( $page_post );
         
-         if ( ! is_wp_error( $page_id ) ) {
-              // Set page template if specified
-              if ( isset( $page_data['template'] ) ) {
-                  if ( 'flexible-page' === $page_data['template'] ) {
-                      update_post_meta( $page_id, '_wp_page_template', 'flexible-page.php' );
-                      
-                      // Para páginas flexible, guardar contenido en ACF field (no en post_content)
-                      if ( isset( $page_data['content'] ) ) {
-                          update_field( 'texto_contenido', $page_data['content'], $page_id );
-                      }
-                      
-                      // Guardar collapses si existen
-                      if ( isset( $page_data['collapses'] ) ) {
-                          update_field( 'collapses', $page_data['collapses'], $page_id );
-                      }
-                      
-                      // Guardar código del formulario si existe
-                      if ( isset( $page_data['codigo_form'] ) && ! empty( $page_data['codigo_form'] ) ) {
-                          // Find the form ID by name
-                          if ( isset( $form_ids[ $page_data['codigo_form'] ] ) ) {
-                              $form_id = $form_ids[ $page_data['codigo_form'] ];
-                              $form_shortcode = '[contact-form-7 id="' . $form_id . '" title="' . $page_data['codigo_form'] . '"]';
-                              update_field( 'codigo_form', $form_shortcode, $page_id );
-                          }
-                      }
-                  } elseif ( 'index-plantilla' === $page_data['template'] ) {
-                      update_post_meta( $page_id, '_wp_page_template', 'indexplantilla-page.php' );
-                  }
-              }
-              
-              // Mark as demo content
-              update_post_meta( $page_id, '_demo_id', $demo_id );
-          }
+          if ( ! is_wp_error( $page_id ) ) {
+               // Set page template if specified
+               if ( isset( $page_data['template'] ) ) {
+                   if ( 'flexible-page' === $page_data['template'] ) {
+                       // Step 1: Assign template first
+                       update_post_meta( $page_id, '_wp_page_template', 'flexible-page.php' );
+                       
+                       // Step 2: Verify template was assigned
+                       $assigned_template = get_post_meta( $page_id, '_wp_page_template', true );
+                       if ( $assigned_template !== 'flexible-page.php' ) {
+                           error_log( "WARNING: Template not assigned correctly for page $page_id" );
+                       }
+                       
+                       // Step 3: Save ACF fields for flexible pages
+                       // Save header/content fields
+                       if ( isset( $page_data['content'] ) ) {
+                           update_field( 'texto_contenido', $page_data['content'], $page_id );
+                       }
+                       
+                       // Save collapses section if present
+                       if ( isset( $page_data['collapses'] ) && ! empty( $page_data['collapses'] ) ) {
+                           // Activate collapses section first
+                           update_field( 'activo_collapses', true, $page_id );
+                           // Then save collapses data
+                           update_field( 'collapses', $page_data['collapses'], $page_id );
+                       }
+                       
+                       // Save form section if present
+                       if ( isset( $page_data['codigo_form'] ) && ! empty( $page_data['codigo_form'] ) ) {
+                           // Find the form ID by name
+                           if ( isset( $form_ids[ $page_data['codigo_form'] ] ) ) {
+                               // Activate form section first
+                               update_field( 'activo_form', true, $page_id );
+                               
+                               // Then save form code
+                               $form_id = $form_ids[ $page_data['codigo_form'] ];
+                               $form_shortcode = '[contact-form-7 id="' . $form_id . '" title="' . $page_data['codigo_form'] . '"]';
+                               update_field( 'codigo_form', $form_shortcode, $page_id );
+                           }
+                       }
+                   } elseif ( 'index-plantilla' === $page_data['template'] ) {
+                       update_post_meta( $page_id, '_wp_page_template', 'indexplantilla-page.php' );
+                   }
+               }
+               
+               // Mark as demo content
+               update_post_meta( $page_id, '_demo_id', $demo_id );
+           }
     }
     
     return true;
@@ -664,10 +681,12 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
             if ( isset( $company[ $field ] ) ) {
                 $company_data[ $field ] = $company[ $field ];
             }
-        }
-        
-        // Save as GROUP field
-        update_field( 'empresa', $company_data, 'option' );
+         }
+         
+         // Save each field individually (fields are flat, not grouped under 'empresa' wrapper)
+         foreach ( $company_data as $field_name => $field_value ) {
+             update_field( $field_name, $field_value, 'option' );
+         }
     }
      
       // Update card_style (product card design for this demo)
