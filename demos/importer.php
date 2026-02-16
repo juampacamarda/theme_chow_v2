@@ -1272,6 +1272,12 @@ function chow_update_theme_options( $demo, $attachment_ids, $form_ids ) {
  * Create or update navigation menu
  */
 function chow_update_menu( $demo ) {
+    // Validar que exista la clave 'menu'
+    if ( ! isset( $demo['menu'] ) || empty( $demo['menu'] ) ) {
+        chow_importer_log( "⚠ Configuración de menú no encontrada, omitiendo", 'WARNING' );
+        return true;
+    }
+    
     $menu_name = $demo['menu']['name'];
     $demo_id = isset( $demo['id'] ) ? $demo['id'] : '';
     
