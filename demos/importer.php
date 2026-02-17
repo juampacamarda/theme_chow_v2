@@ -939,14 +939,17 @@ function chow_create_products( $demo, $attachment_ids, $category_ids ) {
             $product = new WC_Product_Simple( $product_id );
             
             // Set basic product data
-            if ( isset( $product_data['price'] ) ) {
-                $product->set_price( $product_data['price'] );
-                chow_importer_log( "    - Precio: " . $product_data['price'] );
+            if ( isset( $product_data['price'] ) && ! empty( $product_data['price'] ) ) {
+                $price = floatval( str_replace( ',', '.', $product_data['price'] ) );
+                $product->set_price( $price );
+                $product->set_regular_price( $price );
+                chow_importer_log( "    - Precio: " . $price );
             }
             
             if ( ! empty( $product_data['sale_price'] ) ) {
-                $product->set_sale_price( $product_data['sale_price'] );
-                chow_importer_log( "    - Precio en oferta: " . $product_data['sale_price'] );
+                $sale_price = floatval( str_replace( ',', '.', $product_data['sale_price'] ) );
+                $product->set_sale_price( $sale_price );
+                chow_importer_log( "    - Precio en oferta: " . $sale_price );
             }
             
             // Set stock
