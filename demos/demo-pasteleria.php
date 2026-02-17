@@ -472,6 +472,11 @@ li.product.chow-product-card-02,
 footer{
     background-color: var(--chow_txt) !important;
 }
+
+.woocommerce .products ul::after, .woocommerce .products ul::before, .woocommerce ul.products::after, .woocommerce ul.products::before {
+    content: "";
+    display: none!important;
+}
 CSS,
             
             // Menu configuration (shared across all demos)
