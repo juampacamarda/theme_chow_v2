@@ -321,7 +321,7 @@ if (!function_exists('loop_columns')) {
 
  function loop_columns() {
 
- return 4; //4 productos por columna
+ return 4; // 4 productos por fila por defecto
 
  }
 
