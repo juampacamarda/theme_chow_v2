@@ -26,6 +26,12 @@ $chow_available_demos = array(
     'restaurante',
 );
 
+$chow_active_demo = get_option( 'chow_active_demo' );
+
+if ( ! empty( $chow_active_demo ) && in_array( $chow_active_demo, $chow_available_demos, true ) ) {
+    $chow_available_demos = array( $chow_active_demo );
+}
+
 /**
  * Cargar archivos de demos activos y ejecutar sus hooks de inicialización
  */

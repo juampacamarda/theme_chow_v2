@@ -13,6 +13,10 @@
 require_once get_template_directory() . '/demos/demo-libreria.php';
 require_once get_template_directory() . '/demos/demo-pasteleria.php';
 
+function chow_get_available_demo_ids() {
+    return array( 'libreria', 'pasteleria' );
+}
+
 // Register the "Importar Demo" subpage
 add_action( 'init', 'chow_register_importer_page' );
 
@@ -340,9 +344,19 @@ function chow_do_import_internal( $demo_id, $action_type = 'import' ) {
         chow_importer_log( "⊘ Paso 3 omitido: WooCommerce no instalado" );
     }
     
-    // Step 4: Create products (OPTIONAL - skip if plugin missing)
+    // Step 4: Recreate products (OPTIONAL - skip if plugin missing)
     if ( ! isset( $missing_plugins['woocommerce'] ) ) {
-        chow_importer_log( "PASO 4: Creando productos" );
+        chow_importer_log( "PASO 4: Reemplazando productos" );
+
+        $deleted_products = chow_delete_existing_products();
+        if ( is_wp_error( $deleted_products ) ) {
+            $error = $deleted_products->get_error_message();
+            chow_importer_log( "Error limpiando productos existentes: $error", 'ERROR' );
+            return $deleted_products;
+        }
+
+        chow_importer_log( "✓ Productos eliminados antes de importar: $deleted_products" );
+
         $products = chow_create_products( $demo, $attachment_ids, $category_ids );
         if ( is_wp_error( $products ) ) {
             $error = $products->get_error_message();
@@ -415,7 +429,12 @@ function chow_do_import_internal( $demo_id, $action_type = 'import' ) {
     // Mark demo as imported
     chow_importer_log( "Marcando demo como importado" );
     update_option( $demo_marker, time() );
-    update_option( 'chow_demo_' . $demo_id . '_active', 1 );
+
+    // Ensure only one demo is marked active at a time
+    foreach ( chow_get_available_demo_ids() as $available_demo_id ) {
+        update_option( 'chow_demo_' . $available_demo_id . '_active', ( $available_demo_id === $demo_id ) ? 1 : 0 );
+    }
+
     update_option( 'chow_active_demo', $demo_id );
     
     // Return success with information about skipped plugins
@@ -806,6 +825,46 @@ function chow_create_categories( $demo ) {
     }
     
     return $category_ids;
+}
+
+/**
+ * Delete all existing WooCommerce products before demo import
+ */
+function chow_delete_existing_products() {
+    if ( ! post_type_exists( 'product' ) ) {
+        return 0;
+    }
+
+    $deleted_count = 0;
+    $post_types = array( 'product', 'product_variation' );
+    $post_statuses = array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' );
+
+    foreach ( $post_types as $post_type ) {
+        $query = new WP_Query( array(
+            'post_type' => $post_type,
+            'post_status' => $post_statuses,
+            'posts_per_page' => -1,
+            'fields' => 'ids',
+            'no_found_rows' => true,
+            'update_post_meta_cache' => false,
+            'update_post_term_cache' => false,
+        ) );
+
+        if ( empty( $query->posts ) ) {
+            continue;
+        }
+
+        chow_importer_log( '  ↻ Eliminando ' . count( $query->posts ) . ' items de tipo ' . $post_type );
+
+        foreach ( $query->posts as $product_id ) {
+            $deleted = wp_delete_post( $product_id, true );
+            if ( $deleted ) {
+                $deleted_count++;
+            }
+        }
+    }
+
+    return $deleted_count;
 }
 
 /**
@@ -1459,20 +1518,20 @@ function chow_update_menu( $demo ) {
         $menu_item_object_id = 0;
         $page_found = false;
         
-        // Special handling for "Tienda" - detect Shop page slug and title dynamically
+        // Special handling for "Tienda" - detect Shop page slug dynamically but keep hardcoded title
         if ( 'Tienda' === $item_data['title'] ) {
             $shop_details = chow_get_shop_page_details();
             
             if ( $shop_details ) {
-                // Usar URL con el slug real de la Shop page
+                // Usar URL con el slug real de la Shop page, pero mantener título 'Tienda' original
                 $item_url = home_url( '/' . $shop_details['shop_slug'] . '/' );
-                $item_data['title'] = $shop_details['shop_title']; // Usar el título real de la Shop page
-                chow_importer_log( "    → Tienda detectado: slug='{$shop_details['shop_slug']}', título='{$shop_details['shop_title']}'" );
+                // NO sobrescribir $item_data['title'] - mantener 'Tienda' del array de configuración
+                chow_importer_log( "    → Tienda detectado: slug='{$shop_details['shop_slug']}', título='Tienda' (hardcoded)" );
             } else {
-                // Fallback si WooCommerce no está disponible - mantener título "Tienda"
+                // Fallback si WooCommerce no está disponible o shop page no existe
                 $item_url = home_url( '/shop/' );
-                // NO cambiar $item_data['title'], mantener "Tienda"
-                chow_importer_log( "    ⚠ Shop page no detectable, usando /shop/ y título 'Tienda' como fallback", 'WARNING' );
+                // Mantener título "Tienda" del array de configuración
+                chow_importer_log( "    ⚠ Shop page no detectable, usando /shop/ con título 'Tienda' (hardcoded)", 'WARNING' );
             }
             
             $menu_item_type = 'custom';
