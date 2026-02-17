@@ -111,6 +111,22 @@ Estas correcciones ya están aplicadas en el código base y deben tenerse en cue
 - Antes podían coexistir productos viejos y nuevos.
 - Solución aplicada: limpieza total de productos WooCommerce antes de crear productos del demo.
 
+### 5) Precios de productos no se asignaban correctamente (resuelto)
+- Los precios definidos en el array de productos no se guardaban en WooCommerce, dejando productos sin precio visible.
+- Solución aplicada:
+    - Conversión explícita de precios string a float usando `floatval()`.
+    - Reemplazo de comas por puntos para compatibilidad internacional.
+    - Asignación tanto de `set_price()` como `set_regular_price()`.
+    - Verificación de que el precio no esté vacío antes de asignar.
+
+### 6) Grid de shop no se ajustaba a 3 columnas para demo pastelería (resuelto)
+- El demo pastelería requería mostrar productos en 3 columnas en lugar de 4 por defecto.
+- Solución aplicada: CSS override específico en `demo-pasteleria-functions.php` que fuerza 3 columnas para la página de shop.
+
+### 7) Precios de ejemplo en demo pastelería actualizados
+- Los precios originales eran demasiado bajos para productos artesanales premium.
+- Solución aplicada: actualización de precios en `demo-pasteleria.php` con valores más realistas (ej: tortas de $35-52, pastas de $5-15).
+
 ---
 
 ## Flujo Simplificado para Crear Demos
