@@ -1448,6 +1448,7 @@ function chow_update_menu( $demo ) {
     
     // Add menu items
     chow_importer_log( "  + Creando " . count( $demo['menu']['items'] ) . " items de menú" );
+    $menu_position = 1;
     foreach ( $demo['menu']['items'] as $item_data ) {
         
         // Prepare menu item arguments
@@ -1466,9 +1467,12 @@ function chow_update_menu( $demo ) {
                 // Usar URL con el slug real de la Shop page
                 $item_url = home_url( '/' . $shop_details['shop_slug'] . '/' );
                 $item_data['title'] = $shop_details['shop_title']; // Usar el título real de la Shop page
+                chow_importer_log( "    → Tienda detectado: slug='{$shop_details['shop_slug']}', título='{$shop_details['shop_title']}'" );
             } else {
-                // Fallback si WooCommerce no está disponible
+                // Fallback si WooCommerce no está disponible - mantener título "Tienda"
                 $item_url = home_url( '/shop/' );
+                // NO cambiar $item_data['title'], mantener "Tienda"
+                chow_importer_log( "    ⚠ Shop page no detectable, usando /shop/ y título 'Tienda' como fallback", 'WARNING' );
             }
             
             $menu_item_type = 'custom';
@@ -1495,6 +1499,7 @@ function chow_update_menu( $demo ) {
             'menu-item-status'     => 'publish',
             'menu-item-type'       => $menu_item_type,
             'menu-item-parent-id'  => $item_data['parent'] ?? 0,
+            'menu-item-position'   => $menu_position,
         );
         
         // Add title ONLY for custom links
@@ -1515,8 +1520,10 @@ function chow_update_menu( $demo ) {
             chow_importer_log( "    ✗ Error creando menu item '{$item_data['title']}': " . $result->get_error_message(), 'ERROR' );
         } else {
             $type_label = ( 'post_type' === $menu_item_type ) ? 'Página' : 'Custom Link';
-            chow_importer_log( "    ✓ '{$item_data['title']}' creado como {$type_label}" );
+            chow_importer_log( "    ✓ '{$item_data['title']}' creado como {$type_label} (posición {$menu_position})" );
         }
+        
+        $menu_position++;
     }
     
      // Set as Primary Menu (theme location is 'superior')
