@@ -1,18 +1,20 @@
-# 📚 Guía Definitiva de Creación de Demos - Chow Theme
+# 📚 Guía de Creación de Demos - Chow Theme
 
 ## Tabla de Contenidos
 1. [Introducción](#introducción)
 2. [Restaurar Plantilla (Función Rápida de Testing)](#restaurar-plantilla)
-3. [Estructura General de un Demo](#estructura-general-de-un-demo)
-4. [Problemas Comunes y Soluciones](#problemas-comunes-y-soluciones)
-5. [Referencia de Campos ACF](#referencia-de-campos-acf)
-6. [Detalles de Estilos y Ajustes Visuales](#detalles-de-estilos-y-ajustes-visuales)
-7. [Guía de Prompts de Imágenes](#guía-de-prompts-de-imágenes)
-8. [Checklist Pre-Importación](#checklist-pre-importación)
-9. [Ejemplos de Código Correcto](#ejemplos-de-código-correcto)
-10. [Validation Script](#validation-script)
-11. [Troubleshooting](#troubleshooting)
-12. [Contacto y Reportes](#contacto-y-reportes)
+3. [Actualizaciones Críticas (2026-02-16)](#actualizaciones-críticas-2026-02-16)
+4. [Flujo Simplificado para Crear Demos](#flujo-simplificado-para-crear-demos)
+5. [Estructura General de un Demo](#estructura-general-de-un-demo)
+6. [Problemas Comunes y Soluciones](#problemas-comunes-y-soluciones)
+7. [Referencia de Campos ACF](#referencia-de-campos-acf)
+8. [Detalles de Estilos y Ajustes Visuales](#detalles-de-estilos-y-ajustes-visuales)
+9. [Guía de Prompts de Imágenes](#guía-de-prompts-de-imágenes)
+10. [Checklist Pre-Importación](#checklist-pre-importación)
+11. [Ejemplos de Código Correcto](#ejemplos-de-código-correcto)
+12. [Validation Script](#validation-script)
+13. [Troubleshooting](#troubleshooting)
+14. [Contacto y Reportes](#contacto-y-reportes)
 
 ---
 
@@ -59,6 +61,10 @@ La función "Restaurar Plantilla" permite resetear rápidamente el demo a su est
 - ✗ Colores, imágenes y configuración personalizada
 - ✗ Formularios y estructuras de menú personalizadas
 
+**IMPORTANTE SOBRE PRODUCTOS (nuevo comportamiento):**
+- Desde la actualización del importador, al importar demo se eliminan todos los productos WooCommerce existentes (`product` y `product_variation`) antes de crear los productos del demo.
+- Esto evita catálogos mezclados entre demos.
+
 **SE RESTAURARÁ:**
 - ✓ La plantilla original del demo con todos sus contenidos por defecto
 - ✓ Estilos y configuración original del demo
@@ -80,6 +86,48 @@ Flujo de desarrollo:
 5. Si hay errores, editas demo-libreria.php
 6. Vuelves a paso 2 (hasta que todo sea perfecto)
 ```
+
+---
+
+## Actualizaciones Críticas (2026-02-16)
+
+Estas correcciones ya están aplicadas en el código base y deben tenerse en cuenta al crear nuevos demos.
+
+### 1) Menú "Tienda" sin label (resuelto)
+- Se detectó que updates parciales de menú podían dejar items custom sin etiqueta visible (`(no label)`).
+- Solución aplicada: cuando se actualiza URL de item, también se conserva título, tipo, posición y parent del item.
+
+### 2) Orden del menú inestable (resuelto)
+- El orden podía alterarse después de hooks de post-import.
+- Solución aplicada: preservación explícita de `menu_order` en updates de menú y fix específico de orden en demo pastelería.
+
+### 3) Activación cruzada de demos (resuelto)
+- Podían quedar varios demos marcados como activos al mismo tiempo, cargando hooks de más de un demo.
+- Solución aplicada:
+    - Importer: activa solo el demo importado y desactiva los demás.
+    - Loader: prioriza `chow_active_demo` y carga solo ese demo.
+
+### 4) Productos mezclados entre imports (resuelto)
+- Antes podían coexistir productos viejos y nuevos.
+- Solución aplicada: limpieza total de productos WooCommerce antes de crear productos del demo.
+
+---
+
+## Flujo Simplificado para Crear Demos
+
+Usar este flujo evita la mayoría de errores:
+
+1. **Crear/editar** `demos/demo-[nombre].php` con estructura base (company, categories, products, pages, forms, home, menu, custom_css).
+2. **Validar nombres de imágenes** contra `demos/[nombre]/images/`.
+3. **Importar con "Restaurar Plantilla"** desde admin.
+4. **Verificar 4 puntos clave**:
+     - Menú: label y orden correctos.
+     - Home: sliders, newsletter, redes y carrusel.
+     - Páginas flexibles: contenido + collapses.
+     - Productos: solo existen los del demo importado.
+5. **Iterar**: ajustar demo PHP y volver a restaurar.
+
+Regla práctica: el archivo del demo es la fuente de verdad; la importación reconstruye contenido en BD.
 
 ---
 
@@ -117,8 +165,8 @@ function chow_get_demo_nombre() {
 **Síntoma**: Los logos de empresa no se importan aunque los colores sí.
 
 **Causa**: Los colores se definen en dos lugares:
-- `'company'` array (correcto) - línea 26-42
-- `'theme_options'` array (INCORRECTO) - línea 403-408
+- `'company'` array (correcto)
+- `'theme_options'` array (INCORRECTO)
 
 **SOLUCIÓN**:
 ```php
@@ -145,7 +193,7 @@ function chow_get_demo_nombre() {
 
 **Archivos implicados**:
 - `demo-[nombre].php` - **ELIMINAR** sección `'theme_options'`
-- `importer.php` líneas 657-661 - **ELIMINAR** segundo `update_field()` de colores
+- `importer.php` - evitar cualquier duplicación de update de colores fuera de `company`
 
 ---
 
@@ -153,21 +201,21 @@ function chow_get_demo_nombre() {
 
 **Síntoma**: El formulario no aparece en la sección newsletter de la homepage.
 
-**Causa**: Se guarda solo el ID del formulario (42) en lugar del shortcode completo `[contact-form-7 id="42" title="..."]`
+**Causa**: Confusión entre el valor de config del demo y el valor final guardado en ACF.
 
 **SOLUCIÓN**:
 
-El campo `formulario_news` en el GROUP `newsletter` debe contener el **shortcode completo**, no solo el ID.
+En el archivo del demo, `formulario_news` debe contener el **nombre del formulario**. El importer lo convierte al shortcode completo automáticamente.
 
 ```php
 // ❌ INCORRECTO
 'formulario_news' => 'Newsletter Librería',  // Solo el nombre
 
-// ✅ CORRECTO
-'formulario_news' => '[contact-form-7 id="42" title="Newsletter Librería"]',  // Shortcode
+// ✅ CORRECTO en demo-[nombre].php
+'formulario_news' => 'Newsletter Librería',  // Nombre del formulario
 ```
 
-**En importer.php línea 759, generarlo automáticamente**:
+**En importer.php, generarlo automáticamente**:
 ```php
 // El importer debe convertir el ID a shortcode
 $newsletter_data = array(
@@ -193,7 +241,7 @@ $newsletter_data = array(
 
 #### 3A: Contenido Principal
 
-**INCORRECTO** (importer.php línea 587):
+**INCORRECTO**:
 ```php
 $page_post = array(
     'post_title'  => $page_data['title'],
@@ -215,7 +263,7 @@ if ( isset( $page_data['template'] ) && 'flexible-page' === $page_data['template
 
 #### 3B: Collapses/Accordion
 
-**INCORRECTO** (demo-libreria.php línea 222):
+**INCORRECTO**:
 ```php
 'flexible_content' => array(    // ❌ Nombre incorrecto
     array(
@@ -244,7 +292,7 @@ if ( isset( $page_data['template'] ) && 'flexible-page' === $page_data['template
 ),
 ```
 
-**En importer.php línea 608**:
+**En importer.php**:
 ```php
 // ❌ INCORRECTO
 update_field( 'flexible_content', $page_data['flexible_content'], $page_id );
@@ -257,20 +305,24 @@ if ( isset( $page_data['collapses'] ) ) {
 
 ---
 
-### ⚠️ PROBLEMA 4: URL de Tienda - Slug Incorrecto
+### ⚠️ PROBLEMA 4: Menú "Tienda" - URL/Label inconsistentes
 
-**Síntoma**: El menú apunta a `/tienda` pero WooCommerce usa `/shop`.
+**Síntoma**: El ítem de menú "Tienda" apunta mal o aparece sin etiqueta.
 
-**Causa**: El slug se define como `/tienda` en lugar de `/shop`.
+**Causa**:
+- URL hardcodeada incorrecta (`/tienda`)
+- O updates parciales del menú sin conservar título/posición.
 
 **SOLUCIÓN**:
 ```php
-// ❌ INCORRECTO
-array( 'title' => 'Tienda', 'url' => '/tienda', 'parent' => null ),
+// ✅ Recomendado
+array( 'title' => 'Tienda', 'parent' => null ),
 
-// ✅ CORRECTO
+// ✅ Alternativa válida (si se define URL explícita)
 array( 'title' => 'Tienda', 'url' => '/shop', 'parent' => null ),
 ```
+
+Nota: el importer detecta dinámicamente el slug real de Shop y mantiene el label "Tienda".
 
 ---
 
@@ -719,6 +771,7 @@ Antes de crear un nuevo demo, verificar:
 - [ ] Cada producto tiene: `name`, `slug`, `description`, `short_description`, `price`, `image`, `category`
 - [ ] Categorías referenciadas existen en array `'categories'`
 - [ ] Nombres de archivos coinciden con archivos en `demos/[nombre]/images/`
+- [ ] Recordar: al importar, se borran todos los productos WooCommerce existentes antes de crear los del demo
 
 ### ✅ Categorías
 - [ ] Cada categoría tiene: `name`, `slug`, `description`
@@ -750,6 +803,12 @@ Antes de crear un nuevo demo, verificar:
   - [ ] `/shop` para Tienda (NO `/tienda`)
   - [ ] `/sobre-nosotros`, `/preguntas-frecuentes`, etc. para páginas
 - [ ] No hay referencias a URLs temporales o slugs incorrectos
+- [ ] Si el item es "Tienda", priorizar título explícito `'Tienda'` en config y URL resuelta por importer
+- [ ] Verificar orden esperado post-import (ejemplo habitual: Inicio, Tienda, Sobre Nosotros, Preguntas Frecuentes, Contacto)
+
+### ✅ Activación de Demo
+- [ ] Confirmar que solo un demo quede activo después de importar (`chow_active_demo`)
+- [ ] Evitar hooks cruzados entre demos verificando que no haya múltiples `chow_demo_[id]_active` en `1`
 
 ### ✅ Imágenes
 - [ ] Carpeta `demos/[nombre]/images/` existe
@@ -978,6 +1037,14 @@ echo 'OK!' . PHP_EOL;
 ### Menú incorrecto
 1. Verificar que URLs son `/shop` (no `/tienda`)
 2. Verificar que pages existan con los slugs correctos
+3. Si aparece `(no label)`, revisar updates parciales de `wp_update_nav_menu_item` que no incluyan `menu-item-title`
+4. Confirmar que solo el demo activo está cargando hooks de menú
+5. Ejecutar "Restaurar Plantilla" del demo activo para regenerar menú limpio
+
+### Productos no coinciden con el demo
+1. Confirmar que WooCommerce está activo
+2. Revisar logs de importación: debe verse limpieza previa de productos antes del PASO 4
+3. Si quedan productos viejos, volver a correr "Restaurar Plantilla" y validar errores en log
 
 ### Imágenes de fondo no cargan
 1. ✅ **RESUELTO (Commit ed4646c)**: Soporte completo para .webp en backgrounds (newsletter, redes)

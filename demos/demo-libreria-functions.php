@@ -15,7 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Mapea /shop, /cart, /checkout a las URLs correctas de WooCommerce
  * sin importar el slug (shop vs tienda según configuración)
  */
-function chow_fix_demo_menu_links() {
+function chow_fix_demo_menu_links( $imported_demo_id = null ) {
+    if ( null !== $imported_demo_id && 'libreria' !== $imported_demo_id ) {
+        return;
+    }
+
+    if ( ! function_exists( 'wc_get_page_id' ) || ! function_exists( 'wc_get_cart_url' ) || ! function_exists( 'wc_get_checkout_url' ) ) {
+        return;
+    }
+
     // Mapeo dinámico de URLs estándar
     $url_map = array(
         '/shop'     => get_permalink( wc_get_page_id('shop') ),
@@ -30,12 +38,34 @@ function chow_fix_demo_menu_links() {
         if ( $items ) {
             foreach ( $items as $item ) {
                 foreach ( $url_map as $old_url => $new_url ) {
+                    if ( empty( $new_url ) || empty( $item->url ) ) {
+                        continue;
+                    }
+
                     // Comparar URL exacta o parcial
                     if ( $item->url === $old_url || strpos( $item->url, $old_url ) !== false ) {
+                        $item_type = ! empty( $item->type ) ? $item->type : 'custom';
+
+                        $item_args = array(
+                            'menu-item-title' => $item->title,
+                            'menu-item-position' => isset( $item->menu_order ) ? (int) $item->menu_order : 0,
+                            'menu-item-parent-id' => isset( $item->menu_item_parent ) ? (int) $item->menu_item_parent : 0,
+                            'menu-item-status' => 'publish',
+                        );
+
+                        if ( 'post_type' === $item_type ) {
+                            $item_args['menu-item-type'] = 'post_type';
+                            $item_args['menu-item-object'] = ! empty( $item->object ) ? $item->object : 'page';
+                            $item_args['menu-item-object-id'] = isset( $item->object_id ) ? (int) $item->object_id : 0;
+                        } else {
+                            $item_args['menu-item-type'] = 'custom';
+                            $item_args['menu-item-url'] = $new_url;
+                        }
+
                         wp_update_nav_menu_item(
                             $menu->term_id,
                             $item->ID,
-                            array( 'menu-item-url' => $new_url )
+                            $item_args
                         );
                     }
                 }
