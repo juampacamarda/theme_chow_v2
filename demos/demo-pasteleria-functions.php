@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function chow_demo_pasteleria_init() {
     // Enqueuer JS específico del demo
     add_action( 'wp_enqueue_scripts', 'chow_demo_pasteleria_enqueue_scripts', 20 );
+    add_action( 'wp_enqueue_scripts', 'chow_demo_pasteleria_shop_grid_styles', 30 );
     
     // Agregar clase específica al carrusel
     add_filter( 'chow_slide_prod_classes', 'chow_demo_pasteleria_carrusel_class' );
@@ -56,6 +57,50 @@ function chow_demo_pasteleria_carrusel_class( $classes ) {
  */
 function chow_demo_pasteleria_shop_columns( $columns ) {
     return 3;
+}
+
+/**
+ * Forzar 3 columnas visuales en shop/categorías para demo Pastelería
+ */
+function chow_demo_pasteleria_shop_grid_styles() {
+    if ( ! function_exists( 'is_shop' ) ) {
+        return;
+    }
+
+    if ( ! is_shop() && ! is_product_category() && ! is_product_tag() ) {
+        return;
+    }
+
+    $css = '
+    .woocommerce ul.products,
+    .woocommerce-page ul.products {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 20px !important;
+    }
+
+    .woocommerce ul.products li.product,
+    .woocommerce-page ul.products li.product {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    @media (max-width: 991px) {
+        .woocommerce ul.products,
+        .woocommerce-page ul.products {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+    }
+
+    @media (max-width: 575px) {
+        .woocommerce ul.products,
+        .woocommerce-page ul.products {
+            grid-template-columns: 1fr !important;
+        }
+    }
+    ';
+
+    wp_add_inline_style( 'theme-wc', $css );
 }
 
 /**
