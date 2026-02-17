@@ -21,6 +21,9 @@ function chow_demo_pasteleria_init() {
     // Agregar clase específica al carrusel
     add_filter( 'chow_slide_prod_classes', 'chow_demo_pasteleria_carrusel_class' );
 
+    // Grilla de tienda: 3 columnas solo para demo Pastelería
+    add_filter( 'loop_shop_columns', 'chow_demo_pasteleria_shop_columns', 1000 );
+
     // Corregir orden del menú al importar este demo
     add_action( 'chow_demo_imported', 'chow_demo_pasteleria_fix_menu_order', 20 );
 }
@@ -46,6 +49,13 @@ function chow_demo_pasteleria_enqueue_scripts() {
  */
 function chow_demo_pasteleria_carrusel_class( $classes ) {
     return $classes . ' carrusel-pasteleria';
+}
+
+/**
+ * Forzar 3 columnas en shop para demo Pastelería
+ */
+function chow_demo_pasteleria_shop_columns( $columns ) {
+    return 3;
 }
 
 /**
