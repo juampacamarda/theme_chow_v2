@@ -370,6 +370,7 @@ function chow_get_card_class( $card_style = 'classic' ) {
     $card_classes = array(
         'classic' => 'chow-product-card-01',
         'hover_visual' => 'chow-product-card-02',
+        'flip' => 'chow-product-card-03',
     );
     
     return isset( $card_classes[$card_style] ) ? $card_classes[$card_style] : 'chow-product-card-01';

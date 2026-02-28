@@ -75,6 +75,49 @@ jQuery(document).ready(function ($) {
     $("html, body").animate({ scrollTop: $(href).offset().top }, 800);
     });
 
+    // === CARD FLIP: Soporte táctil, hover y accesibilidad ===
+    (function() {
+        var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+        var flippedCards = {};
+
+        $(document).on('click', '.chow-product-card-03', function(e) {
+            var $card = $(this);
+            var cardId = $card.attr('data-card-id') || $card.index();
+            var $target = $(e.target);
+            
+            if ($target.is('a') || $target.is('button') || $target.closest('a, button, .add_to_cart_button').length) {
+                return;
+            }
+
+            if (isTouch) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (!flippedCards[cardId]) {
+                    $card.addClass('is-flipped');
+                    flippedCards[cardId] = true;
+                    
+                    $(document).one('click.cardFlip' + cardId, function(ev) {
+                        if (!$(ev.target).closest('.chow-product-card-03').length) {
+                            $card.removeClass('is-flipped');
+                            flippedCards[cardId] = false;
+                        }
+                    });
+                }
+            }
+        });
+
+        $(document).on('keydown', '.chow-product-card-03', function(e) {
+            var key = e.which || e.keyCode;
+            if (key === 13 || key === 32) {
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).toggleClass('is-flipped');
+            }
+        });
+    })();
+    // === FIN CARD FLIP ===/
+
     /*
     if ( !defined( 'WPCF7_LOAD_JS' ) ) {
         define( 'WPCF7_LOAD_JS', false );

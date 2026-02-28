@@ -346,7 +346,8 @@
             },
             "choices": {
                 "classic": "Clásica",
-                "hover_visual": "Hover Visual"
+                "hover_visual": "Hover Visual",
+                "flip": "Flip 3D"
             },
             "default_value": "classic",
             "multiple": 0,
