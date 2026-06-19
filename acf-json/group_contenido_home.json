@@ -237,7 +237,8 @@
                     "choices": {
                         "": "Usar predeterminado",
                         "classic": "Clásica",
-                        "hover_visual": "Hover Visual"
+                        "hover_visual": "Hover Visual",
+                        "flip": "Flip Card"
                     },
                     "default_value": "",
                     "multiple": 0,
@@ -593,5 +594,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1770825144
+    "modified": 1770835200
 }

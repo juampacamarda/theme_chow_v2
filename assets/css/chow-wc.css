@@ -1,18 +1,42 @@
-/* ===== FLIP CARD (chow-product-card-03) ===== */
-.chow-product-card-03 {
+/* ===== FLIP CARD (chow-product-card-03) - CORREGIDO ===== */
+/* Mayor especificidad para sobrescribir estilos globales de WooCommerce */
+
+/* Reset de estilos globales que rompen la flip card */
+ul.products li.product.chow-product-card-03,
+.woocommerce-page ul.products li.product.chow-product-card-03,
+.woocommerce ul.products li.product.chow-product-card-03,
+#productos-dinamicos.woocommerce .products li.product.chow-product-card-03,
+#productos-dinamicos.woocommerce .products .product.chow-product-card-03 .wrap {
   width: 100%;
-  height: 360px;
+  height: 380px;
+  min-height: unset;
+  max-height: unset;
   perspective: 1000px;
   position: relative;
-  overflow: visible;
+  overflow: visible !important; /* CRÍTICO: permite que el efecto 3D sea visible */
   cursor: pointer;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  /* display: hereda de WC (flex/grid) — NO forzar block */
+  padding: 0!important;
+  margin: 0!important;
+  border-radius: 8px;
+}
+
+.products.productos-row .product.chow-product-card-03{
+    padding: 0 10px!important;
+}
+
+/* El contenedor interno .chow-card-flip debe llenar el <li> */
+.chow-product-card-03.chow-card-flip {
+  height: 100%;
 }
 
 .chow-product-card-03 .chow-card-flip-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.6s;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
 }
 
@@ -37,6 +61,7 @@
 .chow-product-card-03 .chow-card-front {
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   color: #fff;
   text-shadow: 0 1px 3px rgba(0,0,0,0.6);
   align-items: center;
@@ -47,20 +72,25 @@
   background: rgba(0,0,0,0.45);
   padding: 0.6rem 0.9rem;
   border-radius: 6px;
+  max-width: 90%;
 }
 
 .chow-product-card-03 .chow-card-front-title .woocommerce-loop-product__title {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
+  color: #fff !important;
+  background: transparent !important;
+  text-align: center;
 }
 
 .chow-product-card-03 .chow-card-back {
   background: #fff;
   color: #222;
   transform: rotateY(180deg);
-  padding: 1rem;
+  padding: 1.2rem;
   gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .chow-product-card-03 .chow-card-back-content {
@@ -68,12 +98,17 @@
   flex-direction: column;
   gap: 0.6rem;
   height: 100%;
+  overflow-y: auto; /* Scroll si el contenido es muy largo */
 }
 
 .chow-product-card-03 .chow-card-back .woocommerce-loop-product__title {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
+  color: var(--chow_ppal, #D60B52) !important;
+  background: transparent !important;
+  text-align: left;
+  padding: 0 !important;
 }
 
 .chow-product-card-03 .chow-card-category {
@@ -93,31 +128,49 @@
 }
 
 .chow-product-card-03 .chow-card-excerpt {
-  font-size: 0.9rem;
-  line-height: 1.4;
+  font-size: 0.85rem;
+  line-height: 1.5;
   color: #555;
   flex: 1 1 auto;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
 }
 
 .chow-product-card-03 .chow-card-price {
   font-weight: 700;
-  font-size: 1rem;
-  color: var(--chow_ppal, #D60B52);
-  margin: 0.5rem 0;
+  font-size: 1.1rem;
+  color: var(--chow_ppal, #D60B52) !important;
+  background: transparent !important;
+  margin: 0.3rem 0;
+  text-align: left;
+  padding: 0 !important;
+}
+
+.chow-product-card-03 .chow-card-price del {
+  color: #999;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+.chow-product-card-03 .chow-card-price ins {
+  text-decoration: none;
 }
 
 .chow-product-card-03 .chow-card-actions {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  margin-top: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
 }
 
 .chow-product-card-03 .chow-card-actions .button,
 .chow-product-card-03 .chow-card-actions .chow-btn-view {
   white-space: nowrap;
-  font-size: 0.85rem;
-  padding: 0.5rem 0.8rem;
+  font-size: 0.8rem;
+  padding: 0.5rem 0.6rem;
   flex: 1;
   text-align: center;
   cursor: pointer;
@@ -127,31 +180,96 @@
   color: #fff;
   text-decoration: none;
   transition: all 0.3s ease;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 .chow-product-card-03 .chow-card-actions .button:hover,
 .chow-product-card-03 .chow-card-actions .chow-btn-view:hover {
   opacity: 0.85;
   text-decoration: none;
+  transform: translateY(-1px);
 }
 
+.chow-product-card-03 .chow-card-actions .chow-btn-view {
+  background-color: transparent;
+  color: var(--chow_ppal, #D60B52);
+}
+
+.chow-product-card-03 .chow-card-actions .chow-btn-view:hover {
+  background-color: var(--chow_ppal, #D60B52);
+  color: #fff;
+}
+
+/* Accesibilidad: focus visible */
 .chow-product-card-03:focus {
   outline: 2px solid rgba(0, 123, 255, 0.6);
   outline-offset: 3px;
 }
 
+.chow-product-card-03:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.chow-product-card-03:focus-visible {
+  outline: 2px solid rgba(0, 123, 255, 0.6);
+  outline-offset: 3px;
+}
+
+/* Efecto hover sutil en el contenedor */
+.chow-product-card-03:hover {
+  z-index: 10;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .chow-product-card-03 {
-    height: 320px;
+  ul.products li.product.chow-product-card-03,
+  .woocommerce-page ul.products li.product.chow-product-card-03,
+  .woocommerce ul.products li.product.chow-product-card-03 {
+    height: 340px;
+  }
+  
+  .chow-product-card-03 .chow-card-back {
+    padding: 1rem;
+  }
+  
+  .chow-product-card-03 .chow-card-back .woocommerce-loop-product__title {
+    font-size: 0.9rem;
+  }
+  
+  .chow-product-card-03 .chow-card-excerpt {
+    font-size: 0.8rem;
+    -webkit-line-clamp: 3;
+  }
+  
+  .chow-product-card-03 .chow-card-actions .button,
+  .chow-product-card-03 .chow-card-actions .chow-btn-view {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .chow-product-card-03 {
-    height: 280px;
+  ul.products li.product.chow-product-card-03,
+  .woocommerce-page ul.products li.product.chow-product-card-03,
+  .woocommerce ul.products li.product.chow-product-card-03 {
+    height: 300px;
+  }
+  
+  .chow-product-card-03 .chow-card-front-title .woocommerce-loop-product__title {
+    font-size: 0.95rem;
+  }
+  
+  .chow-product-card-03 .chow-card-back-content {
+    gap: 0.4rem;
+  }
+  
+  .chow-product-card-03 .chow-card-excerpt {
+    -webkit-line-clamp: 2;
   }
 }
-/* ===== FIN FLIP CARD ===== */
+/* ===== FIN FLIP CARD CORREGIDA ===== */
+
 
 .woocommerce-result-count, .woocommerce .woocommerce-ordering{display: none!important;}
 header.woocommerce-products-header {
