@@ -9,12 +9,75 @@
  * - Supports content overwriting with user confirmation
  */
 
-// Load demo configuration files
-require_once get_template_directory() . '/demos/demo-libreria.php';
-require_once get_template_directory() . '/demos/demo-pasteleria.php';
+/**
+ * Obtener lista de IDs de demo disponibles escaneando el filesystem.
+ * No requiere mantenimiento al agregar nuevas demos.
+ *
+ * @return string[] Array of demo IDs.
+ */
+function chow_get_available_demo_ids(): array {
+    $demo_files = glob( get_template_directory() . '/demos/demo-*.php' );
+    $ids = array();
 
-function chow_get_available_demo_ids() {
-    return array( 'libreria', 'pasteleria' );
+    foreach ( $demo_files as $file ) {
+        $basename = basename( $file, '.php' );
+        if ( preg_match( '/^demo-([a-z0-9_-]+)$/', $basename, $matches ) ) {
+            $ids[] = $matches[1];
+        }
+    }
+
+    return $ids;
+}
+
+/**
+ * Cargar la configuración de una demo dinámicamente.
+ *
+ * 1. Requiere el archivo demo-{id}.php
+ * 2. Construye el nombre de función chow_get_demo_{id}()
+ * 3. Retorna el array de configuración o un WP_Error
+ *
+ * @param string $demo_id Demo ID (e.g., 'libreria').
+ * @return array|\WP_Error Demo config array on success.
+ */
+function chow_load_demo_config( string $demo_id ) {
+    $file = get_template_directory() . '/demos/demo-' . $demo_id . '.php';
+
+    if ( ! file_exists( $file ) ) {
+        return new WP_Error(
+            'demo_file_not_found',
+            sprintf( 'Archivo de demo no encontrado: demo-%s.php', $demo_id )
+        );
+    }
+
+    require_once $file;
+
+    $func_name = 'chow_get_demo_' . str_replace( '-', '_', $demo_id );
+
+    if ( ! function_exists( $func_name ) ) {
+        return new WP_Error(
+            'demo_function_not_found',
+            sprintf( 'Función %s() no encontrada en demo-%s.php', $func_name, $demo_id )
+        );
+    }
+
+    $demo = call_user_func( $func_name );
+
+    // Validar estructura mínima
+    if ( ! is_array( $demo ) || ! isset( $demo['id'] ) ) {
+        return new WP_Error(
+            'demo_invalid_structure',
+            sprintf( 'La demo %s no tiene una estructura válida (falta key "id" o no es un array)', $demo_id )
+        );
+    }
+
+    if ( ! isset( $demo['name'] ) ) {
+        return new WP_Error(
+            'demo_missing_name',
+            sprintf( 'La demo %s no tiene un nombre definido', $demo_id )
+        );
+    }
+
+    return $demo;
 }
 
 // Register the "Importar Demo" subpage
@@ -271,18 +334,17 @@ function chow_do_import( $demo_id, $action_type = 'import' ) {
  * @return array|WP_Error - Array with success info and skipped plugins, or WP_Error on failure
  */
 function chow_do_import_internal( $demo_id, $action_type = 'import' ) {
-    // Get demo configuration
+    // Get demo configuration (dinámico vía filesystem)
     chow_importer_log( "Obteniendo configuración para demo: $demo_id" );
-    
-    if ( 'libreria' === $demo_id ) {
-        $demo = chow_get_demo_libreria();
-    } elseif ( 'pasteleria' === $demo_id ) {
-        $demo = chow_get_demo_pasteleria();
-    } else {
-        $error = "Demo no encontrada: $demo_id";
-        chow_importer_log( $error, 'ERROR' );
-        return new WP_Error( 'invalid_demo', $error );
+
+    $demo = chow_load_demo_config( $demo_id );
+
+    if ( is_wp_error( $demo ) ) {
+        $error = $demo->get_error_message();
+        chow_importer_log( "Error cargando demo: $error", 'ERROR' );
+        return $demo;
     }
+
     chow_importer_log( "Configuración cargada: " . $demo['name'] );
     
     // Detect missing plugins early
@@ -479,12 +541,11 @@ function chow_has_user_content() {
  * Clear demo content (for overwrite operation)
  */
 function chow_clear_demo_content( $demo_id ) {
-    // Get demo config to know which posts to delete
-    if ( 'libreria' === $demo_id ) {
-        $demo = chow_get_demo_libreria();
-    } elseif ( 'pasteleria' === $demo_id ) {
-        $demo = chow_get_demo_pasteleria();
-    } else {
+    // Get demo config (dinámico vía filesystem)
+    $demo = chow_load_demo_config( $demo_id );
+
+    if ( is_wp_error( $demo ) ) {
+        chow_importer_log( "Error cargando demo para limpieza: " . $demo->get_error_message(), 'ERROR' );
         return;
     }
     

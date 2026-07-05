@@ -9,12 +9,13 @@
 ## 🗂️ Índice de Documentos
 
 | # | Documento | Contenido |
-|---|-----------|-----------|
+|---|---|---|
 | 1 | [Arquitectura del Theme](01-arquitectura.md) | Estructura de archivos, stack tecnológico, filosofía, dependencias, templates |
-| 2 | [Sistema de Demos](02-demos.md) | Cómo crear, importar y gestionar demos prefabricadas. Referencia de campos ACF. Checklist pre-importación. |
+| 2 | [Sistema de Demos](02-demos.md) | Cómo crear, importar y gestionar demos prefabricadas. Referencia de campos SCF. Checklist pre-importación. |
 | 3 | [Tarjetas de Producto (WooCommerce)](03-woocommerce-cards.md) | Sistema modular de cards: Classic, Hover Visual, Flip. Configuración global y por bloque. Extensibilidad. |
-| 4 | [Configuración SCF/ACF](04-acf-config.md) | Grupos de campos, páginas de opciones, auto-sync JSON, variables CSS desde ACF |
+| 4 | [Configuración SCF](04-acf-config.md) | Grupos de campos, páginas de opciones, auto-sync JSON, variables CSS desde SCF |
 | 5 | [Protocolos](05-protocolos.md) | Protocolos paso a paso para: crear una demo, agregar un estilo de card, crear página flexible, extender el theme |
+| 6 | [Flujo OpenDesign ↔ OpenCode](06-flujo-trabajo-diseno.md) | Pipeline completo diseño→implementación con IA. Proceso DESIGN.md → prompt. Handoff protocol entre herramientas. |
 
 ---
 
@@ -29,7 +30,7 @@
 
 ### Plugins Requeridos
 - WooCommerce 9.0+
-- SCF (Secure Custom Fields — fork de ACF)
+- SCF (Secure Custom Fields)
 - Contact Form 7
 
 ### Dependencias Frontend

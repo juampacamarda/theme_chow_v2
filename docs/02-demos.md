@@ -67,3 +67,44 @@ demos/
 - Mantener archivos de imagen organizados
 - Documentar cambios en `DEMO.md`
 - Evitar duplicar campos SCF
+
+## 🤖 Rediseño con IA
+
+El Chow Theme tiene un sistema completo para rediseñar demos con herramientas de IA generativa (v0, Bolt, Lovable, Open Design) y luego implementar el resultado.
+
+### Documentos de referencia
+
+| Documento | Contenido |
+|---|---|
+| [`docs/03-demo-redesign-prompt.md`](03-demo-redesign-prompt.md) | Prompt base para la herramienta de diseño + instrucciones para el agente implementador |
+
+### Flujo de trabajo
+
+```
+HERRAMIENTA DE IA (v0/Bolt/Open Design)
+    │  Copiar prompt con placeholders reemplazados
+    │  Incluye: no Tailwind, componentes existentes, CSS mínimo
+    ▼
+DISEÑO EXPORTADO (HTML + CSS + JS)
+    │
+    ▼
+AGENTE IMPLEMENTADOR
+    │  Sigue las instrucciones en docs/03-demo-redesign-prompt.md
+    │  → "Instrucciones para el agente implementador"
+    ▼
+ARCHIVOS DEL CHOW THEME
+    ├── demos/demo-[nombre].php           # Datos + CSS
+    ├── demos/demo-[nombre]-functions.php  # Hooks específicos (opcional)
+    └── demos/[nombre]/images/             # Assets
+```
+
+### Lo que incluye `03-demo-redesign-prompt.md`
+
+- **Instrucciones de código obligatorias** para la IA (sin Tailwind, clases `chow-*`, código mínimo).
+- **Catálogo de componentes existentes** del theme con clases CSS, descripción y cuándo usar cada uno.
+- **Template de prompt base** con placeholders reutilizable.
+- **Ejemplo concreto** con la demo Pastelería "Harina & Miel" listo para copiar y pegar.
+- **Pipeline de implementación** (6 pasos: analizar → mapear → CSS → template → demo → functions [opcional]).
+- **Reglas de cuándo crear nuevo template part y cuándo NO**.
+- **Tabla de mapeo** de secciones del diseño a componentes del Chow Theme.
+- **Estructura completa** del array `home` con todos los campos requeridos.

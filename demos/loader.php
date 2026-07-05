@@ -14,17 +14,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Lista de demos disponibles
- * Añadir aquí nuevos demos cuando se creen
+ * Lista dinámica de demos disponibles
+ * Escanea el directorio en busca de archivos demo-{id}.php
+ * No requiere mantenimiento al agregar nuevas demos
  */
-$chow_available_demos = array(
-    'libreria',
-    'pasteleria',
-    'yoga',
-    'consultorio',
-    'academia',
-    'restaurante',
-);
+$chow_available_demos = array();
+$demo_files = glob( get_template_directory() . '/demos/demo-*.php' );
+
+foreach ( $demo_files as $file ) {
+    $basename = basename( $file, '.php' );
+
+    // Match "demo-{id}" pero NO "demo-{id}-functions"
+    if ( preg_match( '/^demo-([a-z0-9_-]+)$/', $basename, $matches ) ) {
+        $chow_available_demos[] = $matches[1];
+    }
+}
 
 $chow_active_demo = get_option( 'chow_active_demo' );
 

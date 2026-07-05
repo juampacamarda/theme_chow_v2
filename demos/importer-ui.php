@@ -21,10 +21,32 @@ if ( ! current_user_can( 'manage_options' ) ) {
 // Get active demo if any
 $active_demo = get_option( 'chow_active_demo' );
 
-// Build demos array
+// Build demos array dinámicamente desde el filesystem
 $demos = array();
-$demos[] = chow_get_demo_libreria();
-$demos[] = chow_get_demo_pasteleria();
+$demo_files = glob( get_template_directory() . '/demos/demo-*.php' );
+
+foreach ( $demo_files as $file ) {
+    $basename = basename( $file, '.php' );
+
+    // Solo archivos demo-{id}.php, NO demo-{id}-functions.php
+    if ( ! preg_match( '/^demo-([a-z0-9_-]+)$/', $basename, $matches ) ) {
+        continue;
+    }
+
+    $demo_id = $matches[1];
+    $func_name = 'chow_get_demo_' . str_replace( '-', '_', $demo_id );
+
+    require_once $file;
+
+    if ( function_exists( $func_name ) ) {
+        $demo_data = call_user_func( $func_name );
+
+        // Validar que tenga la estructura mínima esperada
+        if ( is_array( $demo_data ) && isset( $demo_data['id'] ) ) {
+            $demos[] = $demo_data;
+        }
+    }
+}
 
 ?>
 

@@ -95,11 +95,15 @@
                             if ( $products_query->have_posts() ) :
                                 // Detectar qué demo está activo para agregar clase específica
                                 $demo_activo = null;
-                                $demos_disponibles = array('pasteleria', 'libreria', 'yoga', 'consultorio', 'academia', 'restaurante');
-                                foreach ($demos_disponibles as $demo_id) {
-                                    if (get_option('chow_demo_'.$demo_id.'_active')) {
-                                        $demo_activo = $demo_id;
-                                        break;
+                                $demos_files = glob( get_template_directory() . '/demos/demo-*.php' );
+                                foreach ( $demos_files as $file ) {
+                                    $basename = basename( $file, '.php' );
+                                    if ( preg_match( '/^demo-([a-z0-9_-]+)$/', $basename, $matches ) ) {
+                                        $demo_id = $matches[1];
+                                        if ( get_option( 'chow_demo_' . $demo_id . '_active' ) ) {
+                                            $demo_activo = $demo_id;
+                                            break;
+                                        }
                                     }
                                 }
                                 $clase_carousel_productos = $demo_activo ? 'productos-carousel-'.$demo_activo : '';

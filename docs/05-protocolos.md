@@ -46,7 +46,7 @@ function chow_get_demo_[nombre]() {
 ### Requisitos
 - Archivo PHP en `woocommerce/loop/card-[nombre].php`
 - Estilos CSS en `assets/css/chow-wc.css`
-- Campos ACF actualizados
+- Campos SCF actualizados
 
 ### Pasos
 1. **Crear archivo:** `woocommerce/loop/card-[nombre].php`
@@ -57,7 +57,7 @@ function chow_get_demo_[nombre]() {
 3. **Crear CSS:**
    - Clase `.chow-product-card-XX`
    - Estilos en `chow-wc.css`
-4. **Actualizar ACF:**
+4. **Actualizar SCF:**
    - Campos `card_style_default` (Empresa)
    - Campo `card_style` (Bloques de Productos)
 5. **Probar:**
@@ -67,19 +67,19 @@ function chow_get_demo_[nombre]() {
 ### Checklist
 - [ ] Archivo PHP creado
 - [ ] Estilos CSS definidos
-- [ ] Campos ACF actualizados
+- [ ] Campos SCF actualizados
 - [ ] Pruebas completadas
 
 ## 3. Crear Página Flexible
 ### Requisitos
 - Template `flexible-page.php`
-- Campos ACF definidos en `group_flexible_page.json`
+- Campos SCF definidos en `group_flexible_page.json`
 
 ### Pasos
 1. **Crear/editar template:**
    - Usar `flexible-page.php` como base
    - Definir secciones (encabezado, contenido, collapses, etc.)
-2. **Configurar ACF:**
+2. **Configurar SCF:**
    - Campos `texto_contenido`, `collapses`
    - Estructura de collapses: `titulo_collapse`, `contenido_collapse`
 3. **Asignar a página:**
@@ -107,7 +107,7 @@ function chow_get_demo_[nombre]() {
 1. **Agregar sección a homepage:**
    - Modificar `home.php`
    - Actualizar bloques en SCF
-2. **Crear nuevo campo ACF:**
+2. **Crear nuevo campo SCF:**
    - En `group_empresa.json` o nuevo grupo
 3. **Actualizar JavaScript:**
    - Si se requiere interactividad

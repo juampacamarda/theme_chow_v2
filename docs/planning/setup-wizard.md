@@ -52,10 +52,8 @@ Acceso al panel normal
 - País (select)
 
 **Destino de los datos:**
-- Estos datos se guardan en los campos ACF de la página de opciones `group_empresa.json`
-- `empresa_nombre` → ACF field `empresa_nombre`
-- `empresa_descripcion` → ACF field `empresa_descripcion`
-- etc.
+- Estos datos se guardan en los campos SCF de la página de opciones (grupo `group_empresa.json`)
+- Los campos del array `company` se mapean directamente: `direccion`, `telefonos`, `mail`, etc.
 
 **Validación:**
 - Campos obligatorios: nombre, email, teléfono.
@@ -72,8 +70,8 @@ Acceso al panel normal
 - Logo (file upload)
 
 **Destino de los datos:**
-- `color_principal` → ACF field `color_principal` (guarda valor hex, ej: `#2c3e50`)
-- `color_secundario` → ACF field `color_secundario`
+- `color_principal` → SCF field `color_principal` (guarda valor hex, ej: `#2c3e50`)
+- `color_secundario` → SCF field `color_secundario`
 - Logo → Se carga a la librería de medios de WordPress y se asigna como custom logo del sitio
 
 **Validación:**
@@ -91,9 +89,8 @@ Acceso al panel normal
 ¿Cómo deseas cargar tu contenido?
 
 [ ] Importar Demo Prefabricada
-    - Librería "Páginas de Tinta"
-    - Zapatería "Paso Firme"
-    - Bazar "Bazar Dragón"
+    - Librería "Páginas de Tinta" (existente)
+    - Pastelería "Harina & Miel" (existente)
 
 [ ] Cargar CSV Personalizado (Fase 2 - No implementado en MVP)
     - Descargar template
@@ -137,8 +134,8 @@ Si ya tienes contenido, será sobreescrito.
 - YouTube (URL)
 
 **Destino:**
-- Se guardan en los campos ACF de `group_empresa.json`
-- Campos: `redes_facebook`, `redes_instagram`, etc.
+- Se guardan en los campos SCF de `group_empresa.json`
+- Campos: `facebook_link`, `instagram_link`, `twitter_link`, `wsp_link`
 
 **Validación:**
 - Verificar que sean URLs válidas (si se completan).
@@ -205,69 +202,125 @@ demos/
 
 ## Datos de las Demos
 
-Cada demo (`demo-libreria.php`, `demo-zapateria.php`, `demo-bazar.php`) devuelve un array estructurado:
+Cada demo (`demo-libreria.php`, `demo-pasteleria.php`) devuelve un array estructurado con este formato actual:
 
 ```php
 return array(
-    'id' => 'libreria',
-    'name' => 'Librería "Páginas de Tinta"',
+    'id'          => 'libreria',
+    'name'        => 'Librería "Páginas de Tinta"',
     'description' => 'Una demo elegante para librerías y editoriales',
-    'theme_options' => array(
-        'color_principal' => '#2c3e50',
-        'color_secundario' => '#fdf5e6',
-        'custom_css_field' => 'body { font-family: "Lora", serif; }',
+    'image'       => 'libreria-cover.webp',
+    'version'     => '1.0',
+    'card_style'  => 'hover_visual',
+
+    'company' => array(
+        'color_principal'       => '#2c3e50',
+        'color_secundario'      => '#aebcbe',
+        'color_texto'           => '#5f5f5f',
+        'color_fondo'           => '#ffffff',
+        'logo_header_desktop'   => 'libreria-logo-color.webp',
+        'logo_header_mobile'    => 'libreria-logo-blanco.webp',
+        'logo_footer'           => 'libreria-logo-blanco.webp',
+        'direccion'             => 'Av. Corrientes 1234, Buenos Aires',
+        'telefonos'             => '+54 11 4567-8900',
+        'mail'                  => 'info@paginasdetinta.com',
+        'facebook_link'         => '#',
+        'instagram_link'        => '#',
+        'twitter_link'          => '#',
+        'wsp_link'              => '5491145678900',
+        'logos_legales'         => '',
     ),
-    'slider_home' => array(
-        array(
-            'titulo' => 'Descubre Historias',
-            'descripcion' => 'Nuestras últimas novedades literarias',
-            'imagen' => 'demos/libreria/images/slider-01.jpg',
-            'enlace' => '/tienda',
-        ),
-        // ... más slides
-    ),
-    'home_blocks' => array(
-        array(
-            'titulo' => 'Novedades',
-            'tipo' => 'ultimos',
-            'cantidad' => 4,
-            'layout' => 'columnas',
-            'card_style' => 'classic',
-        ),
-        // ... más bloques
-    ),
+
     'categories' => array(
-        array('name' => 'Novelas', 'slug' => 'novelas'),
-        array('name' => 'Poesía', 'slug' => 'poesia'),
+        array('name' => 'Novelas', 'slug' => 'novelas', 'description' => '...'),
+        array('name' => 'Poesía', 'slug' => 'poesia', 'description' => '...'),
     ),
+
     'products' => array(
         array(
-            'title' => 'El Quijote',
-            'price' => 45.99,
-            'sku' => 'LIB-001',
-            'category' => 'novelas',
-            'image' => 'demos/libreria/images/producto-01.jpg',
-            'description' => 'Una clásica novela de aventuras',
-            'is_featured' => true,
+            'name'              => 'El Quijote',
+            'slug'              => 'el-quijote',
+            'price'             => '45.99',
+            'sale_price'        => '',
+            'stock'             => 50,
+            'category'          => 'Novelas',
+            'image'             => 'libreria-producto01.webp',
+            'featured'          => true,
+            'on_sale'           => false,
+            'description'       => 'Una clásica novela de aventuras',
+            'short_description' => 'Clásico de la literatura',
         ),
-        // ... 11 productos más
     ),
+
     'pages' => array(
         array(
-            'title' => 'Sobre Nosotros',
-            'slug' => 'sobre-nosotros',
-            'template' => 'flexible-page.php',
-            'content' => array(
-                'activo_encabezado' => true,
-                'imagen_portada' => 'demos/libreria/images/banner.jpg',
-                'titulo' => 'Nuestra Historia',
-                // ... más campos ACF
+            'title'    => 'Sobre Nosotros',
+            'slug'     => 'sobre-nosotros',
+            'template' => 'flexible-page',
+            'content'  => '<p>Historia de la marca...</p>',
+            'collapses' => array(
+                array(
+                    'titulo_collapse'    => '¿Pregunta?',
+                    'contenido_collapse' => 'Respuesta...',
+                ),
             ),
         ),
-        // ... más páginas
     ),
+
+    'forms' => array(
+        array(
+            'name'     => 'Contacto Librería',
+            'form_tag' => '<label>Nombre [text* nombre]</label>...',
+        ),
+    ),
+
+    'home' => array(
+        'slider_1' => array(
+            'imagen' => 'libreria-slide01.webp',
+            'texto'  => 'Descubre Nuevos Mundos',
+            'link'   => '/shop',
+        ),
+        'product_blocks' => array(
+            array(
+                'titulo'      => 'Novedades',
+                'tipo'        => 'ultimos',
+                'cantidad'    => 4,
+                'layout'      => 'columnas',
+                'columnas'    => 'col-lg-3',
+                'card_style'  => 'hover_visual',
+            ),
+        ),
+        'newsletter' => array(
+            'titulo'          => 'Newsletter',
+            'news_bg'         => 'libreria-fondo-news.webp',
+            'formulario_news' => 'Newsletter Librería',
+        ),
+        'redes_seccion' => array(
+            'titulo'      => 'Síguenos',
+            'fondo_redes' => 'libreria-fondo-redes.webp',
+        ),
+        'sections' => array(
+            'slide'              => true,
+            'productos-1'        => true,
+            'news'               => true,
+            'redes'              => true,
+        ),
+    ),
+
+    'menu' => array(
+        'name'  => 'Menú Librería',
+        'items' => array(
+            array('title' => 'Inicio',  'url' => '/',        'parent' => null),
+            array('title' => 'Tienda',  'url' => '/shop',    'parent' => null),
+            array('title' => 'Contacto','url' => '/contacto','parent' => null),
+        ),
+    ),
+
+    'custom_css' => ':root { --slider-height: 600px; }',
 );
 ```
+
+> **Nota:** La estructura actual NO usa `theme_options`, `slider_home` ni `home_blocks`. Esos nombres son de una versión anterior. Ver la guía completa en `demos/DEMO.md` para la referencia actualizada de campos.
 
 ---
 
@@ -293,24 +346,29 @@ Cuando el usuario selecciona una demo y confirma:
    }
    ```
 
-4. **Crear Productos:**
+4. **Crear Productos (usando WC_Product):**
    ```php
    foreach ( $demo_config['products'] as $product ) {
-       $post_id = wp_insert_post( array(
-           'post_title' => $product['title'],
-           'post_type' => 'product',
-           'post_status' => 'publish',
-       ) );
+       $wc_product = new WC_Product_Simple();
+       $wc_product->set_name( $product['name'] );
+       $wc_product->set_slug( $product['slug'] );
+       $wc_product->set_description( $product['description'] );
+       $wc_product->set_short_description( $product['short_description'] );
+       $wc_product->set_regular_price( floatval( str_replace( ',', '.', $product['price'] ) ) );
+       $wc_product->set_sku( $product['slug'] );
+       $wc_product->set_stock_quantity( $product['stock'] ?? 50 );
+       $wc_product->set_stock_status( 'instock' );
+       $wc_product->set_featured( $product['featured'] ?? false );
        
-       // Guardar metadata del producto (precio, SKU, etc.)
-       update_post_meta( $post_id, '_price', $product['price'] );
-       update_post_meta( $post_id, '_sku', $product['sku'] );
+       $product_id = $wc_product->save();
        
        // Asignar imagen destacada
-       set_post_thumbnail( $post_id, $attachment_id );
+       if ( ! empty( $attachment_id ) ) {
+           set_post_thumbnail( $product_id, $attachment_id );
+       }
        
        // Asignar categoría
-       wp_set_post_terms( $post_id, $product['category'], 'product_cat' );
+       wp_set_post_terms( $product_id, $product['category'], 'product_cat' );
    }
    ```
 
@@ -318,31 +376,29 @@ Cuando el usuario selecciona una demo y confirma:
    ```php
    foreach ( $demo_config['pages'] as $page ) {
        $page_id = wp_insert_post( array(
-           'post_title' => $page['title'],
-           'post_name' => $page['slug'],
-           'post_type' => 'page',
-           'post_status' => 'publish',
+           'post_title'   => $page['title'],
+           'post_name'    => $page['slug'],
+           'post_type'    => 'page',
+           'post_status'  => 'publish',
            'page_template' => $page['template'],
        ) );
        
-       // Guardar campos ACF
-       foreach ( $page['content'] as $field => $value ) {
-           update_field( $field, $value, $page_id );
+       // Guardar contenido en SCF según el template
+       if ( 'flexible-page' === $page['template'] ) {
+           update_field( 'texto_contenido', $page['content'], $page_id );
+           if ( isset( $page['collapses'] ) ) {
+               update_field( 'collapses', $page['collapses'], $page_id );
+           }
+       } else {
+           wp_update_post( array( 'ID' => $page_id, 'post_content' => $page['content'] ) );
        }
    }
    ```
 
-6. **Actualizar Opciones del Tema:**
+6. **Actualizar Opciones del Tema (usando el importer existente):**
    ```php
-   foreach ( $demo_config['theme_options'] as $field => $value ) {
-       update_field( $field, $value, 'option' );
-   }
-   
-   // Slider
-   update_field( 'slider_home', $demo_config['slider_home'], 'option' );
-   
-   // Bloques de productos
-   update_field( 'bloques_productos', $demo_config['home_blocks'], 'option' );
+   // Delegar toda la importación al importer probado
+   chow_do_import( $demo_id );
    ```
 
 7. **Marcar Como Completado:**
@@ -356,7 +412,7 @@ Cuando el usuario selecciona una demo y confirma:
 
 **Lo que SÍ se implementa:**
 - ✅ Setup Wizard UI (5 steps)
-- ✅ Importación de demos (Librería, Zapatería, Bazar)
+- ✅ Importación de demos (Librería, Pastelería)
 - ✅ Carga de imágenes a la librería de medios
 - ✅ Creación de productos y páginas
 - ✅ Actualización de opciones del tema

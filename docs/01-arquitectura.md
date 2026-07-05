@@ -4,7 +4,7 @@
 - **WordPress 5.0+**
 - **WooCommerce 9.0+**
 - **Bootstrap 5.3.0** (CDN)
-- **SCF (Secure Custom Fields)** - Fork oficial de ACF
+- **SCF (Secure Custom Fields)**
 - **JavaScript:** jQuery 3.7.1, Owl Carousel 2.3.4, AOS
 - **CSS:** Bootstrap 5, CSS personalizado (chow-base-style.css, chow-wc.css)
 

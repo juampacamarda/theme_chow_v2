@@ -7,7 +7,7 @@
 4. [Flujo Simplificado para Crear Demos](#flujo-simplificado-para-crear-demos)
 5. [Estructura General de un Demo](#estructura-general-de-un-demo)
 6. [Problemas Comunes y Soluciones](#problemas-comunes-y-soluciones)
-7. [Referencia de Campos ACF](#referencia-de-campos-acf)
+7. [Referencia de Campos SCF](#referencia-de-campos-scf)
 8. [Detalles de Estilos y Ajustes Visuales](#detalles-de-estilos-y-ajustes-visuales)
 9. [Guía de Prompts de Imágenes](#guía-de-prompts-de-imágenes)
 10. [Checklist Pre-Importación](#checklist-pre-importación)
@@ -25,7 +25,7 @@ Esta guía documenta cómo crear demos correctamente para evitar errores comunes
 **Archivos clave**:
 - `demos/demo-[nombre].php` - Definición del demo (datos)
 - `demos/importer.php` - Lógica de importación
-- `acf-json/group_*.json` - Esquema de campos ACF
+- `acf-json/group_*.json` - Esquema de campos SCF
 
 ---
 
@@ -217,7 +217,7 @@ function chow_get_demo_nombre() {
 
 **Síntoma**: El formulario no aparece en la sección newsletter de la homepage.
 
-**Causa**: Confusión entre el valor de config del demo y el valor final guardado en ACF.
+**Causa**: Confusión entre el valor de config del demo y el valor final guardado en SCF.
 
 **SOLUCIÓN**:
 
@@ -253,7 +253,7 @@ $newsletter_data = array(
 
 **Síntoma**: Las páginas con template "flexible-page" no muestran contenido ni collapses.
 
-**Causa**: El contenido se guarda en `post_content` pero el template espera campos ACF `texto_contenido` y `collapses`.
+**Causa**: El contenido se guarda en `post_content` pero el template espera campos SCF `texto_contenido` y `collapses`.
 
 #### 3A: Contenido Principal
 
@@ -269,7 +269,7 @@ $page_post = array(
 
 **CORRECTO**:
 ```php
-// Para páginas flexible, guardar en ACF field
+// Para páginas flexible, guardar en SCF field
 if ( isset( $page_data['template'] ) && 'flexible-page' === $page_data['template'] ) {
     update_field( 'texto_contenido', $page_data['content'], $page_id );
 } else {
@@ -383,7 +383,7 @@ grep -n "str_replace.*\.webp.*\.png" demos/importer.php
 
 ---
 
-## Referencia de Campos ACF
+## Referencia de Campos SCF
 
 ### 🏢 GROUP: Empresa
 
@@ -502,7 +502,7 @@ grep -n "str_replace.*\.webp.*\.png" demos/importer.php
 |-------|------|---------|-------|
 | `imagen` | image | `producto01.png` | Nombre de archivo |
 | `nombre_del_link` | text | `El Quijote` | Título del producto |
-| `link` | link (ACF) | Array con url/title/target | **DEBE SER ARRAY** |
+| `link` | link (SCF) | Array con url/title/target | **DEBE SER ARRAY** |
 
 **CORRECTO**:
 ```php
@@ -632,7 +632,7 @@ array(
 
 ### 🎁 Product Blocks
 
-**Ubicación**: ACF - Bloques de Productos
+**Ubicación**: SCF - Bloques de Productos
 **En Demo**: `'home'` > `'product_blocks'`
 
 **Campos**:
@@ -1038,7 +1038,7 @@ echo 'OK!' . PHP_EOL;
 2. Verificar que el archivo existe en `demos/[nombre]/images/`
 3. Verificar que el nombre coincide exactamente (mayúsculas/minúsculas)
 4. Verificar formato: debe ser `[demo-id]-[nombre].[extensión]` (ej. `libreria-logo-color.webp`)
-5. Verificar que ACF esté guardando el ID de attachment, no la URL
+5. Verificar que SCF esté guardando el ID de attachment, no la URL
 
 ### Formularios no se muestran
 1. Verificar que `formulario_news` contiene el nombre del formulario, no un shortcode

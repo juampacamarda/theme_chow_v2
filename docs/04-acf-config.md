@@ -1,7 +1,7 @@
-# 🎨 Configuración SCF/ACF - Chow Theme v2.0
+# 🎨 Configuración SCF - Chow Theme v2.0
 
 ## 🧩 Sistema SCF (Secure Custom Fields)
-El tema utiliza SCF (fork oficial de ACF) para gestionar todas las opciones del sitio. Los campos se organizan en grupos y se sincronizan automáticamente desde la carpeta `acf-json/`.
+El tema utiliza SCF (Secure Custom Fields) para gestionar todas las opciones del sitio. Los campos se organizan en grupos y se sincronizan automáticamente desde la carpeta `acf-json/`.
 
 ## 📁 Estructura de Grupos de Campos
 ```
@@ -19,7 +19,7 @@ acf-json/
 - Cualquier cambio en los JSON se refleja en tiempo real en el admin
 - Para forzar sincronización: ir a **SCF > Grupos de campos > Sync available**
 
-## 🎨 Variables CSS desde ACF
+## 🎨 Variables CSS desde SCF
 Los colores del tema se gestionan desde campos SCF:
 ```php
 // En functions.php
@@ -56,7 +56,7 @@ Estas variables se inyectan en el CSS mediante:
    - Eliminar del JSON
    - Desactivar en SCF
 4. **Validar campos:**
-   - Usar validaciones en ACF (ej: formato email, números)
+   - Usar validaciones en SCF (ej: formato email, números)
 
 ## ✅ Checklist Pre-Actualización
 - [ ] Campos únicos en cada grupo

@@ -84,7 +84,7 @@ Proporcionar un sistema flexible y escalable para mostrar productos en WooCommer
 ### Agregar Nuevo Estilo
 1. **Crear archivo:** `woocommerce/loop/card-[nombre].php`
 2. **Implementar lógica HTML/PHP**
-3. **Agregar a ACF:**
+3. **Agregar a SCF:**
    - Campos `card_style_default` en "Empresa"
    - Campo `card_style` en "Bloques de Productos"
 4. **Crear CSS:** `.chow-product-card-04` en `assets/css/chow-wc.css`
@@ -98,7 +98,7 @@ Proporcionar un sistema flexible y escalable para mostrar productos en WooCommer
 3. **CSS:**
    - Crear clase `.chow-product-card-XX`
    - Añadir estilos en `chow-wc.css`
-4. **ACF:**
+4. **SCF:**
    - Actualizar campos `card_style_default` y `card_style`
 5. **Pruebas:**
    - Importar demo
@@ -107,5 +107,5 @@ Proporcionar un sistema flexible y escalable para mostrar productos en WooCommer
 ## ✅ Checklist Pre-Extensión
 - [ ] Archivo PHP creado en `woocommerce/loop/`
 - [ ] Estilos CSS definidos
-- [ ] Campos ACF actualizados
+- [ ] Campos SCF actualizados
 - [ ] Pruebas en tienda y homepage
