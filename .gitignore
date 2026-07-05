@@ -22,6 +22,9 @@ vendor/
 node_modules/
 npm-debug.log*
 
+# Agent / tooling (internal dev, not part of the theme product)
+.opencode/
+
 # Demo images (keeping only optimized WebP versions)
 demos/*/images/*.png
 demos/*/images/*.jpg
